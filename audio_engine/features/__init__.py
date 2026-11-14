@@ -1,0 +1,1 @@
+"""Training-compatible feature extraction."""

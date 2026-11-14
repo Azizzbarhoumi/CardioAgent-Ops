@@ -1,0 +1,42 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Large data and model artifacts (tracked via MLflow / data versioning, not Git)
+*.wav
+*.onnx
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.npy
+*.npz
+*.parquet
+mlruns/
+mlartifacts/
+/Data/dataset/
+/Data/__MACOSX/
+/ourdataset/
+/features_normal_train.data
+/features_abnormal_train.data
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+/mlflow.db

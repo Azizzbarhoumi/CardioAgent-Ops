@@ -1,0 +1,13 @@
+Metrics: {'accuracy': 0.7319587469100952, 'loss': 0.5597767233848572, 'precision': 0.7319587469100952, 'recall': 1.0}
+Confusion matrix (normal, abnormal):
+[[  0 338]
+ [  0 923]]
+
+              precision    recall  f1-score   support
+
+      normal       0.00      0.00      0.00       338
+    abnormal       0.73      1.00      0.85       923
+
+    accuracy                           0.73      1261
+   macro avg       0.37      0.50      0.42      1261
+weighted avg       0.54      0.73      0.62      1261
