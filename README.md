@@ -1,9 +1,6 @@
 # CardioAgent-Ops
 
 Containerized micro-services platform (Docker), MLOps, LLM fine-tuning, RAG and multi-agent AI for cardio-acoustic analysis.
-
-Academic mini-project, *Data Mining & Machine Learning*, ENSIT (section 3G Math, supervisor: Dr. Mehrez Boulares). Due date: **1 December 2026**.
-
 > **Current status: research notebooks plus a local inference demo.** The project includes an API
 > and Streamlit interface for independent SVM, decision-tree, and CNN predictions. Other planned
 > platform services remain outside this demo.
