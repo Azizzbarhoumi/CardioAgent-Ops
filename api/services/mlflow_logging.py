@@ -17,6 +17,7 @@ import mlflow
 class InferenceLogger:
     def __init__(self, tracking_uri: str):
         self.tracking_uri = tracking_uri
+        self.ui_uri = os.getenv("MLFLOW_UI_URI", tracking_uri).rstrip("/")
 
     def reachable(self) -> bool:
         try:
@@ -46,7 +47,7 @@ class InferenceLogger:
                 with mlflow.start_run(experiment_id=experiment.experiment_id, run_name=run_name) as run:
                     run_id = run.info.run_id
                     response["mlflow_run_id"] = run.info.run_id
-                    response["mlflow_run_url"] = f"{self.tracking_uri.rstrip('/')}/#/experiments/{experiment.experiment_id}/runs/{run.info.run_id}"
+                    response["mlflow_run_url"] = f"{self.ui_uri}/#/experiments/{experiment.experiment_id}/runs/{run.info.run_id}"
                     mlflow.log_params({
                         "filename": filename[:500],
                         "duration_s": f"{response['duration_s']:.6f}",

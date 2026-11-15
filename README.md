@@ -49,6 +49,21 @@ See [`DEVELOPMENT_ROADMAP.md`](DEVELOPMENT_ROADMAP.md) for the implementation or
 
 ## Local inference demo
 
+### Run the API and MLflow with Docker Compose
+
+The `audio-engine` service runs the FastAPI app together with the `audio_engine` Python package.
+The MLflow service stores its database and artifacts in a persistent Docker volume.
+
+```bash
+docker compose up --build
+```
+
+The API is available at `http://localhost:8000`, its health endpoint at
+`http://localhost:8000/health`, and MLflow at `http://localhost:5000`. Run the Streamlit UI
+locally in another terminal with `streamlit run frontend/app.py`; its default API URL is compatible
+with the Compose port mapping. Use `docker compose down` to stop the services. The named
+`mlflow_data` volume persists until explicitly removed.
+
 Install the API and test dependencies in one environment, then install the UI dependencies:
 
 ```bash

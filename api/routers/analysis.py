@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from fastapi import APIRouter, File, HTTPException, Query, Request, UploadFile
 
 from api.schemas.analysis import AnalysisResponse, HealthResponse, HistoryResponse
@@ -71,7 +73,7 @@ def history(request: Request, limit: int = Query(default=20, ge=1, le=100)) -> H
             analyses.append({
                 "run_id": row["run_id"],
                 "run_name": row.get("tags.mlflow.runName"),
-                "run_url": f"{request.app.state.settings.mlflow_tracking_uri.rstrip('/')}/#/experiments/{experiment.experiment_id}/runs/{row['run_id']}",
+                "run_url": f"{os.getenv('MLFLOW_UI_URI', request.app.state.settings.mlflow_tracking_uri).rstrip('/')}/#/experiments/{experiment.experiment_id}/runs/{row['run_id']}",
                 "experiment_id": experiment.experiment_id,
                 "start_time": start_time_ms,
                 "filename": row.get("params.filename"),

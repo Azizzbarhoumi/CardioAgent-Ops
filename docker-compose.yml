@@ -1,0 +1,46 @@
+services:
+  mlflow:
+    build:
+      context: .
+      dockerfile: docker/mlflow-server/Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/', timeout=5)"]
+      interval: 20s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+    restart: unless-stopped
+
+  audio-engine:
+    build:
+      context: .
+      dockerfile: docker/audio-engine/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MLFLOW_UI_URI: http://localhost:5000
+      MLFLOW_SUPPRESS_PRINTING_URL_TO_STDOUT: "true"
+      MODEL_DIR: /app/audio_engine/artifacts/models
+      MODEL_MANIFEST_PATH: /app/audio_engine/artifacts/models/model_manifest.json
+      API_MAX_UPLOAD_BYTES: ${API_MAX_UPLOAD_BYTES:-20971520}
+      MIN_AUDIO_SECONDS: ${MIN_AUDIO_SECONDS:-0.25}
+      MAX_AUDIO_SECONDS: ${MAX_AUDIO_SECONDS:-120}
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      start_period: 180s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  mlflow_data:
+    name: mlflow-data
