@@ -14,6 +14,10 @@ services:
       start_period: 60s
       retries: 5
     restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - mlflow-server
 
   audio-engine:
     build:
@@ -22,14 +26,20 @@ services:
     ports:
       - "8000:8000"
     environment:
-      MLFLOW_TRACKING_URI: http://mlflow:5000
-      MLFLOW_UI_URI: http://localhost:5000
+      MLFLOW_TRACKING_URI: http://mlflow-server:5000
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
       MLFLOW_SUPPRESS_PRINTING_URL_TO_STDOUT: "true"
       MODEL_DIR: /app/audio_engine/artifacts/models
       MODEL_MANIFEST_PATH: /app/audio_engine/artifacts/models/model_manifest.json
+      SVM_LINEAR_MODEL_PATH: /app/audio_engine/artifacts/models/svm_linear.joblib
+      SVM_RBF_MODEL_PATH: /app/audio_engine/artifacts/models/svm_rbf.joblib
+      DECISION_TREE_MODEL_PATH: /app/audio_engine/artifacts/models/decision_tree.joblib
+      CNN_MODEL_PATH: /app/audio_engine/artifacts/models/cnn_custom.keras
       API_MAX_UPLOAD_BYTES: ${API_MAX_UPLOAD_BYTES:-20971520}
       MIN_AUDIO_SECONDS: ${MIN_AUDIO_SECONDS:-0.25}
       MAX_AUDIO_SECONDS: ${MAX_AUDIO_SECONDS:-120}
+    volumes:
+      - ./audio_engine/artifacts/models:/app/audio_engine/artifacts/models:ro
     depends_on:
       mlflow:
         condition: service_healthy
@@ -38,6 +48,26 @@ services:
       interval: 30s
       timeout: 10s
       start_period: 180s
+      retries: 3
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://audio-engine:8000
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+    depends_on:
+      audio-engine:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
       retries: 3
     restart: unless-stopped
 

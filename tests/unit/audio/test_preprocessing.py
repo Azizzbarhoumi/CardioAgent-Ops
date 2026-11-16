@@ -33,10 +33,9 @@ def test_decode_wav_resamples_to_training_rate_and_preserves_duration() -> None:
 def test_tabular_features_have_documented_order_and_22_values() -> None:
     audio = decode_wav(make_wav())
     features = extract_tabular_features(audio.signal, audio.sample_rate)
+    assert TABULAR_FEATURE_ORDER == ("duration", "snr", *(f"mel_{i}" for i in range(1, 21)))
     assert len(TABULAR_FEATURE_ORDER) == 22
     assert features.shape == (22,)
-    assert TABULAR_FEATURE_ORDER[:2] == ("duration", "snr")
-    assert TABULAR_FEATURE_ORDER[-1] == "mel_20"
     assert abs(features[0] - audio.duration_s) < 0.02
 
 

@@ -120,6 +120,7 @@ def test_health_reports_models_and_mlflow() -> None:
 
 def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("MLFLOW_ALLOW_FILE_STORE", "true")
+    monkeypatch.setenv("MLFLOW_PUBLIC_URL", "http://public-mlflow.example")
     assert __import__("os").environ["MLFLOW_SUPPRESS_PRINTING_URL_TO_STDOUT"] == "true"
     tracking_uri = tmp_path.as_uri()
     logger = InferenceLogger(tracking_uri)
@@ -143,7 +144,7 @@ def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) ->
         ],
         "total_processing_ms": 12.0,
     }
-    run_id, _, warning = logger.log(
+    run_id, run_url, warning = logger.log(
         filename="local-test.wav",
         wav_bytes=wav_bytes,
         response=response,
@@ -152,12 +153,17 @@ def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) ->
     )
     assert warning is None
     assert run_id
+    assert run_url.startswith("http://public-mlflow.example/#/")
     mlflow.set_tracking_uri(tracking_uri)
     experiment = mlflow.get_experiment_by_name("inference_logs")
     run = mlflow.get_run(run_id)
     assert experiment is not None
     assert run.data.params["filename"] == "local-test.wav"
     assert run.data.metrics["svm_linear.prediction"] == 0
+    assert run.data.metrics["svm_linear.confidence_or_score"] == 0.25
+    assert run.data.metrics["svm_linear.latency_ms"] == 1.2
+    assert run.data.tags["svm_linear.version"] == "version-test"
+    assert run.data.tags["svm_linear.run_id"] == "source-test"
     assert run.data.metrics["total_processing_ms"] == 12.0
     paths = {item.path for item in mlflow.tracking.MlflowClient().list_artifacts(run_id, "analysis")}
     assert {"analysis/uploaded.wav", "analysis/mel_spectrogram.png", "analysis/result.json", "analysis/waveform.png"} <= paths
@@ -177,3 +183,4 @@ def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) ->
     assert history.status_code == 200
     payload = history.json()
     assert payload["analyses"] and payload["analyses"][0]["run_id"] == run_id, payload
+    assert payload["analyses"][0]["run_url"].startswith("http://public-mlflow.example/#/")

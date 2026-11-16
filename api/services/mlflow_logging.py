@@ -17,7 +17,7 @@ import mlflow
 class InferenceLogger:
     def __init__(self, tracking_uri: str):
         self.tracking_uri = tracking_uri
-        self.ui_uri = os.getenv("MLFLOW_UI_URI", tracking_uri).rstrip("/")
+        self.ui_uri = os.getenv("MLFLOW_PUBLIC_URL", os.getenv("MLFLOW_UI_URI", tracking_uri)).rstrip("/")
 
     def reachable(self) -> bool:
         try:
