@@ -1,0 +1,4 @@
+import type { ModelResult } from '../types';
+export function ResultsSummaryTable({ results }: { results: ModelResult[] }) {
+  return <section className="panel"><div className="section-heading"><div><div className="eyebrow">AT A GLANCE</div><h2>Results summary</h2></div></div><div className="table-scroll"><table><thead><tr><th>Model</th><th>Prediction</th><th>Score type</th><th>Score</th><th>Threshold</th><th>Time</th></tr></thead><tbody>{results.map(m => <tr key={m.model_key}><td>{m.model_name}</td><td><span className={`table-badge ${m.prediction === 1 ? 'abnormal' : 'normal'}`}>{m.prediction_label}</span></td><td>{m.score_type === 'decision_score' ? 'Decision score' : m.score_type === 'probability' ? 'P(abnormal)' : 'Class confidence'}</td><td>{m.score.toFixed(4)}</td><td>{m.threshold.toFixed(2)}</td><td>{m.latency_ms.toFixed(2)} ms</td></tr>)}</tbody></table></div></section>;
+}

@@ -13,6 +13,10 @@ venv/
 .pytest_cache/
 .coverage
 htmlcov/
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
 .ipynb_checkpoints/
 
 # Large data and model artifacts (tracked via MLflow / data versioning, not Git)

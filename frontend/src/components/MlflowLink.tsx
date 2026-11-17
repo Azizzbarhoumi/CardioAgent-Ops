@@ -1,0 +1,1 @@
+export function MlflowLink({ url }: { url?: string | null }) { return url ? <a className="mlflow-link" href={url} target="_blank" rel="noreferrer">Open this analysis in MLflow ↗</a> : <span className="muted">No MLflow run was created for this analysis.</span>; }

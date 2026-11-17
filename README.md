@@ -13,7 +13,7 @@ Containerized micro-services platform (Docker), MLOps, LLM fine-tuning, RAG and 
 | SVM | 22 cached features per recording; linear and RBF kernels | Re-runs; 3-fold mean RBF accuracy 0.849 and abnormal-class recall 0.845 |
 | Decision tree | 22 cached PCG features | Three-fold stratified baseline; mean accuracy 0.796, abnormal recall 0.855 |
 | CNN | `TP7-CNN.ipynb` and exported TensorFlow checkpoint | 40-band Mel image input; mean fold accuracy about 0.731 and abnormal recall 1.000 |
-| Inference demo | FastAPI, shared audio preprocessing, Streamlit UI | Four independent outputs: linear SVM, RBF SVM, Decision Tree, and CNN |
+| Inference demo | FastAPI, shared audio preprocessing, React UI (legacy Streamlit retained) | Four independent outputs: linear SVM, RBF SVM, Decision Tree, and CNN |
 
 The current PCG class distribution is imbalanced: 1,016 normal and 2,769 abnormal recordings.
 See [`Data/README.md`](Data/README.md) for the source layout, label mapping, and safe data-handling
@@ -49,63 +49,100 @@ See [`DEVELOPMENT_ROADMAP.md`](DEVELOPMENT_ROADMAP.md) for the implementation or
 
 ## Local inference demo
 
-### Run the API, UI, and MLflow with Docker Compose
+### React web app (current replacement UI)
 
-The `audio-engine` service runs the FastAPI inference API; the `streamlit` service provides the UI.
-Both use the exported models under `audio_engine/artifacts/models/`. The MLflow service stores its
-database and artifacts in a persistent Docker volume and proxies artifact uploads from the app.
+The React interface lives in `frontend/`; the original Streamlit interface remains available at
+`frontend/app.py`. From the project root, create and activate a Python environment, then install
+the API and test dependencies:
 
-```bash
-docker compose up --build
-```
-
-The UI is available at `http://localhost:8501`, the API at `http://localhost:8000` (health:
-`http://localhost:8000/health`), and MLflow at `http://localhost:5000`. Inside Compose, the API
-connects to MLflow at `http://mlflow-server:5000`; the browser-facing run link uses
-`MLFLOW_PUBLIC_URL` (default `http://localhost:5000`). Use `docker compose down` to stop the
-services. The named `mlflow_data` volume persists until explicitly removed; do not use
-`docker compose down -v` if you want to retain runs.
-
-Install the API and test dependencies in one environment, then install the UI dependencies:
-
-```bash
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements-api.txt -r requirements-test.txt
-python -m pip install -r requirements-frontend.txt
 ```
 
-Start MLflow in a terminal (MLflow 3.16.1):
+For MLflow history, artifact logging, and run links, start MLflow in one terminal (from the project
+root):
 
-```bash
+```powershell
 mlflow server --backend-store-uri sqlite:///mlflow.db --artifacts-destination ./mlartifacts --host 127.0.0.1 --port 5000
 ```
 
-Export the latest linear and RBF SVM Logged Models, and create the local Decision Tree export
-from the existing feature files. The existing TensorFlow CNN checkpoint is also copied into the
-configured model directory:
+Start the API in another terminal:
 
-```bash
-python scripts/export_inference_models.py
-```
-
-Start the API and UI in separate terminals:
-
-```bash
+```powershell
+.\.venv\Scripts\Activate.ps1
 uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-```bash
-streamlit run frontend/app.py
+In a third terminal, start the React app:
+
+```powershell
+cd frontend
+npm install
+npm run dev
 ```
 
-Set `MLFLOW_TRACKING_URI`, `API_URL`, model paths, and upload/duration limits through environment
-variables. `.env.example` lists the supported names and defaults. The API logs each uploaded
-recording in a separate `inference_logs` run; if MLflow is unavailable, inference still returns
-with a warning.
+Open `http://127.0.0.1:5173`. Set `frontend/.env` to `VITE_API_URL=http://127.0.0.1:8000` if
+the API uses another address. MLflow defaults to `http://localhost:5000`; configure
+`MLFLOW_TRACKING_URI`, `MLFLOW_PUBLIC_URL`, model paths, and allowed browser origins with
+`CORS_ALLOWED_ORIGINS` in `.env` as needed. If MLflow is offline, predictions still return with a
+warning, but history and run links are unavailable.
 
-Run the automated checks with coverage:
+Run the backend/golden checks from the project root:
 
-```bash
-pytest --cov=api --cov=audio_engine --cov-report=term-missing
+```powershell
+pytest
+python scripts/verify_predictions.py
 ```
+
+Run the React component tests and production build from `frontend/`:
+
+```powershell
+npm test
+npm run build
+```
+
+The Playwright browser check (run from `frontend/`) starts an isolated API and MLflow store,
+uploads all golden recordings, compares displayed predictions, checks run metrics and history,
+and captures Analyze, Models, and History screenshots:
+
+```powershell
+npm run test:e2e
+```
+
+It uses the installed Microsoft Edge browser channel and saves screenshots under
+`frontend/e2e/screenshots/`. The isolated E2E server uses `.venv\Scripts\python.exe` by default;
+set the `PYTHON` environment variable when the project dependencies are installed in another
+Python environment.
+
+## Docker Compose (React frontend)
+
+Install and start Docker Desktop, then open PowerShell at the project root. The existing
+`audio_engine/artifacts/models/` directory must contain the exported models.
+
+```powershell
+cd "C:\Users\azizb\Downloads\CardioAgent-Ops"
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+docker compose up --build
+```
+
+Compose starts MLflow, the FastAPI backend, and the React frontend. Open the React app at
+`http://localhost:5173`, the API health endpoint at `http://localhost:8000/health`, and MLflow at
+`http://localhost:5000`. The app-facing `VITE_API_URL` and `MLFLOW_PUBLIC_URL` default to those
+localhost addresses. If you change them, use addresses reachable by the browser; Compose-only
+hostnames such as `audio-engine` are not browser URLs.
+
+Press `Ctrl+C` to stop the foreground Compose run, then use `docker compose down`. MLflow data is
+kept in the `mlflow_data` volume; do not add `-v` if you want to retain it.
+
+The original Streamlit UI is retained as an optional legacy service. To start it alongside the
+React app, use:
+
+```powershell
+docker compose --profile legacy up --build
+```
+
+The Streamlit app is then available at `http://localhost:8501`.
 
 These predictions are for an educational project only and are not intended for medical diagnosis.

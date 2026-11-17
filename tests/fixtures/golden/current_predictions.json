@@ -1,0 +1,407 @@
+{
+  "snapshot_type": "current-runtime-pipeline direct ModelRegistry inference (MLflow logging bypassed)",
+  "captured_utc": "2026-11-17",
+  "label_convention": {
+    "0": "normal",
+    "1": "abnormal"
+  },
+  "model_notes": {
+    "svm_linear": "22 tabular features in order duration,snr,mel_1..mel_20; pipeline.predict label; raw decision_function score; decision boundary 0.",
+    "svm_rbf": "22 tabular features in order duration,snr,mel_1..mel_20; pipeline.predict label; raw decision_function score; decision boundary 0.",
+    "decision_tree": "22 tabular features; pipeline.predict label; current UI score is confidence of the predicted class, NOT always P(abnormal); binary split boundary is P(abnormal)=0.5.",
+    "cnn_custom": "224x224x3 magma RGB image from 40-band log-Mel feature; sigmoid P(abnormal); current registry hardcodes decision threshold 0.5."
+  },
+  "cnn_threshold_note": "The user brief says validation-selected threshold, but current API registry is explicitly hardcoded to 0.5 and the current TP7-CNN notebook also uses 0.5; no alternate threshold was found in the notebook or model manifest.",
+  "files": [
+    {
+      "file": "ourdataset/train/normal/pascal_normal_296_1311682952647_A1.wav",
+      "source": "PASCAL",
+      "ground_truth_label": "normal",
+      "ground_truth_class": 0,
+      "source_duration_s": 0.76325,
+      "source_sample_rate": 4000,
+      "duration_after_resampling_s": 0.7635,
+      "sample_rate_after_resampling": 2000,
+      "tabular_feature_count": 22,
+      "cnn_input_shape": [
+        224,
+        224,
+        3
+      ],
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -1.454024498833294,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-0a91a8d38b22473c8c293c323d688380",
+          "model_run_id": "4969361b59bc4402aa78a9e3ca86f056"
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -1.068277722593387,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-be17b47e7dc94665a76a61d4d4e6bc90",
+          "model_run_id": "1426254e6d77449795d5a9f1ce92676b"
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.5997433075408272,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (binary argmax; current registry uses predict())",
+          "model_version": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
+          "model_run_id": "a1550ba943f14761bc58dbff8e1768b2",
+          "probability_abnormal": 0.5997433075408272
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.6778879761695862,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (current hardcoded registry threshold)",
+          "model_version": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
+          "model_run_id": "c17147e3bb564ff086fa332e581440c0",
+          "probability_abnormal": 0.6778879761695862,
+          "input_shape": [
+            224,
+            224,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "file": "ourdataset/train/normal/physio_training-b_b0033.wav",
+      "source": "PhysioNet",
+      "ground_truth_label": "normal",
+      "ground_truth_class": 0,
+      "source_duration_s": 5.3055,
+      "source_sample_rate": 2000,
+      "duration_after_resampling_s": 5.3055,
+      "sample_rate_after_resampling": 2000,
+      "tabular_feature_count": 22,
+      "cnn_input_shape": [
+        224,
+        224,
+        3
+      ],
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -1.5833891501963142,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-0a91a8d38b22473c8c293c323d688380",
+          "model_run_id": "4969361b59bc4402aa78a9e3ca86f056"
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -0.372910624431255,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-be17b47e7dc94665a76a61d4d4e6bc90",
+          "model_run_id": "1426254e6d77449795d5a9f1ce92676b"
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.6008173064192912,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (binary argmax; current registry uses predict())",
+          "model_version": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
+          "model_run_id": "a1550ba943f14761bc58dbff8e1768b2",
+          "probability_abnormal": 0.6008173064192912
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.7133644819259644,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (current hardcoded registry threshold)",
+          "model_version": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
+          "model_run_id": "c17147e3bb564ff086fa332e581440c0",
+          "probability_abnormal": 0.7133644819259644,
+          "input_shape": [
+            224,
+            224,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "file": "ourdataset/train/normal/physio_training-c_c0024.wav",
+      "source": "PhysioNet",
+      "ground_truth_label": "normal",
+      "ground_truth_class": 0,
+      "source_duration_s": 106.0495,
+      "source_sample_rate": 2000,
+      "duration_after_resampling_s": 106.0495,
+      "sample_rate_after_resampling": 2000,
+      "tabular_feature_count": 22,
+      "cnn_input_shape": [
+        224,
+        224,
+        3
+      ],
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -1.5883386848367163,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-0a91a8d38b22473c8c293c323d688380",
+          "model_run_id": "4969361b59bc4402aa78a9e3ca86f056"
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -0.9999750747730146,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-be17b47e7dc94665a76a61d4d4e6bc90",
+          "model_run_id": "1426254e6d77449795d5a9f1ce92676b"
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.6098025605027062,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (binary argmax; current registry uses predict())",
+          "model_version": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
+          "model_run_id": "a1550ba943f14761bc58dbff8e1768b2",
+          "probability_abnormal": 0.6098025605027062
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.734042763710022,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (current hardcoded registry threshold)",
+          "model_version": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
+          "model_run_id": "c17147e3bb564ff086fa332e581440c0",
+          "probability_abnormal": 0.734042763710022,
+          "input_shape": [
+            224,
+            224,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "file": "ourdataset/train/abnormal/pascal_murmur_171_1307971016233_E.wav",
+      "source": "PASCAL",
+      "ground_truth_label": "abnormal",
+      "ground_truth_class": 1,
+      "source_duration_s": 0.85675,
+      "source_sample_rate": 4000,
+      "duration_after_resampling_s": 0.857,
+      "sample_rate_after_resampling": 2000,
+      "tabular_feature_count": 22,
+      "cnn_input_shape": [
+        224,
+        224,
+        3
+      ],
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -0.18111663003465384,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-0a91a8d38b22473c8c293c323d688380",
+          "model_run_id": "4969361b59bc4402aa78a9e3ca86f056"
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -0.05400607815998626,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-be17b47e7dc94665a76a61d4d4e6bc90",
+          "model_run_id": "1426254e6d77449795d5a9f1ce92676b"
+        },
+        "decision_tree": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": 0.822380499816401,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (binary argmax; current registry uses predict())",
+          "model_version": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
+          "model_run_id": "a1550ba943f14761bc58dbff8e1768b2",
+          "probability_abnormal": 0.17761950018359515
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.6260284185409546,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (current hardcoded registry threshold)",
+          "model_version": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
+          "model_run_id": "c17147e3bb564ff086fa332e581440c0",
+          "probability_abnormal": 0.6260284185409546,
+          "input_shape": [
+            224,
+            224,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "file": "ourdataset/train/abnormal/physio_training-d_d0001.wav",
+      "source": "PhysioNet",
+      "ground_truth_label": "abnormal",
+      "ground_truth_class": 1,
+      "source_duration_s": 6.6075,
+      "source_sample_rate": 2000,
+      "duration_after_resampling_s": 6.6075,
+      "sample_rate_after_resampling": 2000,
+      "tabular_feature_count": 22,
+      "cnn_input_shape": [
+        224,
+        224,
+        3
+      ],
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -1.209082581180845,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-0a91a8d38b22473c8c293c323d688380",
+          "model_run_id": "4969361b59bc4402aa78a9e3ca86f056"
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -0.6298344883500124,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-be17b47e7dc94665a76a61d4d4e6bc90",
+          "model_run_id": "1426254e6d77449795d5a9f1ce92676b"
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.6008173064192912,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (binary argmax; current registry uses predict())",
+          "model_version": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
+          "model_run_id": "a1550ba943f14761bc58dbff8e1768b2",
+          "probability_abnormal": 0.6008173064192912
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.7364140748977661,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (current hardcoded registry threshold)",
+          "model_version": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
+          "model_run_id": "c17147e3bb564ff086fa332e581440c0",
+          "probability_abnormal": 0.7364140748977661,
+          "input_shape": [
+            224,
+            224,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "file": "ourdataset/train/abnormal/physio_training-e_e01313.wav",
+      "source": "PhysioNet",
+      "ground_truth_label": "abnormal",
+      "ground_truth_class": 1,
+      "source_duration_s": 101.673,
+      "source_sample_rate": 2000,
+      "duration_after_resampling_s": 101.673,
+      "sample_rate_after_resampling": 2000,
+      "tabular_feature_count": 22,
+      "cnn_input_shape": [
+        224,
+        224,
+        3
+      ],
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -1.1017098291991878,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-0a91a8d38b22473c8c293c323d688380",
+          "model_run_id": "4969361b59bc4402aa78a9e3ca86f056"
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "prediction_label": "Normal",
+          "score": -0.8023634375917491,
+          "score_type": "decision_score",
+          "threshold": 0.0,
+          "threshold_rule": "decision_score >= 0 => abnormal",
+          "model_version": "m-be17b47e7dc94665a76a61d4d4e6bc90",
+          "model_run_id": "1426254e6d77449795d5a9f1ce92676b"
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.6098025605027062,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (binary argmax; current registry uses predict())",
+          "model_version": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
+          "model_run_id": "a1550ba943f14761bc58dbff8e1768b2",
+          "probability_abnormal": 0.6098025605027062
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "prediction_label": "Abnormal",
+          "score": 0.775268018245697,
+          "score_type": "probability",
+          "threshold": 0.5,
+          "threshold_rule": "P(abnormal) >= 0.5 => abnormal (current hardcoded registry threshold)",
+          "model_version": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
+          "model_run_id": "c17147e3bb564ff086fa332e581440c0",
+          "probability_abnormal": 0.775268018245697,
+          "input_shape": [
+            224,
+            224,
+            3
+          ]
+        }
+      }
+    }
+  ]
+}

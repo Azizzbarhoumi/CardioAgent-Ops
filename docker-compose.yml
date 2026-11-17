@@ -29,6 +29,7 @@ services:
       MLFLOW_TRACKING_URI: http://mlflow-server:5000
       MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
       MLFLOW_SUPPRESS_PRINTING_URL_TO_STDOUT: "true"
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
       MODEL_DIR: /app/audio_engine/artifacts/models
       MODEL_MANIFEST_PATH: /app/audio_engine/artifacts/models/model_manifest.json
       SVM_LINEAR_MODEL_PATH: /app/audio_engine/artifacts/models/svm_linear.joblib
@@ -51,7 +52,22 @@ services:
       retries: 3
     restart: unless-stopped
 
+  react-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+    ports:
+      - "5173:80"
+    depends_on:
+      audio-engine:
+        condition: service_healthy
+    restart: unless-stopped
+
   streamlit:
+    profiles:
+      - legacy
     build:
       context: .
       dockerfile: docker/frontend/Dockerfile

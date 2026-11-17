@@ -59,6 +59,10 @@ class InferenceLogger:
                         mlflow.log_metric(f"{key}.prediction", result["prediction"])
                         mlflow.log_metric(f"{key}.confidence_or_score", result["confidence_or_score"])
                         mlflow.log_metric(f"{key}.latency_ms", result["latency_ms"])
+                        if result.get("score") is not None:
+                            mlflow.log_metric(f"{key}.score", result["score"])
+                        if result.get("threshold") is not None:
+                            mlflow.log_metric(f"{key}.threshold", result["threshold"])
                         mlflow.set_tag(f"{key}.name", result["model_name"])
                         mlflow.set_tag(f"{key}.version", result["model_version"])
                         mlflow.set_tag(f"{key}.run_id", result.get("model_run_id") or "local_export")

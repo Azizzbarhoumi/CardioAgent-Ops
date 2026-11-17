@@ -42,6 +42,10 @@ class FakeRegistry:
                 "prediction_label": "Abnormal" if index % 2 else "Normal",
                 "confidence_or_score": 0.5,
                 "confidence_type": "probability" if index >= 2 else "decision_score",
+                "score": (0.75 if index % 2 else 0.25) if index >= 2 else (0.5 if index % 2 else -0.5),
+                "score_type": "probability" if index >= 2 else "decision_score",
+                "threshold": 0.5 if index >= 2 else 0.0,
+                "kernel": "linear" if key == "svm_linear" else "rbf" if key == "svm_rbf" else None,
                 "latency_ms": 1.0,
             }
             for index, key in enumerate(keys)
@@ -77,6 +81,55 @@ def test_analyze_happy_path_returns_separate_results() -> None:
     assert [result["model_key"] for result in data["results"]] == ["svm_linear", "svm_rbf", "decision_tree", "cnn_custom"]
     assert data["sample_rate_after_resampling"] == 2000
     assert data["waveform_png_base64"]
+    assert [(group["name"], len(group["models"])) for group in data["model_groups"]] == [("SVM (2 kernels)", 2), ("Decision Tree", 1), ("CNN", 1)]
+    assert data["results"][0]["score"] == -0.5
+    assert data["results"][0]["threshold"] == 0.0
+    assert len(data["waveform_points"]) > 1
+
+
+def test_models_endpoint_returns_model_metadata() -> None:
+    with make_client() as client:
+        response = client.get("/models")
+    assert response.status_code == 200
+    payload = response.json()
+    assert len(payload["models"]) == 4
+    linear = next(model for model in payload["models"] if model["key"] == "svm_linear")
+    tree = next(model for model in payload["models"] if model["key"] == "decision_tree")
+    cnn = next(model for model in payload["models"] if model["key"] == "cnn_custom")
+    assert len(linear["input_features"]) == 22
+    assert tree["score_type"] == "probability"
+    assert cnn["input_shape"] == [224, 224, 3]
+
+
+def test_analysis_decodes_recording_once(monkeypatch) -> None:
+    import api.services.analysis as analysis_service
+
+    calls = 0
+    original = analysis_service.decode_wav
+    def counted(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        return original(*args, **kwargs)
+    monkeypatch.setattr(analysis_service, "decode_wav", counted)
+    with make_client() as client:
+        response = client.post("/analyze_pcg", files={"file": ("single.wav", synthetic_wav(), "audio/wav")})
+    assert response.status_code == 200
+    assert calls == 1
+
+
+def test_stereo_wav_at_different_rate_is_mono_and_resampled() -> None:
+    rate = 4000
+    time = np.arange(rate) / rate
+    stereo = np.stack([0.1 * np.sin(2 * np.pi * 80 * time), 0.1 * np.sin(2 * np.pi * 120 * time)], axis=1)
+    buffer = BytesIO()
+    sf.write(buffer, stereo, rate, format="WAV")
+    with make_client(max_upload_bytes=100000) as client:
+        response = client.post("/analyze_pcg", files={"file": ("stereo.wav", buffer.getvalue(), "audio/wav")})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["source_sample_rate"] == 4000
+    assert data["sample_rate_after_resampling"] == 2000
+    assert data["duration_s"] == 1.0
 
 
 def test_analyze_rejects_non_wav_extension() -> None:
@@ -118,6 +171,27 @@ def test_health_reports_models_and_mlflow() -> None:
     assert response.json()["mlflow_reachable"] is True
 
 
+def test_analysis_returns_predictions_when_mlflow_logging_fails(monkeypatch) -> None:
+    import api.services.mlflow_logging as logging_service
+
+    def fail_tracking_uri(*args, **kwargs):
+        raise ConnectionError("MLflow is unavailable")
+
+    monkeypatch.setattr(logging_service.mlflow, "set_tracking_uri", fail_tracking_uri)
+    app = create_app(
+        registry=FakeRegistry(),
+        inference_logger=InferenceLogger("http://127.0.0.1:1"),
+        app_settings=Settings(api_max_upload_bytes=4096, min_audio_seconds=0.25, max_audio_seconds=5),
+    )
+    with TestClient(app) as client:
+        response = client.post("/analyze_pcg", files={"file": ("sample.wav", synthetic_wav(), "audio/wav")})
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["results"]) == 4
+    assert data["mlflow_run_id"] is None
+    assert "MLflow logging failed" in data["warning"]
+
+
 def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("MLFLOW_ALLOW_FILE_STORE", "true")
     monkeypatch.setenv("MLFLOW_PUBLIC_URL", "http://public-mlflow.example")
@@ -138,6 +212,8 @@ def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) ->
                 "model_run_id": "source-test",
                 "prediction": 0,
                 "confidence_or_score": 0.25,
+                "score": -0.5 if key.startswith("svm_") else 0.75,
+                "threshold": 0.0 if key.startswith("svm_") else 0.5,
                 "latency_ms": 1.2,
             }
             for key in ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom")
@@ -161,6 +237,9 @@ def test_mlflow_analysis_logging_uses_local_file_store(tmp_path, monkeypatch) ->
     assert run.data.params["filename"] == "local-test.wav"
     assert run.data.metrics["svm_linear.prediction"] == 0
     assert run.data.metrics["svm_linear.confidence_or_score"] == 0.25
+    assert run.data.metrics["svm_linear.score"] == -0.5
+    assert run.data.metrics["svm_linear.threshold"] == 0.0
+    assert run.data.metrics["decision_tree.score"] == 0.75
     assert run.data.metrics["svm_linear.latency_ms"] == 1.2
     assert run.data.tags["svm_linear.version"] == "version-test"
     assert run.data.tags["svm_linear.run_id"] == "source-test"

@@ -18,6 +18,11 @@ class Settings:
     min_audio_seconds: float = float(os.getenv("MIN_AUDIO_SECONDS", "0.25"))
     max_audio_seconds: float = float(os.getenv("MAX_AUDIO_SECONDS", "120"))
     model_dir: Path = Path(os.getenv("MODEL_DIR", str(Path(__file__).resolve().parents[2] / "audio_engine" / "artifacts" / "models")))
+    cors_origins: tuple[str, ...] = tuple(
+        origin.strip()
+        for origin in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
+        if origin.strip()
+    )
 
 
 settings = Settings()

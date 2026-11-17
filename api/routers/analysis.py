@@ -2,15 +2,51 @@
 
 from __future__ import annotations
 
+import json
 import os
 
 from fastapi import APIRouter, File, HTTPException, Query, Request, UploadFile
 
 from api.schemas.analysis import AnalysisResponse, HealthResponse, HistoryResponse
 from api.services.analysis import analyze_recording
+from audio_engine.features.audio_features import TABULAR_FEATURE_ORDER, CNN_FEATURE_SETTINGS, CNN_IMAGE_SIZE
 
 
 router = APIRouter()
+
+
+@router.get("/models")
+def models_info(request: Request) -> dict:
+    """Describe loaded models using the local provenance manifest."""
+    registry = request.app.state.registry
+    try:
+        manifest_path = getattr(registry, "manifest_path", None)
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path else {}
+    except (OSError, ValueError):
+        manifest = {}
+    metadata = {
+        "svm_linear": {"type": "Support Vector Machine", "kernel": "linear", "input_features": list(TABULAR_FEATURE_ORDER), "score_type": "decision_score", "threshold": 0.0},
+        "svm_rbf": {"type": "Support Vector Machine", "kernel": "RBF", "input_features": list(TABULAR_FEATURE_ORDER), "score_type": "decision_score", "threshold": 0.0},
+        "decision_tree": {"type": "Decision Tree", "input_features": list(TABULAR_FEATURE_ORDER), "score_type": "probability", "threshold": 0.5},
+        "cnn_custom": {"type": "Convolutional Neural Network", "input_shape": [*CNN_IMAGE_SIZE, 3], "mel_settings": CNN_FEATURE_SETTINGS, "score_type": "probability", "threshold": float(os.getenv("CNN_DECISION_THRESHOLD", "0.5"))},
+    }
+    result = []
+    for key, details in metadata.items():
+        entry = registry.models.get(key)
+        info = manifest.get("models", {}).get(key, {})
+        metrics = next((info[key] for key in ("reported_metrics", "reproduced_mean_metrics", "reproduced_metrics", "selected_fold_metrics") if info.get(key)), {})
+        result.append({
+            "key": key,
+            "name": entry.name if entry else key,
+            "loaded": entry is not None,
+            "version": getattr(entry, "version", None) if entry else None,
+            "model_run_id": getattr(entry, "run_id", None) if entry else None,
+            "label_convention": {"0": "normal", "1": "abnormal"},
+            "source": info.get("source", "Local model export"),
+            "metrics": metrics,
+            **details,
+        })
+    return {"models": result, "warning": "CNN uses the current runtime threshold of 0.5; no separate validation-selected threshold is recorded."}
 
 
 @router.post("/analyze_pcg", response_model=AnalysisResponse)

@@ -5,6 +5,7 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from api.core.settings import settings
 from api.routers.analysis import router
@@ -31,6 +32,13 @@ def create_app(registry: ModelRegistry | None = None, inference_logger: Inferenc
     app.state.registry = model_registry
     app.state.inference_logger = logger
     app.state.settings = app_settings
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(app_settings.cors_origins),
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
+        allow_headers=["*"],
+    )
     app.include_router(router)
     return app
 

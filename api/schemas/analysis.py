@@ -12,7 +12,17 @@ class ModelResult(BaseModel):
     prediction_label: str
     confidence_or_score: float
     confidence_type: str
+    score: float | None = None
+    score_type: str | None = None
+    threshold: float | None = None
     latency_ms: float = Field(ge=0)
+    kernel: str | None = None
+
+
+class ModelGroup(BaseModel):
+    key: str
+    name: str
+    models: list[ModelResult]
 
 
 class AnalysisResponse(BaseModel):
@@ -21,6 +31,8 @@ class AnalysisResponse(BaseModel):
     source_sample_rate: int
     sample_rate_after_resampling: int
     results: list[ModelResult]
+    model_groups: list[ModelGroup] = Field(default_factory=list)
+    waveform_points: list[tuple[float, float]] = Field(default_factory=list)
     total_processing_ms: float
     mel_spectrogram_png_base64: str
     waveform_png_base64: str
