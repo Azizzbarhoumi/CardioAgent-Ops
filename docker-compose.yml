@@ -1,14 +1,23 @@
+# CardioAgent-Ops: MLflow + API (5 benchmark-v2 models) + React frontend.
+#   docker compose up --build
+#   App:    http://localhost:3000
+#   API:    http://localhost:8000   (docs at /docs)
+#   MLflow: http://localhost:5000
+# Settings: copy .env.example to .env to change ports/URLs (optional; the defaults below work).
+name: cardioagent-ops
+
 services:
   mlflow:
     build:
       context: .
       dockerfile: docker/mlflow-server/Dockerfile
     ports:
-      - "5000:5000"
+      - "${MLFLOW_PORT:-5000}:5000"
     volumes:
+      # Persistent MLflow backend store (SQLite) + artifact store; survives restarts and `down` (never use `down -v`).
       - mlflow_data:/mlflow
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=5)"]
       interval: 20s
       timeout: 10s
       start_period: 60s
@@ -24,28 +33,29 @@ services:
       context: .
       dockerfile: docker/audio-engine/Dockerfile
     ports:
-      - "8000:8000"
+      - "${API_PORT:-8000}:8000"
     environment:
-      MLFLOW_TRACKING_URI: http://mlflow-server:5000
-      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+      MLFLOW_TRACKING_URI: http://mlflow-server:5000          # internal address (container network)
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}  # address the browser opens
       MLFLOW_SUPPRESS_PRINTING_URL_TO_STDOUT: "true"
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173}
       MODEL_DIR: /app/audio_engine/artifacts/models
       MODEL_MANIFEST_PATH: /app/audio_engine/artifacts/models/model_manifest.json
-      SVM_LINEAR_MODEL_PATH: /app/audio_engine/artifacts/models/svm_linear.joblib
-      SVM_RBF_MODEL_PATH: /app/audio_engine/artifacts/models/svm_rbf.joblib
-      DECISION_TREE_MODEL_PATH: /app/audio_engine/artifacts/models/decision_tree.joblib
-      CNN_MODEL_PATH: /app/audio_engine/artifacts/models/cnn_custom.keras
       API_MAX_UPLOAD_BYTES: ${API_MAX_UPLOAD_BYTES:-20971520}
       MIN_AUDIO_SECONDS: ${MIN_AUDIO_SECONDS:-0.25}
       MAX_AUDIO_SECONDS: ${MAX_AUDIO_SECONDS:-120}
+      TF_CPP_MIN_LOG_LEVEL: "2"
+      SAMPLES_DIR: /app/samples
     volumes:
+      # The 5 exported models + model_manifest.json, read-only. Loaded once at startup.
       - ./audio_engine/artifacts/models:/app/audio_engine/artifacts/models:ro
+      # Demo WAVs for the "Try a sample" buttons (git-ignored folder, see samples/README.md). Read-only.
+      - ./samples:/app/samples:ro
     depends_on:
       mlflow:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request, json; r=json.load(urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)); assert r['models_loaded'], r"]
       interval: 30s
       timeout: 10s
       start_period: 180s
@@ -55,11 +65,18 @@ services:
   react-frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: ../docker/react-frontend/Dockerfile
+      additional_contexts:
+        dockerconf: ./docker/react-frontend
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+        VITE_MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+    environment:
+      # Runtime override (no rebuild needed): written to /config.js at container start.
+      API_URL: ${VITE_API_URL:-http://localhost:8000}
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
     ports:
-      - "5173:80"
+      - "${APP_PORT:-3000}:80"
     depends_on:
       audio-engine:
         condition: service_healthy
@@ -79,12 +96,6 @@ services:
     depends_on:
       audio-engine:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=5)"]
-      interval: 30s
-      timeout: 10s
-      start_period: 60s
-      retries: 3
     restart: unless-stopped
 
 volumes:

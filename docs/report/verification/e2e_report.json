@@ -1,0 +1,1682 @@
+[
+  {
+    "check": "pascal_extra_201104021355.wav svm_linear label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_linear score",
+    "expected": "-0.5699",
+    "got": "-0.5699",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_linear table = card",
+    "expected": "-0.5699",
+    "got": "-0.5699",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_rbf score",
+    "expected": "0.8598",
+    "got": "0.8598",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav svm_rbf table = card",
+    "expected": "0.8598",
+    "got": "0.8598",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav decision_tree score",
+    "expected": "0.6938",
+    "got": "0.6938",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav decision_tree table = card",
+    "expected": "0.6938",
+    "got": "0.6938",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav cnn_custom score",
+    "expected": "0.4951",
+    "got": "0.4951",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav cnn_custom table = card",
+    "expected": "0.4951",
+    "got": "0.4951",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav vgg16_transfer score",
+    "expected": "0.6600",
+    "got": "0.6600",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "pascal_extra_201104021355.wav vgg16_transfer table = card",
+    "expected": "0.6600",
+    "got": "0.6600",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_linear score",
+    "expected": "1.1023",
+    "got": "1.1023",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_linear table = card",
+    "expected": "1.1023",
+    "got": "1.1023",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_rbf score",
+    "expected": "1.0320",
+    "got": "1.0320",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav svm_rbf table = card",
+    "expected": "1.0320",
+    "got": "1.0320",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav decision_tree score",
+    "expected": "1.0000",
+    "got": "1.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav decision_tree table = card",
+    "expected": "1.0000",
+    "got": "1.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav cnn_custom score",
+    "expected": "0.8275",
+    "got": "0.8275",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav cnn_custom table = card",
+    "expected": "0.8275",
+    "got": "0.8275",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav vgg16_transfer score",
+    "expected": "0.6632",
+    "got": "0.6632",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "pascal_murmur_197_1308141235553_D.wav vgg16_transfer table = card",
+    "expected": "0.6632",
+    "got": "0.6632",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_linear score",
+    "expected": "0.8144",
+    "got": "0.8144",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_linear table = card",
+    "expected": "0.8144",
+    "got": "0.8144",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_rbf score",
+    "expected": "0.5002",
+    "got": "0.5002",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav svm_rbf table = card",
+    "expected": "0.5002",
+    "got": "0.5002",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav decision_tree score",
+    "expected": "0.6938",
+    "got": "0.6938",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav decision_tree table = card",
+    "expected": "0.6938",
+    "got": "0.6938",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav cnn_custom score",
+    "expected": "0.7622",
+    "got": "0.7622",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav cnn_custom table = card",
+    "expected": "0.7622",
+    "got": "0.7622",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav vgg16_transfer score",
+    "expected": "0.6835",
+    "got": "0.6836",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_246_1309199278902_D.wav vgg16_transfer table = card",
+    "expected": "0.6836",
+    "got": "0.6836",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_linear score",
+    "expected": "0.5161",
+    "got": "0.5161",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_linear table = card",
+    "expected": "0.5161",
+    "got": "0.5161",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_rbf score",
+    "expected": "0.4292",
+    "got": "0.4292",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav svm_rbf table = card",
+    "expected": "0.4292",
+    "got": "0.4292",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav decision_tree score",
+    "expected": "0.4594",
+    "got": "0.4594",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav decision_tree table = card",
+    "expected": "0.4594",
+    "got": "0.4594",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav cnn_custom score",
+    "expected": "0.3240",
+    "got": "0.3240",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav cnn_custom table = card",
+    "expected": "0.3240",
+    "got": "0.3240",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav vgg16_transfer label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav vgg16_transfer score",
+    "expected": "0.4313",
+    "got": "0.4313",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "pascal_normal_296_1311682952647_A1.wav vgg16_transfer table = card",
+    "expected": "0.4313",
+    "got": "0.4313",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_linear score",
+    "expected": "0.0110",
+    "got": "0.0110",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_linear table = card",
+    "expected": "0.0110",
+    "got": "0.0110",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_rbf score",
+    "expected": "0.2159",
+    "got": "0.2159",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav svm_rbf table = card",
+    "expected": "0.2159",
+    "got": "0.2159",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav decision_tree label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav decision_tree score",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav decision_tree table = card",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav cnn_custom score",
+    "expected": "0.4663",
+    "got": "0.4663",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav cnn_custom table = card",
+    "expected": "0.4663",
+    "got": "0.4663",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav vgg16_transfer score",
+    "expected": "0.6455",
+    "got": "0.6455",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0001.wav vgg16_transfer table = card",
+    "expected": "0.6455",
+    "got": "0.6455",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_linear score",
+    "expected": "1.0203",
+    "got": "1.0203",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_linear table = card",
+    "expected": "1.0203",
+    "got": "1.0203",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_rbf score",
+    "expected": "0.1938",
+    "got": "0.1938",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav svm_rbf table = card",
+    "expected": "0.1938",
+    "got": "0.1938",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav decision_tree score",
+    "expected": "1.0000",
+    "got": "1.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav decision_tree table = card",
+    "expected": "1.0000",
+    "got": "1.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav cnn_custom score",
+    "expected": "0.3087",
+    "got": "0.3087",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav cnn_custom table = card",
+    "expected": "0.3087",
+    "got": "0.3087",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav vgg16_transfer label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav vgg16_transfer score",
+    "expected": "0.4408",
+    "got": "0.4408",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "physio_training-b_b0455.wav vgg16_transfer table = card",
+    "expected": "0.4408",
+    "got": "0.4408",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_linear score",
+    "expected": "3.5517",
+    "got": "3.5517",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_linear table = card",
+    "expected": "3.5517",
+    "got": "3.5517",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_rbf score",
+    "expected": "0.3656",
+    "got": "0.3656",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav svm_rbf table = card",
+    "expected": "0.3656",
+    "got": "0.3656",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav decision_tree score",
+    "expected": "1.0000",
+    "got": "1.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav decision_tree table = card",
+    "expected": "1.0000",
+    "got": "1.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav cnn_custom score",
+    "expected": "0.7892",
+    "got": "0.7892",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav cnn_custom table = card",
+    "expected": "0.7892",
+    "got": "0.7892",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav vgg16_transfer score",
+    "expected": "0.8830",
+    "got": "0.8830",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "physio_training-c_c0015.wav vgg16_transfer table = card",
+    "expected": "0.8830",
+    "got": "0.8830",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_linear score",
+    "expected": "0.1585",
+    "got": "0.1585",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_linear table = card",
+    "expected": "0.1585",
+    "got": "0.1585",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_rbf label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_rbf score",
+    "expected": "-0.7682",
+    "got": "-0.7682",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav svm_rbf table = card",
+    "expected": "-0.7682",
+    "got": "-0.7682",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav decision_tree label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav decision_tree score",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav decision_tree table = card",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav cnn_custom label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav cnn_custom score",
+    "expected": "0.0650",
+    "got": "0.0650",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav cnn_custom table = card",
+    "expected": "0.0650",
+    "got": "0.0650",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav vgg16_transfer label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav vgg16_transfer score",
+    "expected": "0.3616",
+    "got": "0.3616",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "physio_training-e_e01899.wav vgg16_transfer table = card",
+    "expected": "0.3616",
+    "got": "0.3616",
+    "ok": true
+  },
+  {
+    "check": "samples available",
+    "expected": "2",
+    "got": "2",
+    "ok": true
+  },
+  {
+    "check": "sample normal svm_linear label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "sample normal svm_linear score",
+    "expected": "-0.2970",
+    "got": "-0.2970",
+    "ok": true
+  },
+  {
+    "check": "sample normal svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "sample normal svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample normal svm_rbf score",
+    "expected": "0.5537",
+    "got": "0.5537",
+    "ok": true
+  },
+  {
+    "check": "sample normal svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "sample normal decision_tree label",
+    "expected": "Normal",
+    "got": "Normal",
+    "ok": true
+  },
+  {
+    "check": "sample normal decision_tree score",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "sample normal decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "sample normal cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample normal cnn_custom score",
+    "expected": "0.4856",
+    "got": "0.4856",
+    "ok": true
+  },
+  {
+    "check": "sample normal cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "sample normal vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample normal vgg16_transfer score",
+    "expected": "0.6390",
+    "got": "0.6390",
+    "ok": true
+  },
+  {
+    "check": "sample normal vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal svm_linear label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal svm_linear score",
+    "expected": "1.3075",
+    "got": "1.3075",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal svm_linear threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal svm_rbf label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal svm_rbf score",
+    "expected": "1.8252",
+    "got": "1.8252",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal svm_rbf threshold",
+    "expected": "0.0000",
+    "got": "0.0000",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal decision_tree label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal decision_tree score",
+    "expected": "0.4594",
+    "got": "0.4594",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal decision_tree threshold",
+    "expected": "0.2982",
+    "got": "0.2982",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal cnn_custom label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal cnn_custom score",
+    "expected": "0.7157",
+    "got": "0.7157",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal cnn_custom threshold",
+    "expected": "0.2874",
+    "got": "0.2874",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal vgg16_transfer label",
+    "expected": "Abnormal",
+    "got": "Abnormal",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal vgg16_transfer score",
+    "expected": "0.8168",
+    "got": "0.8168",
+    "ok": true
+  },
+  {
+    "check": "sample abnormal vgg16_transfer threshold",
+    "expected": "0.4965",
+    "got": "0.4965",
+    "ok": true
+  },
+  {
+    "check": "svm_linear 3-fold link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/54c0512826d942c79ceba2f3321373ca",
+    "got": "http://localhost:5000/#/experiments/1/runs/54c0512826d942c79ceba2f3321373ca",
+    "ok": true
+  },
+  {
+    "check": "svm_linear train/test link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/54c0512826d942c79ceba2f3321373ca/artifacts/figures/train_vs_test.png",
+    "got": "http://localhost:5000/#/experiments/1/runs/54c0512826d942c79ceba2f3321373ca/artifacts/figures/train_vs_test.png",
+    "ok": true
+  },
+  {
+    "check": "svm_linear analysis link = API",
+    "expected": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "got": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "ok": true
+  },
+  {
+    "check": "svm_linear 3-fold run tags",
+    "expected": "model=svm_linear v3 selected",
+    "got": "model=svm_linear v3 true",
+    "ok": true
+  },
+  {
+    "check": "svm_rbf 3-fold link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/a8f505c1217b4255bec86601d2d2bb70",
+    "got": "http://localhost:5000/#/experiments/1/runs/a8f505c1217b4255bec86601d2d2bb70",
+    "ok": true
+  },
+  {
+    "check": "svm_rbf train/test link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/a8f505c1217b4255bec86601d2d2bb70/artifacts/figures/train_vs_test.png",
+    "got": "http://localhost:5000/#/experiments/1/runs/a8f505c1217b4255bec86601d2d2bb70/artifacts/figures/train_vs_test.png",
+    "ok": true
+  },
+  {
+    "check": "svm_rbf analysis link = API",
+    "expected": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "got": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "ok": true
+  },
+  {
+    "check": "svm_rbf 3-fold run tags",
+    "expected": "model=svm_rbf v3 selected",
+    "got": "model=svm_rbf v3 true",
+    "ok": true
+  },
+  {
+    "check": "decision_tree 3-fold link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/0802b21ad1f8499da4f7eaf6162128e0",
+    "got": "http://localhost:5000/#/experiments/1/runs/0802b21ad1f8499da4f7eaf6162128e0",
+    "ok": true
+  },
+  {
+    "check": "decision_tree train/test link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/0802b21ad1f8499da4f7eaf6162128e0/artifacts/figures/train_vs_test.png",
+    "got": "http://localhost:5000/#/experiments/1/runs/0802b21ad1f8499da4f7eaf6162128e0/artifacts/figures/train_vs_test.png",
+    "ok": true
+  },
+  {
+    "check": "decision_tree analysis link = API",
+    "expected": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "got": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "ok": true
+  },
+  {
+    "check": "decision_tree 3-fold run tags",
+    "expected": "model=decision_tree v3 selected",
+    "got": "model=decision_tree v3 true",
+    "ok": true
+  },
+  {
+    "check": "cnn_custom 3-fold link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/1f324e1f369146daa7f5a5fdd11d2bb0",
+    "got": "http://localhost:5000/#/experiments/1/runs/1f324e1f369146daa7f5a5fdd11d2bb0",
+    "ok": true
+  },
+  {
+    "check": "cnn_custom train/test link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/1f324e1f369146daa7f5a5fdd11d2bb0/artifacts/figures/train_vs_test.png",
+    "got": "http://localhost:5000/#/experiments/1/runs/1f324e1f369146daa7f5a5fdd11d2bb0/artifacts/figures/train_vs_test.png",
+    "ok": true
+  },
+  {
+    "check": "cnn_custom analysis link = API",
+    "expected": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "got": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "ok": true
+  },
+  {
+    "check": "cnn_custom 3-fold run tags",
+    "expected": "model=cnn_custom v3 selected",
+    "got": "model=cnn_custom v3 true",
+    "ok": true
+  },
+  {
+    "check": "vgg16_transfer 3-fold link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/b23e923fbb5e4445a7acdd5bc07766bd",
+    "got": "http://localhost:5000/#/experiments/1/runs/b23e923fbb5e4445a7acdd5bc07766bd",
+    "ok": true
+  },
+  {
+    "check": "vgg16_transfer train/test link = API",
+    "expected": "http://localhost:5000/#/experiments/1/runs/b23e923fbb5e4445a7acdd5bc07766bd/artifacts/figures/train_vs_test.png",
+    "got": "http://localhost:5000/#/experiments/1/runs/b23e923fbb5e4445a7acdd5bc07766bd/artifacts/figures/train_vs_test.png",
+    "ok": true
+  },
+  {
+    "check": "vgg16_transfer analysis link = API",
+    "expected": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "got": "http://localhost:5000/#/experiments/2/runs/d2f2dcfcd1e94d6eaf900cbe5cbb0d8c",
+    "ok": true
+  },
+  {
+    "check": "vgg16_transfer 3-fold run tags",
+    "expected": "model=vgg16_transfer v3 selected",
+    "got": "model=vgg16_transfer v3 true",
+    "ok": true
+  },
+  {
+    "check": "analysis run exists",
+    "expected": "run with tags",
+    "got": "21",
+    "ok": true
+  },
+  {
+    "check": "benchmark svm_linear button",
+    "expected": "http://localhost:5000/#/experiments/1/runs/54c0512826d942c79ceba2f3321373ca",
+    "got": "http://localhost:5000/#/experiments/1/runs/54c0512826d942c79ceba2f3321373ca",
+    "ok": true
+  },
+  {
+    "check": "benchmark svm_rbf button",
+    "expected": "http://localhost:5000/#/experiments/1/runs/a8f505c1217b4255bec86601d2d2bb70",
+    "got": "http://localhost:5000/#/experiments/1/runs/a8f505c1217b4255bec86601d2d2bb70",
+    "ok": true
+  },
+  {
+    "check": "benchmark decision_tree button",
+    "expected": "http://localhost:5000/#/experiments/1/runs/0802b21ad1f8499da4f7eaf6162128e0",
+    "got": "http://localhost:5000/#/experiments/1/runs/0802b21ad1f8499da4f7eaf6162128e0",
+    "ok": true
+  },
+  {
+    "check": "benchmark cnn_custom button",
+    "expected": "http://localhost:5000/#/experiments/1/runs/1f324e1f369146daa7f5a5fdd11d2bb0",
+    "got": "http://localhost:5000/#/experiments/1/runs/1f324e1f369146daa7f5a5fdd11d2bb0",
+    "ok": true
+  },
+  {
+    "check": "benchmark vgg16_transfer button",
+    "expected": "http://localhost:5000/#/experiments/1/runs/b23e923fbb5e4445a7acdd5bc07766bd",
+    "got": "http://localhost:5000/#/experiments/1/runs/b23e923fbb5e4445a7acdd5bc07766bd",
+    "ok": true
+  },
+  {
+    "check": "audio advanced",
+    "expected": "> 1 s",
+    "got": "2.33",
+    "ok": true
+  },
+  {
+    "check": "waveform playhead moved",
+    "expected": "> 44",
+    "got": "194.43",
+    "ok": true
+  },
+  {
+    "check": "spectrogram playhead moved",
+    "expected": "> 10.08",
+    "got": "23.2",
+    "ok": true
+  },
+  {
+    "check": "light desktop grid columns",
+    "expected": "3",
+    "got": "3",
+    "ok": true
+  },
+  {
+    "check": "light desktop Analyze horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light desktop Analyze overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light desktop Benchmark horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light desktop Benchmark overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light desktop Models horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light desktop Models overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light tablet grid columns",
+    "expected": "2",
+    "got": "2",
+    "ok": true
+  },
+  {
+    "check": "light tablet Analyze horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light tablet Analyze overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light tablet Benchmark horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light tablet Benchmark overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light tablet Models horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light tablet Models overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light phone grid columns",
+    "expected": "1",
+    "got": "1",
+    "ok": true
+  },
+  {
+    "check": "light phone Analyze horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light phone Analyze overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light phone Benchmark horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light phone Benchmark overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light phone Models horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "light phone Models overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark desktop grid columns",
+    "expected": "3",
+    "got": "3",
+    "ok": true
+  },
+  {
+    "check": "dark desktop Analyze horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark desktop Analyze overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark desktop Benchmark horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark desktop Benchmark overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark desktop Models horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark desktop Models overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark tablet grid columns",
+    "expected": "2",
+    "got": "2",
+    "ok": true
+  },
+  {
+    "check": "dark tablet Analyze horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark tablet Analyze overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark tablet Benchmark horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark tablet Benchmark overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark tablet Models horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark tablet Models overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark phone grid columns",
+    "expected": "1",
+    "got": "1",
+    "ok": true
+  },
+  {
+    "check": "dark phone Analyze horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark phone Analyze overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark phone Benchmark horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark phone Benchmark overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark phone Models horizontal scroll",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "dark phone Models overflowing elements in cards",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe light Analyze serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe light Analyze passes",
+    "expected": ">0",
+    "got": "27",
+    "ok": true
+  },
+  {
+    "check": "axe light Benchmark serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe light Benchmark passes",
+    "expected": ">0",
+    "got": "25",
+    "ok": true
+  },
+  {
+    "check": "axe light History serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe light History passes",
+    "expected": ">0",
+    "got": "21",
+    "ok": true
+  },
+  {
+    "check": "axe light Models serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe light Models passes",
+    "expected": ">0",
+    "got": "21",
+    "ok": true
+  },
+  {
+    "check": "axe light badges icon+text",
+    "expected": "all",
+    "got": "10/10",
+    "ok": true
+  },
+  {
+    "check": "axe dark Analyze serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe dark Analyze passes",
+    "expected": ">0",
+    "got": "27",
+    "ok": true
+  },
+  {
+    "check": "axe dark Benchmark serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe dark Benchmark passes",
+    "expected": ">0",
+    "got": "25",
+    "ok": true
+  },
+  {
+    "check": "axe dark History serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe dark History passes",
+    "expected": ">0",
+    "got": "21",
+    "ok": true
+  },
+  {
+    "check": "axe dark Models serious/critical",
+    "expected": "0",
+    "got": "0",
+    "ok": true
+  },
+  {
+    "check": "axe dark Models passes",
+    "expected": ">0",
+    "got": "21",
+    "ok": true
+  },
+  {
+    "check": "axe dark badges icon+text",
+    "expected": "all",
+    "got": "10/10",
+    "ok": true
+  }
+]

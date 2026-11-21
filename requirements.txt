@@ -1,0 +1,18 @@
+# Training / notebook environment (.venv). Pinned so the teacher gets the same results.
+# The fold manifests in Data/processed/splits/v2_patient_grouped are saved files,
+# so the folds themselves do not depend on these versions.
+scikit-learn==1.9.1
+tensorflow==2.21.0
+keras==3.15.1
+numpy==2.5.3
+pandas==3.0.6
+scipy==1.18.1
+librosa==1.0.0
+soundfile==0.14.0
+pillow==12.3.0
+matplotlib==3.11.2
+seaborn==0.13.2
+joblib==1.6.0
+mlflow==3.16.1
+ipykernel==7.4.0
+pytest==8.4.2

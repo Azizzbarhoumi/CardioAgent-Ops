@@ -1,39 +1,93 @@
 import { useCallback, useEffect, useState } from 'react';
-import { analyzeFile, getHealth, getHistory, getModels } from './api';
-import type { Analysis, Health, HistoryItem, ModelInfo } from './types';
-import { AppHeader } from './components/AppHeader';
-import { DisclaimerBanner } from './components/DisclaimerBanner';
-import { UploadCard } from './components/UploadCard';
-import { ErrorAlert } from './components/ErrorAlert';
-import { LoadingState } from './components/LoadingState';
-import { ModelGroup } from './components/ModelGroup';
-import { ResultsSummaryTable } from './components/ResultsSummaryTable';
-import { AudioCharts } from './components/AudioCharts';
-import { MlflowLink } from './components/MlflowLink';
-import { HistoryTable } from './components/HistoryTable';
-import { ModelsInfoPanel } from './components/ModelsInfoPanel';
+import { analyzeFile, fetchSample, getBenchmark, getHealth, getHistory, getModels, getSamples } from './api';
+import type { Analysis, BenchmarkModel, Health, HistoryItem, ModelInfo, Sample } from './types';
+import { I18nProvider, useI18n } from './i18n';
+import { baseName, download, toCsv, toJson } from './lib/export';
+import { UploadPanel } from './monitor/Upload';
+import { ChannelGrid, SummaryTable } from './monitor/Results';
+import { SignalPanel } from './monitor/Signal';
+import { BenchmarkView } from './monitor/Benchmark';
+import { Header, HistoryView, ModelsView, PrintHeader, PrintLinks, type Tab } from './monitor/Pages';
+import './monitor/monitor.css';
 
-type Tab = 'Analyze' | 'History' | 'Models';
-export default function App() {
-  const [health,setHealth]=useState<Health|null>(null), [models,setModels]=useState<ModelInfo[]>([]), [history,setHistory]=useState<HistoryItem[]>([]);
-  const [tab,setTab]=useState<Tab>('Analyze'), [file,setFile]=useState<File|null>(null), [analysis,setAnalysis]=useState<Analysis|null>(null);
-  const [busy,setBusy]=useState(false), [error,setError]=useState(''), [historyWarning,setHistoryWarning]=useState(''), [modelsWarning,setModelsWarning]=useState('');
-  const refresh=useCallback(async()=>{ try{setHealth(await getHealth());}catch{setHealth(null);} },[]);
-  useEffect(()=>{void refresh(); void getModels().then(r=>{setModels(r.models);setModelsWarning(r.warning||'');}).catch(e=>setModelsWarning(e.message)); const timer=window.setInterval(()=>void refresh(),15000); return()=>window.clearInterval(timer);},[refresh]);
-  useEffect(()=>{if(tab==='History')void getHistory().then(r=>{setHistory(r.analyses);setHistoryWarning(r.warning||'');}).catch(e=>setHistoryWarning(e.message));},[tab]);
-  async function analyze(){if(!file)return;setBusy(true);setError('');try{const result=await analyzeFile(file);setAnalysis(result);void refresh();}catch(e){setError(e instanceof Error?e.message:'Analysis failed.');}finally{setBusy(false);}}
-  const groups=analysis?.model_groups?.length?analysis.model_groups:analysis?[
-    {key:'svm',name:'SVM (2 kernels)',models:analysis.results.filter(r=>r.model_key.startsWith('svm_'))},
-    {key:'decision_tree',name:'Decision Tree',models:analysis.results.filter(r=>r.model_key==='decision_tree')},
-    {key:'cnn',name:'CNN',models:analysis.results.filter(r=>r.model_key==='cnn_custom')},
-  ]:[];
-  return <main className="page-shell"><AppHeader health={health}/><DisclaimerBanner/><nav className="tabs" aria-label="Main sections">{(['Analyze','History','Models'] as Tab[]).map(name=><button key={name} className={tab===name?'active':''} onClick={()=>setTab(name)}>{name}</button>)}</nav>
-    {tab==='Analyze'&&<div className="page-content"><UploadCard file={file} busy={busy} onFile={chosen=>{setFile(chosen);setAnalysis(null);setError('');}} onAnalyze={()=>void analyze()}/>{error&&<ErrorAlert>{error}</ErrorAlert>}{busy&&<LoadingState/>}
-      {analysis&&<><section className="result-intro"><div><div className="eyebrow">ANALYSIS COMPLETE</div><h2>{analysis.filename}</h2><p>{analysis.duration_s.toFixed(2)} s <span>·</span> {analysis.source_sample_rate.toLocaleString()} Hz → {analysis.sample_rate_after_resampling.toLocaleString()} Hz <span>·</span> {analysis.total_processing_ms.toFixed(0)} ms total</p></div><MlflowLink url={analysis.mlflow_run_url}/></section>{analysis.warning&&<div className="alert warning">{analysis.warning}</div>}
-        <section className="results-section"><div className="section-heading"><div><div className="eyebrow">INDEPENDENT RESULTS</div><h2>Model analyses</h2><p>Each model reports its own prediction. No combined result is calculated.</p></div></div><div className="groups-stack">{groups.map(g=><ModelGroup group={g} key={g.key}/>)}</div></section>
-        <DisclaimerBanner compact/><ResultsSummaryTable results={analysis.results}/><section className="results-section"><div className="section-heading"><div><div className="eyebrow">RECORDING DETAILS</div><h2>Audio analysis</h2></div></div><AudioCharts result={analysis}/></section></>}
-      {!analysis&&!busy&&<div className="empty-state">Your independent model results and audio analysis will appear here.</div>}</div>}
-    {tab==='History'&&<div className="page-content"><div className="section-heading"><div><div className="eyebrow">PAST ANALYSES</div><h2>History</h2><p>Recent analyses logged to MLflow.</p></div><button className="button secondary" onClick={()=>void getHistory().then(r=>{setHistory(r.analyses);setHistoryWarning(r.warning||'');}).catch(e=>setHistoryWarning(e.message))}>Refresh</button></div>{historyWarning&&<div className="alert warning">{historyWarning}</div>}<HistoryTable items={history}/></div>}
-    {tab==='Models'&&<div className="page-content"><div className="section-heading"><div><div className="eyebrow">MODEL INFORMATION</div><h2>Models and inputs</h2><p>Training metrics are reported by the local model manifest when available.</p></div></div>{modelsWarning&&<div className="alert warning">{modelsWarning}</div>}<ModelsInfoPanel models={models}/></div>}
-    <footer>Heart Sound Model Lab <span>·</span> Educational use only</footer></main>;
+function Lab() {
+  const { t, lang } = useI18n();
+  const loc = lang === 'fr' ? 'fr-FR' : 'en-US';
+  const [health, setHealth] = useState<Health | null>(null);
+  const [tab, setTab] = useState<Tab>('Analyze');
+  const [file, setFile] = useState<File | null>(null);
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [analyzedFile, setAnalyzedFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [samples, setSamples] = useState<Sample[]>([]);
+  const [samplesWarning, setSamplesWarning] = useState<string | null>(null);
+  const [models, setModels] = useState<ModelInfo[]>([]), [modelsWarning, setModelsWarning] = useState('');
+  const [bench, setBench] = useState<BenchmarkModel[]>([]), [benchWarning, setBenchWarning] = useState(''), [benchLoading, setBenchLoading] = useState(false);
+  const [history, setHistory] = useState<HistoryItem[]>([]), [historyWarning, setHistoryWarning] = useState('');
+
+  const refresh = useCallback(async () => { try { setHealth(await getHealth()); } catch { setHealth(null); } }, []);
+  useEffect(() => {
+    void refresh();
+    void getModels().then(r => { setModels(r.models); setModelsWarning(r.warning || ''); }).catch(e => setModelsWarning(e.message));
+    void getSamples().then(r => { setSamples(r.samples); setSamplesWarning(r.warning ?? null); }).catch(e => setSamplesWarning(e.message));
+    const timer = window.setInterval(() => void refresh(), 15000);
+    return () => window.clearInterval(timer);
+  }, [refresh]);
+  const loadHistory = useCallback(() => void getHistory().then(r => { setHistory(r.analyses); setHistoryWarning(r.warning || ''); }).catch(e => setHistoryWarning(e.message)), []);
+  useEffect(() => {
+    if (tab === 'Benchmark') { setBenchLoading(true); void getBenchmark().then(r => { setBench(r.models); setBenchWarning(''); }).catch(e => setBenchWarning(e.message)).finally(() => setBenchLoading(false)); }
+    if (tab === 'History') loadHistory();
+  }, [tab, loadHistory]);
+
+  async function analyze(target: File | null = file) {
+    if (!target) return;
+    setBusy(true); setError('');
+    try { const result = await analyzeFile(target); setAnalysis(result); setAnalyzedFile(target); void refresh(); }
+    catch (e) { setError(e instanceof Error ? e.message : t('error.analysis')); }
+    finally { setBusy(false); }
+  }
+  async function trySample(sample: Sample) {
+    setError('');
+    try { const f = await fetchSample(sample); setFile(f); setAnalysis(null); await analyze(f); }
+    catch (e) { setError(e instanceof Error ? e.message : t('error.analysis')); }
+  }
+
+  return <div className="lab">
+    <Header health={health} tab={tab} onTab={setTab} />
+    <main className="wrap">
+      {tab === 'Analyze' && <div className="page">
+        <UploadPanel file={file} busy={busy} samples={samples} samplesWarning={samplesWarning}
+          onFile={f => { setFile(f); setAnalysis(null); setError(''); }} onAnalyze={() => void analyze()} onSample={s => void trySample(s)} />
+        {error && <div className="alert error" role="alert">{error}</div>}
+        {busy && <div className="loading" role="status"><span className="spinner" />{t('loading')}</div>}
+        {analysis && <>
+          <PrintHeader analysis={analysis} />
+          <section className="pnl result-head">
+            <div><div className="h"><span>{t('result.complete')}</span></div>
+              <p className="mono file-name">{analysis.filename}</p>
+              <p className="muted">{t('result.meta', { dur: analysis.duration_s.toFixed(2), src: analysis.source_sample_rate.toLocaleString(loc), rs: analysis.sample_rate_after_resampling.toLocaleString(loc), ms: analysis.total_processing_ms.toFixed(0) })}</p></div>
+            <div className="actions no-print">
+              {analysis.mlflow_run_url ? <a className="mlflow-link" href={analysis.mlflow_run_url} target="_blank" rel="noreferrer">{t('result.openRun')}</a> : <span className="muted">{t('result.noRun')}</span>}
+              <button type="button" className="btn sm" onClick={() => download(`${baseName(analysis.filename)}_analysis.json`, toJson(analysis), 'application/json')}>{t('export.json')}</button>
+              <button type="button" className="btn sm" onClick={() => download(`${baseName(analysis.filename)}_analysis.csv`, toCsv(analysis), 'text/csv')}>{t('export.csv')}</button>
+              <button type="button" className="btn sm" onClick={() => window.print()}>{t('export.print')}</button>
+            </div>
+          </section>
+          {analysis.warning && <div className="alert warning">{analysis.warning}</div>}
+          <SummaryTable results={analysis.results} />
+          <SignalPanel analysis={analysis} file={analyzedFile} />
+          <ChannelGrid results={analysis.results} analysisUrl={analysis.mlflow_run_url} />
+          <PrintLinks analysis={analysis} />
+        </>}
+        {!analysis && !busy && <div className="empty">{t('empty')}</div>}
+      </div>}
+      {tab === 'Benchmark' && <BenchmarkView models={bench} warning={benchWarning} loading={benchLoading} />}
+      {tab === 'History' && <HistoryView items={history} warning={historyWarning} onRefresh={loadHistory} />}
+      {tab === 'Models' && <ModelsView models={models} warning={modelsWarning} />}
+    </main>
+    <footer className="foot">{t('app.footer')}</footer>
+  </div>;
 }
+
+export default function App() { return <I18nProvider><Lab /></I18nProvider>; }

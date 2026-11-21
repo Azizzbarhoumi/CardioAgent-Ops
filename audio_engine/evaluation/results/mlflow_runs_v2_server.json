@@ -1,0 +1,51 @@
+{
+  "tracking_uri": "http://localhost:5000",
+  "store": "docker volume mlflow-data",
+  "runs": {
+    "svm_linear": {
+      "parent_run_id": "066c1d6a14774d629f52bdab55455fe8",
+      "child_run_ids": {
+        "1": "cdd15d73530f41e4b8ed9bde8b6b8dc7",
+        "2": "5a97c8c3115c45f18512e253e3808ba1",
+        "3": "dbf798b4a34d4f009d7713a3a4787803"
+      },
+      "experiment_id": "1"
+    },
+    "svm_rbf": {
+      "parent_run_id": "cfdeffa024f8426a9c6775fd9e0d67ce",
+      "child_run_ids": {
+        "1": "143804bbc9ad4493a0961092f49caeab",
+        "2": "29eda62c31ed404e9e6760ffdc891b56",
+        "3": "4ebf2c35a22247058f7308f25671113a"
+      },
+      "experiment_id": "1"
+    },
+    "decision_tree": {
+      "parent_run_id": "b51db8568da345acb5c3f2c1dc71204b",
+      "child_run_ids": {
+        "1": "16593330982640fe9e8a45bdbb38dc6c",
+        "2": "128cb99767a7489bbf2457a170206828",
+        "3": "dc48ee7a3fad4f059ebbd2c8a71581fc"
+      },
+      "experiment_id": "1"
+    },
+    "cnn_custom": {
+      "parent_run_id": "fdf43dbea07b48448ca81c8cb644cf00",
+      "child_run_ids": {
+        "1": "c81e50105d2e4d51976c561407801ff3",
+        "2": "6fa48138211a4b7ba97803f443727cca",
+        "3": "3f2356eb685d49b1bbefbbe4d3928fbf"
+      },
+      "experiment_id": "1"
+    },
+    "vgg16_transfer": {
+      "parent_run_id": "0700315198ed4e19a02d13c17869e335",
+      "child_run_ids": {
+        "1": "36849f8f64c24abab7cad3a831e64f50",
+        "2": "4b16df2a2f954a598bb71b462fb20629",
+        "3": "502c83d0ac984fc29995e09c240a835d"
+      },
+      "experiment_id": "1"
+    }
+  }
+}

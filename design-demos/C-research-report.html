@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction C · Research Report</title>
+<!-- Logic 3 (best designer for this content): Edward Tufte. Data-ink first, no boxes or shadows, hairlines only,
+     small multiples, notes in the margin instead of tooltips. Form from content: this is an educational lab that
+     reports evidence, so the page reads like a figure page of a careful paper; every number has its caption next to it. -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf6;--ink:#1f1f1c;--ink2:#55534c;--line:#d9d5ca;--accent:#8a3b12;--nor:#25603a;--abn:#9b2c1c;--warn:#5c4a12;--side-n:#e4ece3;--side-a:#f2e1da;--mark:#1f1f1c;--b0:#3c3a35;--b1:#8f8a7d;--b2:#c9a227;--tr:#c8c3b6;--te:#3c3a35;--heat:138,59,18}
+@media (prefers-color-scheme:dark){:root{--bg:#1a1916;--ink:#ece8de;--ink2:#b3ad9f;--line:#3a3731;--accent:#e59a6c;--nor:#8fd0a2;--abn:#f19a87;--warn:#e7d28f;--side-n:#22352a;--side-a:#43271f;--mark:#fff;--b0:#ece8de;--b1:#9c968a;--b2:#d8b44a;--tr:#57534a;--te:#ece8de;--heat:229,154,108}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Source Sans 3',system-ui,sans-serif}
+.serif,h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;font-weight:600}.n,td.n,.sb-num b,.rl-row b{font-variant-numeric:tabular-nums lining-nums}
+.wrap{max-width:1180px;margin:auto;padding:36px 28px 60px}
+header{display:grid;grid-template-columns:1fr auto;gap:12px 28px;align-items:end;border-bottom:1px solid var(--ink);padding-bottom:14px}
+h1{font-size:2.1rem;margin:0;letter-spacing:-.01em;font-weight:400}header p{margin:4px 0 0;color:var(--ink2)}
+.st{color:var(--ink2);font-size:.95rem;text-align:right}
+.disc{grid-column:1/-1;font-size:.98rem;color:var(--warn);font-style:italic;font-family:'Source Serif 4',serif}
+nav{display:flex;gap:26px;margin:14px 0 30px;font-size:1rem}nav button{font:inherit;background:none;border:0;padding:0 0 4px;color:var(--ink2);cursor:pointer;border-bottom:1px solid transparent}nav button.on{color:var(--ink);border-color:var(--ink)}
+.sec{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:40px;margin-bottom:40px}.sec>.main{min-width:0}
+.note{font-size:.92rem;color:var(--ink2);border-top:1px solid var(--line);padding-top:8px}.note b{color:var(--ink)}
+h2{font-size:1.45rem;margin:0 0 6px;font-weight:400}h3{font-size:1.08rem;margin:0}
+.upl{display:flex;gap:22px;align-items:baseline;flex-wrap:wrap;padding:14px 0;border-top:1px dashed var(--ink2);border-bottom:1px dashed var(--ink2)}
+.upl strong{font-weight:600}.upl span{color:var(--ink2)}.upl .sp{flex:1}
+.lnk{font:inherit;background:none;border:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0}
+.go{font:inherit;font-weight:600;background:var(--ink);color:var(--bg);border:0;padding:8px 16px;cursor:pointer}
+.fl{margin-top:10px;color:var(--ink2)}.fl b{color:var(--ink)}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:7px 10px 7px 0;border-bottom:1px solid var(--line)}thead th{border-bottom:1px solid var(--ink);font-weight:600;font-size:.92rem}td.n,th.r{text-align:right}.tscroll{overflow-x:auto}
+.badge{display:inline-flex;align-items:center;gap:5px;font-weight:600}.badge svg{width:15px;height:15px}.badge.nor{color:var(--nor)}.badge.abn{color:var(--abn)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:28px;row-gap:34px}
+.svm{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;column-gap:28px;border-top:3px double var(--ink);padding-top:8px}
+.svm>h3{grid-column:1/-1;font-weight:400;font-style:italic;margin-bottom:6px}
+.card{border-top:1px solid var(--ink);padding-top:10px;display:grid;gap:12px;align-content:start;min-width:0}
+.svm .card{border-top-color:var(--line)}
+.card .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.meta{color:var(--ink2);font-size:.92rem}
+.sb-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.9rem;color:var(--ink2)}.sb-num b{color:var(--ink)}
+.sb-track{position:relative;height:8px;margin:12px 0 4px}.sb-norm,.sb-abn{position:absolute;top:0;bottom:0}.sb-norm{left:0;background:var(--side-n)}.sb-abn{right:0;background:var(--side-a)}
+.sb-thr{position:absolute;top:-6px;bottom:-6px;width:1px;background:var(--ink)}.sb-mark{position:absolute;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--mark);transform:translateX(-5px);margin-top:3px}
+.sb-ticks{position:relative;height:16px;font-size:.78rem;color:var(--ink2)}.sb-ticks span{position:absolute;transform:translateX(-50%)}
+.sb-sides{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink2);font-style:italic}
+.rl-title{font-size:.86rem;color:var(--ink2);font-style:italic;margin-bottom:2px}.rl-title span{display:none}
+.rl-row{display:grid;grid-template-columns:8.3em 1fr 7.4em;gap:8px;align-items:center;font-size:.9rem}.rl-row b{font-weight:400;text-align:right}
+.rl-bar{position:relative;height:1px;background:var(--line)}.rl-sd{position:absolute;top:-3px;height:7px;border-left:1px solid var(--ink2);border-right:1px solid var(--ink2)}.rl-pt{position:absolute;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--ink);transform:translateX(-3px)}
+.dist{font-size:.85rem;color:var(--ink2);font-style:italic;cursor:help;border-bottom:1px dotted var(--ink2)}
+.links{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:.92rem}a{color:var(--accent);text-underline-offset:3px}
+details{font-size:.9rem;color:var(--ink2)}summary{cursor:pointer}
+svg.wave,svg.chart{width:100%;height:auto;display:block}svg text{fill:var(--ink2);font-size:13px;font-family:'Source Sans 3',sans-serif}
+.ax{stroke:var(--ink)}.zero{stroke:var(--line)}.sig{fill:none;stroke:var(--ink);stroke-width:.9}.ph{stroke:var(--accent);stroke-width:1.5}.grid{stroke:var(--line)}
+.spec{position:relative;height:190px;background:linear-gradient(180deg,#2a1a4c,#3a2e84 30%,#24608d 56%,#1e8a6e 78%,#bad646)}.spec .phd{position:absolute;top:0;bottom:0;width:1.5px;background:#fff}
+.ctrl{display:flex;gap:14px;align-items:baseline;margin:6px 0 10px}
+.b0{fill:var(--b0);background:var(--b0)}.b1{fill:var(--b1);background:var(--b1)}.b2{fill:var(--b2);background:var(--b2)}.tr{fill:var(--tr);background:var(--tr)}.te{fill:var(--te);background:var(--te)}.err{stroke:var(--ink);stroke-width:1}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;color:var(--ink2);margin-top:4px}.legend i{display:inline-block;width:10px;height:10px;margin-right:5px}
+.heat td{text-align:right;background:rgba(var(--heat),calc(var(--v)*.45 + .03))}
+.cm table{max-width:380px}.cm-sel{display:flex;gap:14px;margin-bottom:8px;flex-wrap:wrap}.ph-cell{text-align:center;color:var(--ink2)}.cm .note{border:0}
+@media (max-width:1100px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.svm{grid-column:1/-1}.sec{grid-template-columns:1fr;gap:12px}}
+@media (max-width:680px){.cards,.svm{grid-template-columns:1fr}.svm .card+.card{margin-top:24px}header{grid-template-columns:1fr}.st{text-align:left}.wrap{padding:22px 16px}}
+</style></head><body><div class="wrap">
+<header><div><h1>Heart Sound Model Lab</h1><p>Five independent analyses of a phonocardiogram recording</p></div>
+<div class="st">API and models ready · MLflow connected · <a href="#">Open MLflow ↗</a></div>
+<div class="disc" role="note">Educational project only. This is not a medical device and must not be used for diagnosis or medical decisions.</div></header>
+<nav aria-label="Main sections"><button class="on" data-tab="an">Analyze</button><button data-tab="bm">Benchmark</button><button>History</button><button>Models</button></nav>
+<div data-view="an" id="an"></div><div data-view="bm" id="bm" hidden></div></div>
+<script src="data.js"></script><script src="charts.js"></script>
+<script>
+const D=DEMO,C=CH,f=D.file;
+const card=m=>`<article class="card"><div class="top"><h3>${m.name.replace('SVM · ','')}</h3>${C.badge(false)}</div>${C.scoreBar(m)}
+ ${C.reliability(m)}<div class="meta">inference ${m.ms.toFixed(1)} ms · ${C.distTag(m)}</div>
+ <div class="links">${C.links()}</div><div class="meta">3-fold CV · fold ${m.fold} model</div>
+ <details><summary>Model details</summary>v2-fold${m.fold} · ${m.type==='decision'?'decision_score &gt; 0':'P(abnormal) ≥ threshold'} · 0 = Normal, 1 = Abnormal</details></article>`;
+const sec=(main,note)=>`<section class="sec"><div class="main">${main}</div><aside class="note">${note}</aside></section>`;
+document.getElementById('an').innerHTML=
+sec(`<h2>Recording</h2><div class="upl"><strong>Drop your WAV recording here</strong><span>or <button class="lnk">browse your device</button> · up to 20 MB</span><span class="sp"></span><span>Try a sample: <button class="lnk">normal</button> · <button class="lnk">abnormal</button></span></div>
+ <div class="fl"><b>${f.name}</b> · ${f.dur} s · ${f.src.toLocaleString()} Hz resampled to ${f.rs.toLocaleString()} Hz · ${f.total} ms <button class="go" style="margin-left:12px">Analyze</button></div>`,
+ `<b>Five models, five answers.</b> Each model reads the recording on its own. There is no combined result.`)+
+sec(`<h2>Results summary</h2><div class="tscroll"><table><thead><tr><th>Model</th><th>Prediction</th><th>Score type</th><th class="r">Score</th><th class="r">Threshold</th><th class="r">Time</th></tr></thead>
+ <tbody>${D.models.map(m=>`<tr><td>${m.name}</td><td>${C.badge(false)}</td><td>${m.type==='decision'?'Decision score':'P(abnormal)'}</td><td class="n">${m.score.toFixed(4)}</td><td class="n">${m.thr.toFixed(m.type==='decision'?0:2)}</td><td class="n">${m.ms.toFixed(1)} ms</td></tr>`).join('')}</tbody></table></div>
+ <p class="meta"><a href="#">Analysis in MLflow ↗</a> · <a href="#">JSON</a> · <a href="#">CSV</a> · <a href="#">Print report</a></p>`,
+ `<b>Scores are not comparable across rows.</b> SVM decision scores are signed margins (positive = abnormal). The other three are probabilities of abnormal, each with its own threshold.`)+
+sec(`<h2>Each model in detail</h2><div class="cards"><div class="svm"><h3>SVM (2 kernels): linear and RBF</h3>${card(D.models[0])}${card(D.models[1])}</div>${D.models.slice(2).map(card).join('')}</div>`,
+ `<b>How to read a card.</b> The dot is this recording's score, the vertical line is the model's threshold. The three metric lines are 3-fold cross-validated test results for the model, not the confidence of this prediction. Bars show ± one std over the folds.<br><br><b>Distance to threshold</b>: SVM far if |score| ≥ 1.0; probabilities far if |score − threshold| ≥ 0.15.`)+
+sec(`<h2>Signal</h2><div class="ctrl"><button class="go" data-play>Play</button><span class="n" data-time>0.0 s / ${f.dur} s</span></div><h3>Resampled waveform, ${f.rs} Hz</h3>${C.waveform()}
+ <h3 style="margin-top:18px">Mel spectrogram (CNN and VGG16 input)</h3><div class="spec"><span class="phd" data-ph></span></div><p class="meta">Time (s) · Mel frequency (Hz) · log power (dB). Placeholder gradient; the app shows the API image.</p>`,
+ `<b>Playhead.</b> The vertical line moves with the audio on both the waveform and the spectrogram.`);
+document.getElementById('bm').innerHTML=
+sec(`<h2>Test recall, balanced accuracy and F1</h2>${C.grouped()}`,`<b>Patient-grouped 3-fold CV.</b> Same folds for every model. Mean ± std over the three test folds. Each model is reported separately.`)+
+sec(`<h2>Train vs test</h2>${C.trainTest()}`,`<b>Overfitting check.</b> The gap is train minus test balanced accuracy.`)+
+sec(`<h2>Recall per fold</h2><div class="tscroll">${C.heatmap()}</div>`,`Darker cell = higher recall on that test fold.`)+
+sec(`<h2>Confusion matrix</h2>${C.confusion()}`,`Rows are the true class, columns the prediction.`)+
+sec(`<h2>MLflow</h2><table>${D.models.map(m=>`<tr><td>${m.name}</td><td><a href="#">3-fold results ↗</a></td><td><a href="#">train vs test ↗</a></td></tr>`).join('')}</table>`,`Links open the MLflow UI unchanged.`);
+C.tabs();C.playhead();
+</script></body></html>

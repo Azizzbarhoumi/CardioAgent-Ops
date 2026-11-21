@@ -28,3 +28,16 @@ docs
 .env
 .env.*
 !.env.example
+backups
+logs
+notebooks
+scripts
+frontend
+# models are bind-mounted read-only into the API container (see docker-compose.yml)
+audio_engine/artifacts/models
+audio_engine/evaluation/results
+audio_engine/evaluation/figures
+*.joblib
+*.keras
+*.npz
+*.csv

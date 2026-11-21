@@ -1,0 +1,319 @@
+{
+  "model": "svm_rbf",
+  "display_name": "SVM (RBF)",
+  "framework": "scikit-learn",
+  "score_type": "decision_score",
+  "label_convention": {
+    "0": "normal",
+    "1": "abnormal"
+  },
+  "evaluation": "patient_grouped_3_fold_cv",
+  "split_manifest_sha": "53829bb5614daaffe5525acd4a1aad7dc622a66859ba90f98f9511428bf46b02",
+  "fold_manifest_shas": {
+    "1": "ec79ec31ded4a3042673858b0f5f44839e5ab2285a79cccb807ddd7c784e0573",
+    "2": "e1285ffbbb553bea2ed79b95909bc6ad8f16f88c1ea7d4a675b10ece219214b0",
+    "3": "5468c8a22b04c23c4a258876229a0b7c59d9f3e6e1cee42357e4006fd26deea3"
+  },
+  "params": {
+    "features": "duration, snr, mel_1..mel_20",
+    "class_weight": "balanced",
+    "random_state": 1,
+    "search_grid": {
+      "svc__C": [
+        0.1,
+        1.0,
+        10.0
+      ],
+      "svc__gamma": [
+        "scale",
+        0.01,
+        0.1
+      ]
+    },
+    "search_scoring": "balanced_accuracy",
+    "inner_cv": "StratifiedGroupKFold(3) on train"
+  },
+  "folds": [
+    {
+      "fold": 1,
+      "sizes": {
+        "train": 2017,
+        "validation": 507,
+        "test": 1261
+      },
+      "best_params": {
+        "svc__C": 1.0,
+        "svc__gamma": 0.1
+      },
+      "inner_cv_balanced_accuracy": 0.8635286860101284,
+      "threshold": 0.0,
+      "threshold_rule": "decision_score > 0",
+      "fit_seconds": 0.38,
+      "train": {
+        "accuracy": 0.8750619732275657,
+        "balanced_accuracy": 0.885399962474201,
+        "precision": 0.9622071050642479,
+        "recall": 0.8630508474576272,
+        "f1": 0.9099356683345247,
+        "macro_f1": 0.8530260865944468,
+        "roc_auc": 0.9410819938707862,
+        "specificity": 0.9077490774907749,
+        "confusion_matrix": [
+          [
+            492,
+            50
+          ],
+          [
+            202,
+            1273
+          ]
+        ]
+      },
+      "validation": {
+        "accuracy": 0.8264299802761341,
+        "balanced_accuracy": 0.8348263833835421,
+        "precision": 0.9380804953560371,
+        "recall": 0.816711590296496,
+        "f1": 0.8731988472622478,
+        "macro_f1": 0.799099423631124,
+        "roc_auc": 0.8970984620263199,
+        "specificity": 0.8529411764705882,
+        "confusion_matrix": [
+          [
+            116,
+            20
+          ],
+          [
+            68,
+            303
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.852498017446471,
+        "balanced_accuracy": 0.8448620718393199,
+        "precision": 0.9320046893317703,
+        "recall": 0.8613217768147345,
+        "f1": 0.8952702702702703,
+        "macro_f1": 0.8229702557785668,
+        "roc_auc": 0.920108727009302,
+        "specificity": 0.8284023668639053,
+        "confusion_matrix": [
+          [
+            280,
+            58
+          ],
+          [
+            128,
+            795
+          ]
+        ]
+      },
+      "model_path": "audio_engine\\artifacts\\models\\v2\\svm_rbf\\fold_1\\model.joblib"
+    },
+    {
+      "fold": 2,
+      "sizes": {
+        "train": 2019,
+        "validation": 504,
+        "test": 1262
+      },
+      "best_params": {
+        "svc__C": 10.0,
+        "svc__gamma": "scale"
+      },
+      "inner_cv_balanced_accuracy": 0.8469696825898513,
+      "threshold": 0.0,
+      "threshold_rule": "decision_score > 0",
+      "fit_seconds": 0.38,
+      "train": {
+        "accuracy": 0.8915304606240714,
+        "balanced_accuracy": 0.908343680593204,
+        "precision": 0.9772382397572079,
+        "recall": 0.8720379146919431,
+        "f1": 0.9216457960644007,
+        "macro_f1": 0.8727295754256034,
+        "roc_auc": 0.9559631446009789,
+        "specificity": 0.9446494464944649,
+        "confusion_matrix": [
+          [
+            512,
+            30
+          ],
+          [
+            189,
+            1288
+          ]
+        ]
+      },
+      "validation": {
+        "accuracy": 0.8293650793650794,
+        "balanced_accuracy": 0.8458897922312556,
+        "precision": 0.9492063492063492,
+        "recall": 0.8102981029810298,
+        "f1": 0.8742690058479532,
+        "macro_f1": 0.8044184535412606,
+        "roc_auc": 0.911352002408913,
+        "specificity": 0.8814814814814815,
+        "confusion_matrix": [
+          [
+            119,
+            16
+          ],
+          [
+            70,
+            299
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.8605388272583201,
+        "balanced_accuracy": 0.8691965726740749,
+        "precision": 0.9538274605103281,
+        "recall": 0.8504875406283857,
+        "f1": 0.8991981672394044,
+        "macro_f1": 0.8364885437739438,
+        "roc_auc": 0.9282415619197371,
+        "specificity": 0.887905604719764,
+        "confusion_matrix": [
+          [
+            301,
+            38
+          ],
+          [
+            138,
+            785
+          ]
+        ]
+      },
+      "model_path": "audio_engine\\artifacts\\models\\v2\\svm_rbf\\fold_2\\model.joblib"
+    },
+    {
+      "fold": 3,
+      "sizes": {
+        "train": 2019,
+        "validation": 504,
+        "test": 1262
+      },
+      "best_params": {
+        "svc__C": 10.0,
+        "svc__gamma": "scale"
+      },
+      "inner_cv_balanced_accuracy": 0.8613561566351303,
+      "threshold": 0.0,
+      "threshold_rule": "decision_score > 0",
+      "fit_seconds": 0.39,
+      "train": {
+        "accuracy": 0.8935116394254582,
+        "balanced_accuracy": 0.90969777673403,
+        "precision": 0.9773071104387292,
+        "recall": 0.8747461069735951,
+        "f1": 0.9231868524473026,
+        "macro_f1": 0.8748299072567425,
+        "roc_auc": 0.9535797355265361,
+        "specificity": 0.9446494464944649,
+        "confusion_matrix": [
+          [
+            512,
+            30
+          ],
+          [
+            185,
+            1292
+          ]
+        ]
+      },
+      "validation": {
+        "accuracy": 0.8373015873015873,
+        "balanced_accuracy": 0.8395663956639566,
+        "precision": 0.9361702127659575,
+        "recall": 0.8346883468834688,
+        "f1": 0.8825214899713467,
+        "macro_f1": 0.8090026804695443,
+        "roc_auc": 0.9091438321790625,
+        "specificity": 0.8444444444444444,
+        "confusion_matrix": [
+          [
+            114,
+            21
+          ],
+          [
+            61,
+            308
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.8581616481774961,
+        "balanced_accuracy": 0.8629053650242732,
+        "precision": 0.9481927710843373,
+        "recall": 0.8526543878656555,
+        "f1": 0.8978893325727325,
+        "macro_f1": 0.8328616572072483,
+        "roc_auc": 0.9240804481986085,
+        "specificity": 0.8731563421828908,
+        "confusion_matrix": [
+          [
+            296,
+            43
+          ],
+          [
+            136,
+            787
+          ]
+        ]
+      },
+      "model_path": "audio_engine\\artifacts\\models\\v2\\svm_rbf\\fold_3\\model.joblib"
+    }
+  ],
+  "summary": {
+    "mean_train_accuracy": 0.8867013577590317,
+    "std_train_accuracy": 0.008269934363474483,
+    "mean_train_balanced_accuracy": 0.9011471399338117,
+    "std_train_balanced_accuracy": 0.011148649919698848,
+    "mean_train_precision": 0.9722508184200617,
+    "std_train_precision": 0.007102033477486446,
+    "mean_train_recall": 0.8699449563743885,
+    "std_train_recall": 0.004998675136188632,
+    "mean_train_f1": 0.9182561056154093,
+    "std_train_f1": 0.005916979584364079,
+    "mean_train_macro_f1": 0.8668618564255975,
+    "std_train_macro_f1": 0.009820870415112913,
+    "mean_train_roc_auc": 0.9502082913327671,
+    "std_train_roc_auc": 0.006526210678357075,
+    "mean_train_specificity": 0.9323493234932348,
+    "std_train_specificity": 0.017395000767196717,
+    "mean_validation_accuracy": 0.8310322156476003,
+    "std_validation_accuracy": 0.004592201169181216,
+    "mean_validation_balanced_accuracy": 0.8400941904262514,
+    "std_validation_balanced_accuracy": 0.004532010541047299,
+    "mean_validation_precision": 0.9411523524427813,
+    "std_validation_precision": 0.005748184803000117,
+    "mean_validation_recall": 0.8205660133869982,
+    "std_validation_recall": 0.01032354694942792,
+    "mean_validation_f1": 0.8766631143605159,
+    "std_validation_f1": 0.004165471837845232,
+    "mean_validation_macro_f1": 0.8041735192139763,
+    "std_validation_macro_f1": 0.004046695657812787,
+    "mean_validation_roc_auc": 0.9058647655380985,
+    "std_validation_roc_auc": 0.006263921130115709,
+    "mean_validation_specificity": 0.8596223674655047,
+    "std_validation_specificity": 0.015841175523586826,
+    "mean_test_accuracy": 0.8570661642940958,
+    "std_test_accuracy": 0.003372804897181226,
+    "mean_test_balanced_accuracy": 0.8589880031792226,
+    "std_test_balanced_accuracy": 0.01031346290334356,
+    "mean_test_precision": 0.9446749736421453,
+    "std_test_precision": 0.009249847191932168,
+    "mean_test_recall": 0.8548212351029253,
+    "std_test_recall": 0.004680925025935595,
+    "mean_test_f1": 0.897452590027469,
+    "std_test_f1": 0.001633024124779055,
+    "mean_test_macro_f1": 0.8307734855865863,
+    "std_test_macro_f1": 0.005712931128559269,
+    "mean_test_roc_auc": 0.9241435790425493,
+    "std_test_roc_auc": 0.00332051602894191,
+    "mean_test_specificity": 0.8631547712555201,
+    "std_test_specificity": 0.02530062442699974
+  }
+}

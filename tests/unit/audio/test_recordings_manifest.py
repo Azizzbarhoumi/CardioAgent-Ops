@@ -30,8 +30,9 @@ def test_build_manifest_maps_labels_and_uses_relative_paths(tmp_path: Path) -> N
 
     by_id = {row["recording_id"]: row for row in rows}
     assert len(rows) == 5
-    assert by_id["physionet:training-a:a0001"]["label"] == "normal"
-    assert by_id["physionet:training-a:a0002"]["label"] == "abnormal"
+    # PhysioNet/CinC 2016 REFERENCE.csv: 1 = abnormal, -1 = normal
+    assert by_id["physionet:training-a:a0001"]["label"] == "abnormal"
+    assert by_id["physionet:training-a:a0002"]["label"] == "normal"
     assert by_id["pascal:normal:normal_sample.wav"]["label"] == "normal"
     assert by_id["pascal:murmur:murmur_sample.wav"]["label"] == "abnormal"
     assert by_id["pascal:extra:extra_sample.wav"]["label"] == "abnormal"

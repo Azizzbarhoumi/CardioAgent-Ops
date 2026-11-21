@@ -1,223 +1,236 @@
 {
+  "benchmark_version": "v3",
   "experiment": "audio_benchmark",
-  "tracking_uri": "http://localhost:5000",
+  "evaluation": "patient_grouped_3_fold_cv",
+  "split_manifest": "Data/processed/splits/v3_labels_fixed",
   "label_convention": {
     "0": "normal",
     "1": "abnormal"
   },
+  "positive_class": "abnormal",
+  "gray_mel_settings": {
+    "n_fft": 512,
+    "hop_length": 128,
+    "n_mels": 40,
+    "fmin": 20,
+    "fmax": 1000
+  },
   "models": {
     "svm_linear": {
-      "file": "audio_engine/artifacts/models/svm_linear.joblib",
-      "source": "MLflow Logged Model",
-      "source_tracking_uri": "http://localhost:5000",
-      "model_id": "m-0a91a8d38b22473c8c293c323d688380",
-      "run_id": "4969361b59bc4402aa78a9e3ca86f056",
-      "training_run_id": "4969361b59bc4402aa78a9e3ca86f056",
-      "run_name": "svm_linear",
+      "display_name": "SVM (linear)",
+      "file": "audio_engine/artifacts/models/svm_linear_v3.joblib",
+      "sha256": "5b13c747f52502a22552d88a5092d8c8301a1e3802c6413117d95190d3dc8d08",
+      "framework": "scikit-learn",
+      "input": "22 features: duration, snr, mel_1, mel_2, mel_3, mel_4, mel_5, mel_6, mel_7, mel_8, mel_9, mel_10, mel_11, mel_12, mel_13, mel_14, mel_15, mel_16, mel_17, mel_18, mel_19, mel_20",
+      "feature_version": "tabular_duration_snr_mel20_v1",
+      "score_type": "decision_score",
+      "threshold": 0.0,
+      "label_rule": "decision_score > 0",
+      "app_fold": 1,
+      "app_fold_selection": "best validation balanced_accuracy",
+      "training_run_id": "a9dddad8a9df429bb785b2b321a737b0",
+      "benchmark_parent_run_id": "54c0512826d942c79ceba2f3321373ca",
+      "experiment_id": "1",
       "kernel": "linear",
-      "feature_order": [
-        "duration",
-        "snr",
-        "mel_1",
-        "mel_2",
-        "mel_3",
-        "mel_4",
-        "mel_5",
-        "mel_6",
-        "mel_7",
-        "mel_8",
-        "mel_9",
-        "mel_10",
-        "mel_11",
-        "mel_12",
-        "mel_13",
-        "mel_14",
-        "mel_15",
-        "mel_16",
-        "mel_17",
-        "mel_18",
-        "mel_19",
-        "mel_20"
-      ],
-      "features": "duration, snr, mel_1..mel_20",
-      "label_convention": {
-        "0": "normal",
-        "1": "abnormal"
+      "app_fold_test_metrics": {
+        "recall": 0.8006993006993007,
+        "accuracy": 0.6812053925455988,
+        "balanced_accuracy": 0.7234265734265735,
+        "f1": 0.5325581395348837,
+        "roc_auc": 0.7841204948897257,
+        "specificity": 0.6461538461538462
       },
-      "reported_metrics": {
-        "mean_accuracy": 0.7859943956468863,
-        "mean_precision": 0.9234864597585921,
-        "mean_recall": 0.7713850054347601,
-        "mean_f1": 0.8406073999310656
-      },
-      "metrics": {
-        "mean_accuracy": 0.7859943956468863,
-        "mean_precision": 0.9234864597585921,
-        "mean_recall": 0.7713850054347601,
-        "mean_f1": 0.8406073999310656
-      },
-      "reproduced_metrics": {
-        "mean_accuracy": 0.7859943956468863,
-        "mean_precision": 0.9234864597585921,
-        "mean_recall": 0.7713850054347601,
-        "mean_f1": 0.8406073999310656
-      },
-      "metric_differences": {
-        "mean_accuracy": 0.0,
-        "mean_precision": 0.0,
-        "mean_recall": 0.0,
-        "mean_f1": 0.0
+      "cv_summary": {
+        "mean_test_accuracy": 0.7030325423646447,
+        "std_test_accuracy": 0.019334832913343897,
+        "mean_test_balanced_accuracy": 0.7503763256602122,
+        "std_test_balanced_accuracy": 0.019291058032451746,
+        "mean_test_precision": 0.4228694456028526,
+        "std_test_precision": 0.019519724588919086,
+        "mean_test_recall": 0.8370410077727151,
+        "std_test_recall": 0.03928737857176,
+        "mean_test_f1": 0.5614474036021392,
+        "std_test_f1": 0.020507605947620727,
+        "mean_test_macro_f1": 0.6683655183857345,
+        "std_test_macro_f1": 0.017842982512189295,
+        "mean_test_roc_auc": 0.7977455494871991,
+        "std_test_roc_auc": 0.00965946206171374,
+        "mean_test_specificity": 0.6637116435477091,
+        "std_test_specificity": 0.026770491245564777
       }
     },
     "svm_rbf": {
-      "file": "audio_engine/artifacts/models/svm_rbf.joblib",
-      "source": "MLflow Logged Model",
-      "source_tracking_uri": "http://localhost:5000",
-      "model_id": "m-be17b47e7dc94665a76a61d4d4e6bc90",
-      "run_id": "1426254e6d77449795d5a9f1ce92676b",
-      "training_run_id": "1426254e6d77449795d5a9f1ce92676b",
-      "run_name": "svm_rbf",
+      "display_name": "SVM (RBF)",
+      "file": "audio_engine/artifacts/models/svm_rbf_v3.joblib",
+      "sha256": "8813e4dfc0da7594fc34c56c7084faf5b6bd5748960a9af2a45767d7e367c011",
+      "framework": "scikit-learn",
+      "input": "22 features: duration, snr, mel_1, mel_2, mel_3, mel_4, mel_5, mel_6, mel_7, mel_8, mel_9, mel_10, mel_11, mel_12, mel_13, mel_14, mel_15, mel_16, mel_17, mel_18, mel_19, mel_20",
+      "feature_version": "tabular_duration_snr_mel20_v1",
+      "score_type": "decision_score",
+      "threshold": 0.0,
+      "label_rule": "decision_score > 0",
+      "app_fold": 1,
+      "app_fold_selection": "best validation balanced_accuracy",
+      "training_run_id": "cab8af7d030b40bc81bca1303d8559ec",
+      "benchmark_parent_run_id": "a8f505c1217b4255bec86601d2d2bb70",
+      "experiment_id": "1",
       "kernel": "rbf",
-      "feature_order": [
-        "duration",
-        "snr",
-        "mel_1",
-        "mel_2",
-        "mel_3",
-        "mel_4",
-        "mel_5",
-        "mel_6",
-        "mel_7",
-        "mel_8",
-        "mel_9",
-        "mel_10",
-        "mel_11",
-        "mel_12",
-        "mel_13",
-        "mel_14",
-        "mel_15",
-        "mel_16",
-        "mel_17",
-        "mel_18",
-        "mel_19",
-        "mel_20"
-      ],
-      "features": "duration, snr, mel_1..mel_20",
-      "label_convention": {
-        "0": "normal",
-        "1": "abnormal"
+      "app_fold_test_metrics": {
+        "recall": 0.7762237762237763,
+        "accuracy": 0.7708168120539255,
+        "balanced_accuracy": 0.7727272727272727,
+        "f1": 0.6057298772169167,
+        "roc_auc": 0.8698081405773713,
+        "specificity": 0.7692307692307693
       },
-      "reported_metrics": {
-        "mean_accuracy": 0.8491380447937704,
-        "mean_precision": 0.94279856633984,
-        "mean_recall": 0.8451066219089572,
-        "mean_f1": 0.891271193116561
-      },
-      "metrics": {
-        "mean_accuracy": 0.8491380447937704,
-        "mean_precision": 0.94279856633984,
-        "mean_recall": 0.8451066219089572,
-        "mean_f1": 0.891271193116561
-      },
-      "reproduced_metrics": {
-        "mean_accuracy": 0.8491380447937704,
-        "mean_precision": 0.94279856633984,
-        "mean_recall": 0.8451066219089572,
-        "mean_f1": 0.891271193116561
-      },
-      "metric_differences": {
-        "mean_accuracy": 0.0,
-        "mean_precision": 0.0,
-        "mean_recall": 0.0,
-        "mean_f1": 0.0
+      "cv_summary": {
+        "mean_test_accuracy": 0.7968227197073571,
+        "std_test_accuracy": 0.020221165124767407,
+        "mean_test_balanced_accuracy": 0.8118299883953624,
+        "std_test_balanced_accuracy": 0.028624196401848212,
+        "mean_test_precision": 0.5333440847401488,
+        "std_test_precision": 0.02865995704219197,
+        "mean_test_recall": 0.8393192173679979,
+        "std_test_recall": 0.044954880974807945,
+        "mean_test_f1": 0.6521869020226072,
+        "std_test_f1": 0.03457270882832319,
+        "mean_test_macro_f1": 0.7543367229896446,
+        "std_test_macro_f1": 0.024391982889505358,
+        "mean_test_roc_auc": 0.8950323299132236,
+        "std_test_roc_auc": 0.018406139146975614,
+        "mean_test_specificity": 0.7843407594227267,
+        "std_test_specificity": 0.014161097869000485
       }
     },
     "decision_tree": {
-      "file": "audio_engine/artifacts/models/decision_tree.joblib",
-      "source": "course4-decisiontree.ipynb; refit on existing features using notebook hyperparameters",
-      "source_tracking_uri": "sqlite:///mlflow.db (local project tracking store)",
-      "run_id": "a1550ba943f14761bc58dbff8e1768b2",
-      "features": "duration, snr, mel_1..mel_20",
-      "label_convention": {
-        "0": "normal",
-        "1": "abnormal"
+      "display_name": "Decision Tree",
+      "file": "audio_engine/artifacts/models/decision_tree_v3.joblib",
+      "sha256": "fbc96276600b061daa2a5fc44d124bc1579afee36b4f2bfddca45370cc33075d",
+      "framework": "scikit-learn",
+      "input": "22 features: duration, snr, mel_1, mel_2, mel_3, mel_4, mel_5, mel_6, mel_7, mel_8, mel_9, mel_10, mel_11, mel_12, mel_13, mel_14, mel_15, mel_16, mel_17, mel_18, mel_19, mel_20",
+      "feature_version": "tabular_duration_snr_mel20_v1",
+      "score_type": "probability",
+      "threshold": 0.29816513761467894,
+      "label_rule": "P(abnormal) >= threshold (chosen on validation)",
+      "app_fold": 2,
+      "app_fold_selection": "best validation balanced_accuracy",
+      "training_run_id": "887c505db6c84b16be2cf2ad40cf1d94",
+      "benchmark_parent_run_id": "0802b21ad1f8499da4f7eaf6162128e0",
+      "experiment_id": "1",
+      "kernel": null,
+      "app_fold_test_metrics": {
+        "recall": 0.7517482517482518,
+        "accuracy": 0.7828843106180665,
+        "balanced_accuracy": 0.7718782242347817,
+        "f1": 0.6107954545454546,
+        "roc_auc": 0.8110652155221827,
+        "specificity": 0.7920081967213115
       },
-      "hyperparameters": {
-        "max_depth": 3,
-        "class_weight": "balanced",
-        "random_state": 1
-      },
-      "reproduced_metrics": {
-        "mean_accuracy": 0.7960345159113275,
-        "mean_precision": 0.8650660435163594,
-        "mean_recall": 0.8548212351029253,
-        "mean_f1": 0.8598153178434949
-      },
-      "metric_differences_vs_local_run": {
-        "mean_accuracy": 0.0,
-        "mean_precision": 0.0,
-        "mean_recall": 0.0,
-        "mean_f1": 0.0
+      "cv_summary": {
+        "mean_test_accuracy": 0.7677701938734174,
+        "std_test_accuracy": 0.01800121913877684,
+        "mean_test_balanced_accuracy": 0.76218129459283,
+        "std_test_balanced_accuracy": 0.00785712109715855,
+        "mean_test_precision": 0.4945284346049845,
+        "std_test_precision": 0.023383941338991292,
+        "mean_test_recall": 0.7519837885691544,
+        "std_test_recall": 0.03740232428301003,
+        "mean_test_f1": 0.595456162247602,
+        "std_test_f1": 0.011094487722414328,
+        "mean_test_macro_f1": 0.7161342019394846,
+        "std_test_macro_f1": 0.012832426560562759,
+        "mean_test_roc_auc": 0.8206281133708048,
+        "std_test_roc_auc": 0.015619180980013487,
+        "mean_test_specificity": 0.7723788006165057,
+        "std_test_specificity": 0.03280946677855998
       }
     },
     "cnn_custom": {
-      "file": "audio_engine/artifacts/models/cnn_custom.keras",
-      "source": "Existing TensorFlow CNN checkpoint selected by notebook validation recall/F1 (fold 3)",
-      "source_tracking_uri": "sqlite:///mlflow.db (local project tracking store)",
-      "run_id": "c17147e3bb564ff086fa332e581440c0",
-      "input_shape": [
-        224,
-        224,
-        3
-      ],
-      "input_preprocessing": "40-band Mel, dB, per-record min-max, magma RGB, resize 224x224, divide by 255",
-      "label_convention": {
-        "0": "normal",
-        "1": "abnormal"
+      "display_name": "CNN",
+      "file": "audio_engine/artifacts/models/cnn_custom_v3.keras",
+      "sha256": "134a6464e2bd8f5b238da8a0fbb6cba546d27e016b29334c62e845c15360128c",
+      "framework": "tensorflow-keras",
+      "input": "gray log-Mel uint8 (40 x frames) resized to 40x256x1, /255",
+      "feature_version": "mel40_sr2000_gray_v2",
+      "score_type": "probability",
+      "threshold": 0.2874319851398468,
+      "label_rule": "P(abnormal) >= threshold (chosen on validation)",
+      "app_fold": 1,
+      "app_fold_selection": "best validation balanced_accuracy",
+      "training_run_id": "aa9f90caaf4d4c23a09cbac62e189d7b",
+      "benchmark_parent_run_id": "1f324e1f369146daa7f5a5fdd11d2bb0",
+      "experiment_id": "1",
+      "kernel": null,
+      "app_fold_test_metrics": {
+        "recall": 0.8916083916083916,
+        "accuracy": 0.7137192704203014,
+        "balanced_accuracy": 0.7765734265734265,
+        "f1": 0.5855338691159586,
+        "roc_auc": 0.8678034785727093,
+        "specificity": 0.6615384615384615
       },
-      "validation_split": "Data/processed/splits/cnn/cnn_fold_3.csv",
-      "selected_fold_metrics": {
-        "fold": 3,
-        "accuracy": 0.7319587628865979,
-        "precision": 0.7319587628865979,
-        "recall": 1.0,
-        "f1": 0.8452380952380952
+      "cv_summary": {
+        "mean_test_accuracy": 0.7759412887666192,
+        "std_test_accuracy": 0.045274178305681353,
+        "mean_test_balanced_accuracy": 0.7864685647552502,
+        "std_test_balanced_accuracy": 0.008623545487766103,
+        "mean_test_precision": 0.5168657052199972,
+        "std_test_precision": 0.061467780533422924,
+        "mean_test_recall": 0.8056861837349643,
+        "std_test_recall": 0.0695547282669851,
+        "mean_test_f1": 0.6234295308794109,
+        "std_test_f1": 0.026947236448881577,
+        "mean_test_macro_f1": 0.7311594589321314,
+        "std_test_macro_f1": 0.03431462547818828,
+        "mean_test_roc_auc": 0.8927464618761561,
+        "std_test_roc_auc": 0.018414787674348346,
+        "mean_test_specificity": 0.7672509457755359,
+        "std_test_specificity": 0.0784411880861725
+      }
+    },
+    "vgg16_transfer": {
+      "display_name": "Transfer Learning (VGG16)",
+      "file": "audio_engine/artifacts/models/vgg16_transfer_v3.keras",
+      "sha256": "182a797d22cca23e4010090fb3a6dd7cc3b3d0ea03977177248c519b6fc657aa",
+      "framework": "tensorflow-keras",
+      "input": "gray log-Mel uint8 resized to 224x224, gray->RGB, vgg16.preprocess_input",
+      "feature_version": "mel40_sr2000_gray_v2",
+      "score_type": "probability",
+      "threshold": 0.49647918343544006,
+      "label_rule": "P(abnormal) >= threshold (chosen on validation)",
+      "app_fold": 2,
+      "app_fold_selection": "best validation balanced_accuracy",
+      "training_run_id": "962ee9792a2844a6913c935253fdb9d9",
+      "benchmark_parent_run_id": "b23e923fbb5e4445a7acdd5bc07766bd",
+      "experiment_id": "1",
+      "kernel": null,
+      "app_fold_test_metrics": {
+        "recall": 0.9090909090909091,
+        "accuracy": 0.7345483359746434,
+        "balanced_accuracy": 0.7962462742175858,
+        "f1": 0.6081871345029239,
+        "roc_auc": 0.8613865642554166,
+        "specificity": 0.6834016393442623
       },
-      "fold_metric_differences_vs_notebook": {
-        "1": {
-          "accuracy": 2.9755092056937826e-08,
-          "precision": 2.9755092056937826e-08,
-          "recall": 0.0
-        },
-        "2": {
-          "accuracy": 2.9755092056937826e-08,
-          "precision": 2.9755092056937826e-08,
-          "recall": 0.0
-        },
-        "3": {
-          "accuracy": 1.5976502676373627e-08,
-          "precision": 1.5976502676373627e-08,
-          "recall": 0.0
-        }
-      },
-      "reproduced_mean_metrics": {
-        "mean_accuracy": 0.7315720968734513,
-        "mean_precision": 0.7315720968734513,
-        "mean_recall": 1.0,
-        "mean_f1": 0.8449802041335222
-      },
-      "reported_mean_metrics": {
-        "mean_accuracy": 0.7315720717112223,
-        "mean_precision": 0.7315720717112223,
-        "mean_recall": 1.0,
-        "mean_f1": 0.844980187348057
-      },
-      "mean_metric_differences": {
-        "mean_accuracy": 2.5162228967090527e-08,
-        "mean_precision": 2.5162228967090527e-08,
-        "mean_recall": 0.0,
-        "mean_f1": 1.6785465128954513e-08
+      "cv_summary": {
+        "mean_test_accuracy": 0.7233762855178707,
+        "std_test_accuracy": 0.014693303504002792,
+        "mean_test_balanced_accuracy": 0.7803673833496904,
+        "std_test_balanced_accuracy": 0.020040205217688102,
+        "mean_test_precision": 0.44499815630677686,
+        "std_test_precision": 0.016219791510070494,
+        "mean_test_recall": 0.8847290920461651,
+        "std_test_recall": 0.029872908183331732,
+        "mean_test_f1": 0.5921540529659427,
+        "std_test_f1": 0.02104183177885931,
+        "mean_test_macro_f1": 0.6914334374175728,
+        "std_test_macro_f1": 0.016161165542109997,
+        "mean_test_roc_auc": 0.8564276193601387,
+        "std_test_roc_auc": 0.016717738869604107,
+        "mean_test_specificity": 0.6760056746532156,
+        "std_test_specificity": 0.010230723390661865
       }
     }
-  }
+  },
+  "split_manifest_sha": "60b60900f45aa7ff6bcbbfee39f99c8b1cba4c8b93b3582084e0b165f99d1c38"
 }

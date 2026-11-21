@@ -20,10 +20,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 def test_exported_models_load_and_predict_independently() -> None:
     model_dir = PROJECT_ROOT / "audio_engine" / "artifacts" / "models"
-    required = ("svm_linear.joblib", "svm_rbf.joblib", "decision_tree.joblib", "cnn_custom.keras", "model_manifest.json")
+    required = ("svm_linear_v3.joblib", "svm_rbf_v3.joblib", "decision_tree_v3.joblib", "cnn_custom_v3.keras", "vgg16_transfer_v3.keras", "model_manifest.json")
     missing = [name for name in required if not (model_dir / name).is_file()]
     if missing:
-        pytest.skip("Run scripts/export_inference_models.py first; missing: " + ", ".join(missing))
+        pytest.skip("Run scripts/export_app_models.py first; missing: " + ", ".join(missing))
 
     rate = 2000
     time = np.arange(rate) / rate
@@ -36,7 +36,7 @@ def test_exported_models_load_and_predict_independently() -> None:
     assert registry.all_loaded, registry.load_errors
     analysis = registry.predict_all(buffer.getvalue())
     assert [result["model_key"] for result in analysis["results"]] == [
-        "svm_linear", "svm_rbf", "decision_tree", "cnn_custom"
+        "svm_linear", "svm_rbf", "decision_tree", "cnn_custom", "vgg16_transfer"
     ]
     assert analysis["tabular_features"].shape == (1, 22)
     assert TABULAR_FEATURE_ORDER == ("duration", "snr", *(f"mel_{index}" for index in range(1, 21)))
@@ -46,7 +46,7 @@ def test_exported_models_load_and_predict_independently() -> None:
     for key in ("svm_linear", "svm_rbf"):
         result = next(item for item in analysis["results"] if item["model_key"] == key)
         manifest_entry = json.loads((model_dir / "model_manifest.json").read_text())["models"][key]
-        assert result["model_version"] == manifest_entry["model_id"]
+        assert result["model_version"] == f"v2-fold{manifest_entry['app_fold']}"
         assert result["model_run_id"] == manifest_entry["training_run_id"]
         assert result["confidence_type"] == "decision_score"
         assert (result["confidence_or_score"] > 0) == (result["prediction"] == 1)

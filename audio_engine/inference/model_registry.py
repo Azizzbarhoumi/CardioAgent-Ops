@@ -1,23 +1,33 @@
-"""Load exported models once and produce independent model predictions."""
+"""Load the 5 benchmark-v2 models once and produce independent predictions.
+
+Everything (file, score type, threshold, provenance) comes from ``model_manifest.json``,
+written by ``scripts/export_app_models.py``. Labels: 0 = normal, 1 = abnormal.
+There is no combined verdict: every model result stays separate.
+"""
 
 from __future__ import annotations
 
 import json
 import os
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import joblib
 import numpy as np
 
-from audio_engine.features.audio_features import extract_cnn_image, extract_tabular_features
+from audio_engine.features.audio_features import cnn_v2_input, extract_gray_mel, extract_tabular_features, vgg_input
 from audio_engine.preprocessing.audio import AudioInput, decode_wav
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MODEL_DIR = PROJECT_ROOT / "audio_engine" / "artifacts" / "models"
 LABELS = {0: "Normal", 1: "Abnormal"}
+MODEL_ORDER = ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom", "vgg16_transfer")
+PATH_ENV = {
+    "svm_linear": "SVM_LINEAR_MODEL_PATH", "svm_rbf": "SVM_RBF_MODEL_PATH", "decision_tree": "DECISION_TREE_MODEL_PATH",
+    "cnn_custom": "CNN_MODEL_PATH", "vgg16_transfer": "TRANSFER_MODEL_PATH",
+}
+THRESHOLD_ENV = {"decision_tree": "DECISION_TREE_THRESHOLD", "cnn_custom": "CNN_DECISION_THRESHOLD", "vgg16_transfer": "TRANSFER_DECISION_THRESHOLD"}
 
 
 @dataclass
@@ -27,111 +37,85 @@ class LoadedModel:
     version: str
     run_id: str | None
     model: object
+    score_type: str = "probability"
+    threshold: float = 0.5
+    info: dict = field(default_factory=dict)
 
 
 class ModelRegistry:
-    """Runtime registry for two SVM kernels, one tree, and one CNN."""
+    """Runtime registry for SVM (linear, RBF), Decision Tree, CNN and VGG16 transfer learning."""
 
     def __init__(self, model_dir: Path | None = None, manifest_path: Path | None = None):
         self.model_dir = Path(model_dir or os.getenv("MODEL_DIR", DEFAULT_MODEL_DIR)).resolve()
         self.manifest_path = Path(manifest_path or os.getenv("MODEL_MANIFEST_PATH", self.model_dir / "model_manifest.json"))
         self.models: dict[str, LoadedModel] = {}
         self.load_errors: dict[str, str] = {}
+        self.manifest: dict = {}
 
     def load_all(self) -> None:
-        """Load exported model files and retain their provenance from the manifest."""
         try:
-            manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            manifest = {}
-        specifications = {
-            "svm_linear": ("SVM (linear)", "SVM_LINEAR_MODEL_PATH", "svm_linear.joblib", "joblib"),
-            "svm_rbf": ("SVM (RBF)", "SVM_RBF_MODEL_PATH", "svm_rbf.joblib", "joblib"),
-            "decision_tree": ("Decision Tree", "DECISION_TREE_MODEL_PATH", "decision_tree.joblib", "joblib"),
-            "cnn_custom": ("CNN", "CNN_MODEL_PATH", "cnn_custom.keras", "tensorflow"),
-        }
-        for key, (display_name, env_name, default_filename, flavor) in specifications.items():
+            self.manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            self.manifest = {}
+            self.load_errors["manifest"] = f"Cannot read {self.manifest_path}: {exc}"
+        for key in MODEL_ORDER:
             try:
-                path = Path(os.getenv(env_name, str(self.model_dir / default_filename))).expanduser().resolve()
-                model_info = manifest.get("models", {}).get(key, {})
-                model_uri = os.getenv(f"{key.upper()}_MLFLOW_MODEL_URI")
-                if model_uri and flavor == "joblib":
-                    import mlflow.sklearn
-
-                    model = mlflow.sklearn.load_model(model_uri)
-                elif path.is_file() and flavor == "joblib":
+                info = self.manifest.get("models", {})[key]
+                path = Path(os.getenv(PATH_ENV[key], str(self.model_dir / Path(info["file"]).name))).expanduser().resolve()
+                if not path.is_file():
+                    raise FileNotFoundError(f"Model file not found: {path}")
+                if info["framework"] == "scikit-learn":
                     model = joblib.load(path)
-                elif path.is_file():
+                else:
                     import tensorflow as tf
 
-                    model = tf.keras.models.load_model(path)
-                else:
-                    resolve_best = os.getenv("MLFLOW_RESOLVE_BEST_MODELS", "false").lower() in {"1", "true", "yes"}
-                    if not resolve_best or key not in {"svm_linear", "svm_rbf"}:
-                        raise FileNotFoundError(f"Model file not found: {path}")
-                    from audio_engine.inference.mlflow_resolver import resolve_best_logged_model
-
-                    resolved = resolve_best_logged_model(
-                        f"svm_{key.removeprefix('svm_')}_model",
-                        tracking_uri=os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"),
-                    )
-                    import mlflow.sklearn
-
-                    model = mlflow.sklearn.load_model(resolved["model_uri"])
-                    model_info = {**model_info, "model_id": resolved["model_id"], "run_id": resolved["run_id"]}
+                    model = tf.keras.models.load_model(path, compile=False)
+                threshold = float(os.getenv(THRESHOLD_ENV[key], info["threshold"])) if key in THRESHOLD_ENV else float(info["threshold"])
                 self.models[key] = LoadedModel(
-                    key=key,
-                    name=display_name,
-                    version=str(model_info.get("model_id") or model_info.get("source") or "local"),
-                    run_id=model_info.get("run_id"),
-                    model=model,
+                    key=key, name=info["display_name"], version=f"v2-fold{info['app_fold']}",
+                    run_id=info.get("training_run_id"), model=model, score_type=info["score_type"],
+                    threshold=threshold, info=info,
                 )
                 self.load_errors.pop(key, None)
-            except Exception as exc:  # keep the API health endpoint available for diagnosis
+            except Exception as exc:  # keep /health available for diagnosis
                 self.load_errors[key] = str(exc)
 
     @property
     def all_loaded(self) -> bool:
-        return len(self.models) == 4
+        return len(self.models) == len(MODEL_ORDER)
 
     def predict_all(self, wav_bytes: bytes | AudioInput) -> dict:
-        """Decode once, extract both training-compatible inputs once, predict independently."""
+        """Decode once, compute the tabular vector and the gray Mel image once, predict independently."""
         audio = wav_bytes if isinstance(wav_bytes, AudioInput) else decode_wav(wav_bytes)
         features = extract_tabular_features(audio.signal, audio.sample_rate).reshape(1, -1)
-        cnn_image, mel_png = extract_cnn_image(audio.signal, audio.sample_rate)
+        gray, mel_db = extract_gray_mel(audio.signal, audio.sample_rate)
+        image_inputs = {"cnn_custom": cnn_v2_input(gray), "vgg16_transfer": vgg_input(gray)}
         results = []
-
-        for key in ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom"):
+        for key in MODEL_ORDER:
             if key not in self.models:
                 raise RuntimeError(f"Model {key} is not loaded: {self.load_errors.get(key, 'unknown error')}")
             entry = self.models[key]
             started = time.perf_counter()
             if key.startswith("svm_"):
-                model = entry.model
-                prediction = int(model.predict(features)[0])
-                decision = float(np.asarray(model.decision_function(features)).reshape(-1)[0])
-                confidence, confidence_type = decision, "decision_score"
+                score = float(np.asarray(entry.model.decision_function(features)).reshape(-1)[0])
+                prediction = int(score > entry.threshold)
+                confidence = score
             elif key == "decision_tree":
-                model = entry.model
-                prediction = int(model.predict(features)[0])
-                probabilities = model.predict_proba(features)[0]
-                classes = list(model.classes_) if hasattr(model, "classes_") else list(model.named_steps["classifier"].classes_)
-                confidence, confidence_type = float(probabilities[classes.index(prediction)]), "probability"
+                classes = list(entry.model.classes_)
+                score = float(entry.model.predict_proba(features)[0][classes.index(1)])
+                prediction = int(score >= entry.threshold)
+                confidence = score if prediction else 1.0 - score
             else:
-                probability_abnormal = float(np.asarray(entry.model.predict(cnn_image[np.newaxis, ...], verbose=0)).reshape(-1)[0])
-                prediction = int(probability_abnormal >= 0.5)
-                confidence = probability_abnormal if prediction == 1 else 1.0 - probability_abnormal
-                confidence_type = "probability"
-            latency_ms = (time.perf_counter() - started) * 1000.0
+                score = float(np.asarray(entry.model.predict(image_inputs[key][np.newaxis, ...], verbose=0)).reshape(-1)[0])
+                prediction = int(score >= entry.threshold)
+                confidence = score if prediction else 1.0 - score
             results.append({
-                "model_name": entry.name,
-                "model_key": key,
-                "model_version": entry.version,
-                "model_run_id": entry.run_id,
-                "prediction": prediction,
-                "prediction_label": LABELS[prediction],
-                "confidence_or_score": confidence,
-                "confidence_type": confidence_type,
-                "latency_ms": latency_ms,
+                "model_name": entry.name, "model_key": key, "model_version": entry.version, "model_run_id": entry.run_id,
+                "prediction": prediction, "prediction_label": LABELS[prediction],
+                "confidence_or_score": confidence, "confidence_type": entry.score_type,
+                "score": score, "score_type": entry.score_type, "threshold": entry.threshold,
+                "label_rule": entry.info.get("label_rule"),
+                "kernel": entry.info.get("kernel"),
+                "latency_ms": (time.perf_counter() - started) * 1000.0,
             })
-        return {"audio": audio, "tabular_features": features, "cnn_image": cnn_image, "mel_png": mel_png, "results": results}
+        return {"audio": audio, "tabular_features": features, "gray_mel": gray, "mel_db": mel_db, "results": results}

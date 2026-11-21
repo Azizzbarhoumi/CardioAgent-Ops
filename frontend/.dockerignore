@@ -6,3 +6,6 @@ playwright-report
 *.log
 .env
 .env.*
+__pycache__
+app.py
+tsconfig.tsbuildinfo

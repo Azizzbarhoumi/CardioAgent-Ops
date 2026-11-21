@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from audio_engine.inference.model_registry import LoadedModel, ModelRegistry
 from audio_engine.preprocessing.audio import AudioInput
 
 
+@pytest.mark.skip(reason="v1 registry (extract_cnn_image); replaced by tests/model/test_v2_pipeline.py::test_one_preprocessing_pass_shared_by_all_models")
 def test_prediction_reuses_one_preprocessed_signal_and_feature_vector(monkeypatch) -> None:
     import audio_engine.inference.model_registry as registry_module
 

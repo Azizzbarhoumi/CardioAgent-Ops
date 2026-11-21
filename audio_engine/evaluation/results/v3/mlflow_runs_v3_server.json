@@ -1,0 +1,50 @@
+{
+  "tracking_uri": "http://localhost:5000",
+  "runs": {
+    "svm_linear": {
+      "parent_run_id": "54c0512826d942c79ceba2f3321373ca",
+      "child_run_ids": {
+        "1": "a9dddad8a9df429bb785b2b321a737b0",
+        "2": "e7146427c1544dc59673bd7ef5666795",
+        "3": "9b1489d03a55422892b07198e3068dc8"
+      },
+      "experiment_id": "1"
+    },
+    "svm_rbf": {
+      "parent_run_id": "a8f505c1217b4255bec86601d2d2bb70",
+      "child_run_ids": {
+        "1": "cab8af7d030b40bc81bca1303d8559ec",
+        "2": "23547471789b476eb23fa19c6ed7897b",
+        "3": "50712e94f5264fd5814e67d6e9655a6b"
+      },
+      "experiment_id": "1"
+    },
+    "decision_tree": {
+      "parent_run_id": "0802b21ad1f8499da4f7eaf6162128e0",
+      "child_run_ids": {
+        "1": "cc21405a46454d9ca6d7cc98d25b6173",
+        "2": "887c505db6c84b16be2cf2ad40cf1d94",
+        "3": "b6bf756f6377457e9c046c691c18d06f"
+      },
+      "experiment_id": "1"
+    },
+    "cnn_custom": {
+      "parent_run_id": "1f324e1f369146daa7f5a5fdd11d2bb0",
+      "child_run_ids": {
+        "1": "aa9f90caaf4d4c23a09cbac62e189d7b",
+        "2": "796cd2a653ca4ce9ac2a58970a92512c",
+        "3": "e0c193f52de847709fd4acde4aac225f"
+      },
+      "experiment_id": "1"
+    },
+    "vgg16_transfer": {
+      "parent_run_id": "b23e923fbb5e4445a7acdd5bc07766bd",
+      "child_run_ids": {
+        "1": "64dd6ef442f4445cb8a61a6c28784848",
+        "2": "962ee9792a2844a6913c935253fdb9d9",
+        "3": "b1b6383c0dfc4795bf0094a23d132793"
+      },
+      "experiment_id": "1"
+    }
+  }
+}

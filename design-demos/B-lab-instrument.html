@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction B · Lab Instrument</title>
+<!-- Logic 1 (seconds roulette = 55 → web style #16 "Terminal-core soft futurism"), toned down to a calm lab instrument:
+     IBM Plex Sans + Plex Mono for every number, sidebar navigation like a measuring device, the existing teal kept as the
+     single accent for continuity. Form from content: a phonocardiogram is read on an instrument, so the page is a readout
+     panel; numbers are first-class and aligned. -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0ee;--side:#e3e7e4;--panel:#fbfbf9;--ink:#1d2622;--ink2:#4d5a54;--line:#cdd4d0;--accent:#0b7466;--nor:#0b6b3a;--nor-bg:#dcefe3;--abn:#a3341f;--abn-bg:#f6e1da;--warn:#6b4e00;--warn-bg:#f6ecc9;--side-n:#d3e8dc;--side-a:#f1d9d1;--mark:#1d2622;--b0:#0b7466;--b1:#6aa99f;--b2:#9aa59f;--tr:#b6beb9;--te:#0b7466;--heat:11,116,102}
+@media (prefers-color-scheme:dark){:root{--bg:#121816;--side:#0c110f;--panel:#19211e;--ink:#e3ebe7;--ink2:#a3b2ab;--line:#2d3a35;--accent:#4fc7b4;--nor:#7fd9a4;--nor-bg:#163626;--abn:#ff9f8a;--abn-bg:#3d1d16;--warn:#f1d88a;--warn-bg:#352c10;--side-n:#183528;--side-a:#3f231b;--mark:#fff;--b0:#4fc7b4;--b1:#2f8a7c;--b2:#7d8b85;--tr:#4a5752;--te:#4fc7b4;--heat:79,199,180}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'IBM Plex Sans',system-ui,sans-serif}
+.n,.sb-num b,.rl-row b,td.n,.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:var(--side);border-right:1px solid var(--line);padding:22px 18px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
+aside h1{font-size:1.05rem;margin:0;letter-spacing:.01em}aside .k{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--ink2)}
+aside nav{display:grid;gap:2px}aside nav button{font:inherit;text-align:left;background:none;border:0;border-radius:4px;padding:8px 10px;color:var(--ink2);cursor:pointer}aside nav button.on{background:var(--panel);color:var(--ink);font-weight:600;box-shadow:inset 3px 0 var(--accent)}
+.st{display:grid;gap:6px;font-size:.88rem;color:var(--ink2)}.st span:before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--nor);margin-right:8px}
+.disc{margin-top:auto;background:var(--warn-bg);color:var(--warn);border-radius:4px;padding:10px 12px;font-size:.88rem;font-weight:500}
+.view{padding:22px 28px 40px;display:grid;gap:18px;min-width:0;max-width:1260px}
+.strip{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.drop{flex:1;min-width:240px;border:1.5px dashed var(--line);border-radius:4px;padding:10px 14px}.drop strong{display:block}.drop span{display:block;color:var(--ink2);font-size:.9rem}
+.btn{font:inherit;font-weight:500;border-radius:4px;padding:8px 14px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}.btn.g{background:transparent;color:var(--accent)}
+@media (prefers-color-scheme:dark){.btn{color:#08211d}.btn.g{color:var(--accent)}}
+.fileline{display:flex;gap:18px;flex-wrap:wrap;font-size:.9rem;color:var(--ink2)}.fileline b{color:var(--ink)}
+h2{font-size:1rem;text-transform:uppercase;letter-spacing:.08em;margin:6px 0 0;color:var(--ink2);font-weight:600}h3{font-size:1rem;margin:0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px}
+table{border-collapse:collapse;width:100%;font-size:.94rem}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{font-weight:500;color:var(--ink2);font-size:.86rem}td.n{text-align:right}th.r{text-align:right}.tscroll{overflow-x:auto}
+.badge{display:inline-flex;align-items:center;gap:6px;font-weight:600;border-radius:3px;padding:2px 8px;font-size:.88rem}.badge svg{width:15px;height:15px}.badge.nor{color:var(--nor);background:var(--nor-bg)}.badge.abn{color:var(--abn);background:var(--abn-bg)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.svm{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--accent);border-radius:6px;background:var(--panel)}
+.svm .lbl{grid-column:1/-1;padding:8px 14px;border-bottom:1px solid var(--line);font-size:.86rem;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.svm .card{border:0;border-radius:0}.svm .card+.card{border-left:1px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:12px;min-width:0;align-content:start}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.row{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem;color:var(--ink2)}
+.sb-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.88rem;color:var(--ink2)}.sb-num b{color:var(--ink);font-weight:500}
+.sb-track{position:relative;height:10px;margin:10px 0 4px}.sb-norm,.sb-abn{position:absolute;top:0;bottom:0}.sb-norm{left:0;background:var(--side-n)}.sb-abn{right:0;background:var(--side-a)}
+.sb-thr{position:absolute;top:-6px;bottom:-6px;width:0;border-left:2px dashed var(--ink2)}.sb-mark{position:absolute;top:-5px;width:0;height:0;border:7px solid transparent;border-top:10px solid var(--mark);transform:translate(-7px,-6px)}
+.sb-ticks{position:relative;height:16px;font:12px 'IBM Plex Mono',monospace;color:var(--ink2)}.sb-ticks span{position:absolute;transform:translateX(-50%)}
+.sb-sides{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink2)}
+.rl{border-top:1px solid var(--line);padding-top:10px}.rl-title{font-size:.84rem;font-weight:600;margin-bottom:4px}.rl-title span{font-weight:400;color:var(--ink2)}
+.rl-row{display:grid;grid-template-columns:8em 1fr 7.5em;gap:8px;align-items:center;font-size:.86rem;color:var(--ink2)}.rl-row b{color:var(--ink);font-weight:500;text-align:right}
+.rl-bar{position:relative;height:4px;background:var(--line)}.rl-sd{position:absolute;top:-2px;bottom:-2px;background:var(--b1);opacity:.6}.rl-pt{position:absolute;top:-4px;width:2px;height:12px;background:var(--accent)}
+.dist{font-size:.8rem;font-family:'IBM Plex Mono',monospace;color:var(--ink2);border:1px solid var(--line);border-radius:3px;padding:1px 6px;cursor:help}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.88rem}a{color:var(--accent)}
+details{font-size:.86rem;color:var(--ink2)}summary{cursor:pointer;color:var(--ink)}
+.aud{display:grid;grid-template-columns:3fr 2fr;gap:14px}.ctrl{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+svg.wave,svg.chart{width:100%;height:auto;display:block}svg text{fill:var(--ink2);font:12px 'IBM Plex Mono',monospace}
+.ax{stroke:var(--ink2)}.zero{stroke:var(--line)}.sig{fill:none;stroke:var(--accent);stroke-width:1.1}.ph{stroke:var(--abn);stroke-width:1.5}.grid{stroke:var(--line)}
+.spec{position:relative;height:100%;min-height:200px;border-radius:4px;background:linear-gradient(180deg,#24124a,#3a2d85 30%,#22608c 55%,#1d8a6c 78%,#bdd946);overflow:hidden}.spec .phd{position:absolute;top:0;bottom:0;width:2px;background:#fff}.spec em{position:absolute;left:8px;bottom:8px;font:12px 'IBM Plex Mono',monospace;color:#fff;background:rgba(0,0,0,.5);padding:2px 6px}
+.b0{fill:var(--b0);background:var(--b0)}.b1{fill:var(--b1);background:var(--b1)}.b2{fill:var(--b2);background:var(--b2)}.tr{fill:var(--tr);background:var(--tr)}.te{fill:var(--te);background:var(--te)}.err{stroke:var(--ink);stroke-width:1.4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.86rem;color:var(--ink2);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;margin-right:5px}
+.two{display:grid;grid-template-columns:3fr 2fr;gap:14px}
+.heat td{font-family:'IBM Plex Mono',monospace;text-align:right;background:rgba(var(--heat),calc(var(--v)*.55 + .04))}
+.cm table{max-width:380px}.cm-sel{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;font-size:.9rem}.ph-cell{text-align:center;color:var(--ink2);font-family:'IBM Plex Mono',monospace}.note{font-size:.86rem;color:var(--ink2)}
+@media (max-width:1150px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.svm{grid-column:1/-1}.aud,.two{grid-template-columns:1fr}}
+@media (max-width:820px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}aside nav{display:flex;flex-wrap:wrap}.disc{margin:0;width:100%}.st{display:none}.view{padding:16px}}
+@media (max-width:640px){.cards,.svm{grid-template-columns:1fr}.svm .card+.card{border-left:0;border-top:1px solid var(--line)}}
+</style></head><body><div class="app">
+<aside><div><h1>Heart Sound Model Lab</h1><div class="k">CardioAgent · 5 independent models</div></div>
+<nav aria-label="Main sections"><button class="on" data-tab="an">Analyze</button><button data-tab="bm">Benchmark</button><button>History</button><button>Models</button></nav>
+<div class="st"><span>API and models ready</span><span>MLflow connected</span><a href="#">Open MLflow ↗</a></div>
+<div class="disc" role="note">Educational project only. Not a medical device. Must not be used for diagnosis or medical decisions.</div></aside>
+<div><div class="view" data-view="an" id="an"></div><div class="view" data-view="bm" id="bm" hidden></div></div></div>
+<script src="data.js"></script><script src="charts.js"></script>
+<script>
+const D=DEMO,C=CH,f=D.file;
+const card=m=>`<article class="card"><div class="top"><h3>${m.name.replace('SVM · ','')}</h3>${C.badge(false)}</div>${C.scoreBar(m)}
+ <div class="row"><span>inference <b class="mono">${m.ms.toFixed(1)} ms</b></span>${C.distTag(m)}</div>${C.reliability(m)}
+ <div class="links">${C.links()}</div><div class="row"><span>3-fold CV · fold ${m.fold} model</span></div>
+ <details><summary>Model details</summary><span class="mono">v2-fold${m.fold}</span> · rule ${m.type==='decision'?'decision_score &gt; 0':'P(abnormal) ≥ threshold'} · 0 = Normal, 1 = Abnormal</details></article>`;
+document.getElementById('an').innerHTML=`
+<div class="strip"><div class="drop"><strong>Drop your WAV recording here</strong><span>or browse your device · up to 20 MB</span></div><button class="btn g">Browse</button><button class="btn g">Normal sample</button><button class="btn g">Abnormal sample</button><button class="btn">Analyze →</button></div>
+<div class="fileline"><b class="mono">${f.name}</b><span class="mono">${f.dur} s</span><span class="mono">${f.src} → ${f.rs} Hz</span><span class="mono">${f.total} ms</span><a href="#">analysis in MLflow ↗</a><a href="#">JSON</a><a href="#">CSV</a><a href="#">Print</a></div>
+<h2>Results summary · independent, no combined result</h2>
+<div class="box tscroll"><table><thead><tr><th>Model</th><th>Prediction</th><th>Score type</th><th class="r">Score</th><th class="r">Threshold</th><th class="r">Time</th></tr></thead>
+<tbody>${D.models.map(m=>`<tr><td>${m.name}</td><td>${C.badge(false)}</td><td>${m.type==='decision'?'Decision score':'P(abnormal)'}</td><td class="n">${m.score.toFixed(4)}</td><td class="n">${m.thr.toFixed(m.type==='decision'?0:2)}</td><td class="n">${m.ms.toFixed(1)} ms</td></tr>`).join('')}</tbody></table></div>
+<h2>Model readouts</h2>
+<div class="cards"><div class="svm"><div class="lbl">SVM (2 kernels) · linear | RBF</div>${card(D.models[0])}${card(D.models[1])}</div>${D.models.slice(2).map(card).join('')}</div>
+<h2>Signal</h2>
+<div class="aud"><div class="box"><div class="ctrl"><button class="btn" data-play>Play</button><span class="mono" data-time>0.0 s / ${f.dur} s</span></div><h3>Resampled waveform · ${f.rs} Hz</h3>${C.waveform()}</div>
+<div class="box" style="display:grid;grid-template-rows:auto 1fr auto;gap:8px"><h3>Mel spectrogram (CNN and VGG16 input)</h3><div class="spec"><span class="phd" data-ph></span><em>API PNG (placeholder)</em></div><span class="row">time (s) · Mel frequency (Hz) · dB</span></div></div>`;
+document.getElementById('bm').innerHTML=`
+<h2>Benchmark · patient-grouped 3-fold CV · mean ± std over test folds</h2>
+<div class="box"><h3>Test recall · balanced accuracy · F1</h3>${C.grouped()}</div>
+<div class="two"><div class="box"><h3>Train vs test</h3>${C.trainTest(620,220)}</div><div class="box"><h3>Recall heatmap (model × fold)</h3><div class="tscroll">${C.heatmap()}</div></div></div>
+<div class="two"><div class="box"><h3>Confusion matrix</h3>${C.confusion()}</div><div class="box"><h3>MLflow runs</h3><table>${D.models.map(m=>`<tr><td>${m.short}</td><td><a href="#">3-fold results ↗</a></td><td><a href="#">train vs test ↗</a></td></tr>`).join('')}</table></div></div>`;
+C.tabs();C.playhead();
+</script></body></html>

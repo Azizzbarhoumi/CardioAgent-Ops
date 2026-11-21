@@ -17,6 +17,12 @@ class ModelResult(BaseModel):
     threshold: float | None = None
     latency_ms: float = Field(ge=0)
     kernel: str | None = None
+    label_rule: str | None = None
+    benchmark_run_url: str | None = None
+    benchmark_folds_urls: list[str] = Field(default_factory=list)
+    benchmark_train_vs_test_url: str | None = None
+    benchmark_summary: dict | None = None
+    benchmark_warning: str | None = None
 
 
 class ModelGroup(BaseModel):
@@ -35,6 +41,7 @@ class AnalysisResponse(BaseModel):
     waveform_points: list[tuple[float, float]] = Field(default_factory=list)
     total_processing_ms: float
     mel_spectrogram_png_base64: str
+    mel_spectrogram_axes: dict | None = None
     waveform_png_base64: str
     mlflow_run_id: str | None = None
     mlflow_run_url: str | None = None
