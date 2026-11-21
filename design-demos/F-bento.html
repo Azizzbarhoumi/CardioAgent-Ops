@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction F · Bold Bento</title>
+<!-- Starting point 3: chosen "bento" over "editorial" because tiles map one-to-one onto independent models (one tile
+     per model, never a shared tile = no combined verdict by construction). Pushed further: oversized monospace numbers,
+     solid colour blocks (deep teal, ink, paper) and tiles of different sizes by importance. -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9eeec;--tile:#fff;--ink:#0b1513;--ink2:#46524f;--line:#d3dbd8;--teal:#00695c;--teal-ink:#fff;--teal-soft:#c9ebe4;--blk:#0b1513;--blk-ink:#f2f7f5;--blk-ink2:#b5c4c0;--nor:#0a6b3c;--nor-bg:#d4f0de;--abn:#a8321c;--abn-bg:#fbe0d8;--side-n:#cfeae1;--side-a:#f6dbd3;--mark:#0b1513;--warn:#4a3600;--warn-bg:#ffd970;--b0:#00695c;--b1:#4db6ac;--b2:#8a9794;--tr:#b9c5c1;--te:#00695c;--heat:0,105,92}
+@media (prefers-color-scheme:dark){:root{--bg:#080d0c;--tile:#121a18;--ink:#eaf3f0;--ink2:#a5b6b2;--line:#25322f;--teal:#0f8a79;--teal-ink:#fff;--teal-soft:#123b34;--blk:#eaf3f0;--blk-ink:#0b1513;--blk-ink2:#3e4c48;--nor:#80dfab;--nor-bg:#123626;--abn:#ffa08c;--abn-bg:#3e1d16;--side-n:#163a31;--side-a:#43231b;--mark:#fff;--warn:#2a1f00;--warn-bg:#f2c94c;--b0:#3fd0bd;--b1:#1f8f81;--b2:#7d918d;--tr:#3a4a46;--te:#3fd0bd;--heat:63,208,189}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'Space Grotesk',system-ui,sans-serif}
+.mono,.n,.sb-num b,.rl-row b{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1320px;margin:auto;padding:18px 18px 40px}
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.bento>*{min-width:0}
+.t{background:var(--tile);border-radius:18px;padding:18px;border:1px solid var(--line)}
+.s1{grid-column:span 1}.s2{grid-column:span 2}.s3{grid-column:span 3}.s4{grid-column:span 4}.s6{grid-column:1/-1}
+.teal{background:var(--teal);color:var(--teal-ink);border-color:transparent}.blk{background:var(--blk);color:var(--blk-ink);border-color:transparent}.blk a{color:inherit}
+.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent;font-weight:700}
+h1{font-size:2.2rem;line-height:1.02;margin:0;letter-spacing:-.03em}h2{font-size:1.2rem;margin:0 0 8px;letter-spacing:-.01em}h3{margin:0;font-size:1.05rem}
+.k{font:700 .74rem 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}nav button{font:600 .9rem 'Space Grotesk',sans-serif;border:1.5px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:5px 14px;cursor:pointer}nav button.on{background:var(--blk-ink);color:var(--blk)}
+.st{display:grid;gap:4px;font:500 .84rem 'JetBrains Mono',monospace}.st span:before{content:'●';margin-right:6px;color:#7fe6ad}
+.drop{border:2px dashed var(--teal);border-radius:14px;padding:14px;display:grid;gap:2px}.drop strong{font-size:1.1rem}.drop span{color:var(--ink2)}
+.btn{font:700 .92rem 'Space Grotesk',sans-serif;border-radius:999px;padding:9px 16px;border:2px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer}.btn.p{background:var(--teal);color:var(--teal-ink)}
+@media (prefers-color-scheme:dark){.btn{color:#3fd0bd;border-color:#3fd0bd}.btn.p{background:#3fd0bd;color:#04201c}.drop{border-color:#3fd0bd}}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.huge{font:700 3rem/1 'JetBrains Mono',monospace;letter-spacing:-.04em}
+table{border-collapse:collapse;width:100%;font-size:.96rem}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}th{color:var(--ink2);font-weight:500;font-size:.86rem}td.n,th.r{text-align:right}.ts{overflow-x:auto}
+.badge{display:inline-flex;align-items:center;gap:6px;font-weight:700;border-radius:999px;padding:3px 11px;font-size:.88rem;white-space:nowrap}.badge svg{width:15px;height:15px}.badge.nor{color:var(--nor);background:var(--nor-bg)}.badge.abn{color:var(--abn);background:var(--abn-bg)}
+/* model tile */
+.mt{display:grid;gap:12px;align-content:start}.mt .hd{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.score{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}.score .v{font:700 2.7rem/1 'JetBrains Mono',monospace;letter-spacing:-.04em}.score .thr{font:500 .9rem 'JetBrains Mono',monospace;color:var(--ink2);text-align:right}.score .thr b{display:block;font-size:1.3rem;color:var(--ink)}
+.sub{color:var(--ink2);font-size:.86rem}
+.svm{background:var(--teal-soft);border-color:transparent;display:grid;grid-template-columns:1fr 1fr;gap:12px}.svm>.k{grid-column:1/-1;color:var(--ink)}.svm .mt{background:var(--tile);border-radius:14px;padding:16px}
+.sb-head{display:none}
+.sb-track{position:relative;height:18px;border-radius:999px;overflow:visible;margin:4px 0}.sb-norm,.sb-abn{position:absolute;top:0;bottom:0}.sb-norm{left:0;background:var(--side-n);border-radius:999px 0 0 999px}.sb-abn{right:0;background:var(--side-a);border-radius:0 999px 999px 0}
+.sb-thr{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--ink);transform:translateX(-1.5px);border-radius:2px}.sb-mark{position:absolute;top:-4px;width:26px;height:26px;border-radius:50%;background:var(--teal);border:4px solid var(--tile);transform:translateX(-13px)}
+@media (prefers-color-scheme:dark){.sb-mark{background:#3fd0bd}}
+.sb-ticks{position:relative;height:16px;font:11px 'JetBrains Mono',monospace;color:var(--ink2)}.sb-ticks span{position:absolute;transform:translateX(-50%)}
+.sb-sides{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink2);font-weight:500}
+.rl{background:var(--bg);border-radius:12px;padding:10px 12px}.rl-title{font-size:.82rem;font-weight:700;margin-bottom:4px}.rl-title span{font-weight:400;color:var(--ink2)}
+.rl-row{display:grid;grid-template-columns:7.6em 1fr 7.2em;gap:8px;align-items:center;font-size:.84rem;color:var(--ink2)}.rl-row b{color:var(--ink);font-weight:500;text-align:right}
+.rl-bar{position:relative;height:8px;background:var(--line);border-radius:999px}.rl-sd{position:absolute;top:0;bottom:0;background:var(--b1);opacity:.6;border-radius:999px}.rl-pt{position:absolute;top:-3px;width:4px;height:14px;background:var(--teal);border-radius:2px;transform:translateX(-2px)}
+.dist{font:500 .76rem 'JetBrains Mono',monospace;border:1.5px solid var(--line);border-radius:999px;padding:1px 9px;color:var(--ink2);cursor:help}
+.lk{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.88rem;font-weight:500}a{color:var(--teal)}
+@media (prefers-color-scheme:dark){a{color:#3fd0bd}.blk a,.teal a{color:inherit}}
+details{font-size:.84rem;color:var(--ink2)}summary{cursor:pointer;color:var(--ink)}
+svg.wave,svg.chart{width:100%;height:auto;display:block}svg text{fill:var(--ink2);font:12px 'JetBrains Mono',monospace}
+.ax{stroke:var(--ink2)}.zero{stroke:var(--line)}.sig{fill:none;stroke:var(--teal);stroke-width:1.2}.ph{stroke:var(--abn);stroke-width:2}.grid{stroke:var(--line)}
+@media (prefers-color-scheme:dark){.sig{stroke:#3fd0bd}}
+.specbox{position:relative;height:150px;border-radius:10px;margin:0 1.778% 0 4.889%;background:linear-gradient(180deg,#24124a,#3a2d85 30%,#22608c 55%,#1d8a6c 78%,#bdd946);overflow:hidden}.specbox .phd{position:absolute;top:0;bottom:0;width:2px;background:#fff}.specbox em{position:absolute;right:8px;bottom:8px;font:12px 'JetBrains Mono',monospace;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;font-style:normal;border-radius:4px}
+.b0{fill:var(--b0);background:var(--b0)}.b1{fill:var(--b1);background:var(--b1)}.b2{fill:var(--b2);background:var(--b2)}.tr{fill:var(--tr);background:var(--tr)}.te{fill:var(--te);background:var(--te)}.err{stroke:var(--ink);stroke-width:1.4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.84rem;color:var(--ink2);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;border-radius:3px}
+.heat td{font-family:'JetBrains Mono',monospace;text-align:right;background:rgba(var(--heat),calc(var(--v)*.55 + .04))}
+.cm table{max-width:380px}.cm-sel{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;font-size:.9rem}.ph-cell{text-align:center;color:var(--ink2)}.note{font-size:.84rem;color:var(--ink2)}
+.stat .huge{margin:6px 0 2px}.stat .sub{color:inherit;opacity:.85}
+@media (max-width:1100px){.bento{grid-template-columns:repeat(4,minmax(0,1fr))}.s3,.s4{grid-column:span 4}.s2{grid-column:span 2}.svm{grid-column:1/-1}}
+@media (max-width:680px){.bento{grid-template-columns:1fr}.s1,.s2,.s3,.s4,.s6,.svm{grid-column:auto}.svm{grid-template-columns:1fr}h1{font-size:1.8rem}.wrap{padding:10px}}
+</style></head><body><div class="wrap">
+<div class="bento" style="margin-bottom:12px">
+ <div class="t blk s4"><div class="k">CardioAgent · 5 independent models</div><h1>Heart Sound<br>Model Lab</h1><nav aria-label="Main sections"><button class="on" data-tab="an">Analyze</button><button data-tab="bm">Benchmark</button><button>History</button><button>Models</button></nav></div>
+ <div class="t teal s2"><div class="st"><span>API and models ready</span><span>MLflow connected</span></div><p style="margin:12px 0 0"><a href="#" style="color:inherit;font-weight:700">Open MLflow ↗</a></p></div>
+ <div class="t warn s6" role="note">⚠ Educational project only. This is not a medical device and must not be used for diagnosis or medical decisions.</div>
+</div>
+<div class="bento" data-view="an" id="an"></div><div class="bento" data-view="bm" id="bm" hidden></div></div>
+<script src="data.js"></script><script src="charts.js"></script>
+<script>
+const D=DEMO,C=CH,f=D.file;
+const mt=(m,cls='t s2')=>`<article class="${cls} mt"><div class="hd"><h3>${m.name.replace('SVM · ','')}</h3>${C.badge(false)}</div>
+ <div class="sub">${m.type==='decision'?'Decision score (positive = abnormal)':'Probability of abnormal'}</div>
+ <div class="score"><span class="v">${m.score.toFixed(4)}</span><span class="thr">threshold<b>${m.thr.toFixed(m.type==='decision'?0:2)}</b></span></div>
+ ${C.scoreBar(m)}<div class="row"><span class="mono sub">${m.ms.toFixed(1)} ms</span>${C.distTag(m)}</div>${C.reliability(m)}
+ <div class="lk">${C.links()}</div><div class="sub">3-fold CV · fold ${m.fold} model</div>
+ <details><summary>Model details</summary><span class="mono">v2-fold${m.fold}</span> · ${m.type==='decision'?'decision_score &gt; 0':'P(abnormal) ≥ threshold'}</details></article>`;
+document.getElementById('an').innerHTML=`
+<div class="t s4"><h2>Choose a recording</h2><div class="drop"><strong>Drop your WAV recording here</strong><span>or browse your device · up to 20 MB</span></div>
+ <div class="row" style="margin-top:12px"><button class="btn">Browse</button><button class="btn">Normal sample</button><button class="btn">Abnormal sample</button><button class="btn p">Analyze →</button></div></div>
+<div class="t blk s2 stat"><div class="k">Recording</div><div class="huge">${f.dur}<small style="font-size:1.2rem"> s</small></div><div class="sub mono" style="word-break:break-all">${f.name}</div><div class="sub mono">${f.src}→${f.rs} Hz · ${f.total} ms</div><div class="lk" style="margin-top:8px"><a href="#">MLflow ↗</a><a href="#">JSON</a><a href="#">CSV</a><a href="#">Print</a></div></div>
+<div class="t s6"><h2>Results summary <span class="sub" style="font-weight:400">· one row per model · no combined result</span></h2><div class="ts"><table><thead><tr><th>Model</th><th>Prediction</th><th>Score type</th><th class="r">Score</th><th class="r">Threshold</th><th class="r">Time</th></tr></thead>
+<tbody>${D.models.map(m=>`<tr><td>${m.name}</td><td>${C.badge(false)}</td><td>${m.type==='decision'?'Decision score':'P(abnormal)'}</td><td class="n">${m.score.toFixed(4)}</td><td class="n">${m.thr.toFixed(m.type==='decision'?0:2)}</td><td class="n">${m.ms.toFixed(1)} ms</td></tr>`).join('')}</tbody></table></div></div>
+<div class="t svm s4"><div class="k">SVM (2 kernels) · linear | RBF</div>${mt(D.models[0],'mt')}${mt(D.models[1],'mt')}</div>
+${mt(D.models[2])}${mt(D.models[3])}${mt(D.models[4])}
+<div class="t s2 blk stat"><div class="k">Reading the tiles</div><p class="sub" style="margin:8px 0 0">Each tile is one model on its own scale. The dot is this recording's score, the bar is the threshold. Metric lines are 3-fold cross-validated test results, not the confidence of this prediction.</p></div>
+<div class="t s6"><div class="row" style="justify-content:space-between"><h2>Signal</h2><div class="row"><button class="btn p" data-play>Play</button><span class="mono" style="font-size:1.4rem;font-weight:700" data-time>0.0 s / ${f.dur} s</span></div></div>
+ <div class="sub">Resampled waveform · ${f.rs} Hz</div>${C.waveform(900,190)}<div class="sub" style="margin:6px 0">Mel spectrogram (CNN and VGG16 input)</div><div class="specbox"><span class="phd" data-ph></span><em>API PNG (placeholder)</em></div></div>`;
+document.getElementById('bm').innerHTML=`
+<div class="t s6 teal"><div class="k">Benchmark · patient-grouped 3-fold CV</div><h2 style="margin:6px 0 0;font-size:1.6rem">Mean ± std over the 3 test folds. Each model is reported separately.</h2></div>
+${D.models.map((m,i)=>`<div class="t ${i<2?'s3':'s2'} stat"><div class="k">${m.short}</div><div class="huge">${(m.m.bal[0]*100).toFixed(1)}<small style="font-size:1.1rem">%</small></div><div class="sub">balanced accuracy ± ${(m.m.bal[1]*100).toFixed(1)} · recall ${(m.m.recall[0]*100).toFixed(1)} · specificity ${(m.m.spec[0]*100).toFixed(1)}</div><div class="lk" style="margin-top:6px"><a href="#">3-fold ↗</a><a href="#">train vs test ↗</a></div></div>`).join('')}
+<div class="t s6"><h2>Test recall, balanced accuracy, F1</h2>${C.grouped()}</div>
+<div class="t s4"><h2>Train vs test</h2>${C.trainTest(620,220)}</div><div class="t s2"><h2>Recall per fold</h2><div class="ts">${C.heatmap()}</div></div>
+<div class="t s6"><h2>Confusion matrix</h2>${C.confusion()}</div>`;
+C.tabs();C.playhead();
+</script></body></html>

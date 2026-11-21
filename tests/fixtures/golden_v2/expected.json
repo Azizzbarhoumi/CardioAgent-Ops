@@ -1,0 +1,310 @@
+{
+  "description": "Golden snapshot v2: expected outputs computed by the TRAINING-side pipeline\n(saved PNG / tabular cache + exported model files), independent of the API code path.",
+  "label_convention": {
+    "0": "normal",
+    "1": "abnormal"
+  },
+  "tolerance": {
+    "decision_score": 1e-06,
+    "probability": 0.0001
+  },
+  "split_manifest_sha": "60b60900f45aa7ff6bcbbfee39f99c8b1cba4c8b93b3582084e0b165f99d1c38",
+  "recordings": {
+    "pascal_extra_201104021355.wav": {
+      "true_label": 1,
+      "source": "pascal",
+      "models": {
+        "svm_linear": {
+          "prediction": 0,
+          "score": -0.5698867303620603,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 0.8597614407943934,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "score": 0.693795863909273,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.49513673782348633,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 1,
+          "score": 0.6599785685539246,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 0.9363718820861678
+    },
+    "pascal_murmur_197_1308141235553_D.wav": {
+      "true_label": 1,
+      "source": "pascal",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 1.1022565164936793,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 1.0319693920811104,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "score": 1.0,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.8275227546691895,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 1,
+          "score": 0.6632170081138611,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 18.409
+    },
+    "pascal_normal_246_1309199278902_D.wav": {
+      "true_label": 0,
+      "source": "pascal",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 0.8143508737177596,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 0.5002368054791277,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "score": 0.6937958639092728,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.7621865272521973,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 1,
+          "score": 0.6835477352142334,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 23.532
+    },
+    "pascal_normal_296_1311682952647_A1.wav": {
+      "true_label": 0,
+      "source": "pascal",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 0.5160914336164246,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 0.42920470391018656,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "score": 0.4593639575971732,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.32397153973579407,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 0,
+          "score": 0.4312830865383148,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 0.76325
+    },
+    "physio_training-b_b0001.wav": {
+      "true_label": 0,
+      "source": "physio",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 0.010998061726321395,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 0.21585822075586797,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 0,
+          "score": 0.0,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.4663189947605133,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 1,
+          "score": 0.645513653755188,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 8.0
+    },
+    "physio_training-b_b0455.wav": {
+      "true_label": 1,
+      "source": "physio",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 1.020332288791505,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 0.1938206267706672,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "score": 1.0,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.30872055888175964,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 0,
+          "score": 0.4407709538936615,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 7.7275
+    },
+    "physio_training-c_c0015.wav": {
+      "true_label": 1,
+      "source": "physio",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 3.551678038281186,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 1,
+          "score": 0.36556612269640537,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 1,
+          "score": 1.0,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 1,
+          "score": 0.7892259955406189,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 1,
+          "score": 0.8830212354660034,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 85.1755
+    },
+    "physio_training-e_e01899.wav": {
+      "true_label": 0,
+      "source": "physio",
+      "models": {
+        "svm_linear": {
+          "prediction": 1,
+          "score": 0.1584551059404437,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "svm_rbf": {
+          "prediction": 0,
+          "score": -0.7681548048774371,
+          "score_type": "decision_score",
+          "threshold": 0.0
+        },
+        "decision_tree": {
+          "prediction": 0,
+          "score": 0.0,
+          "score_type": "probability",
+          "threshold": 0.29816513761467894
+        },
+        "cnn_custom": {
+          "prediction": 0,
+          "score": 0.06501246243715286,
+          "score_type": "probability",
+          "threshold": 0.2874319851398468
+        },
+        "vgg16_transfer": {
+          "prediction": 0,
+          "score": 0.3615735173225403,
+          "score_type": "probability",
+          "threshold": 0.49647918343544006
+        }
+      },
+      "duration_s": 100.97
+    }
+  }
+}

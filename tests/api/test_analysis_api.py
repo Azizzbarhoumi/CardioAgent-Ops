@@ -25,13 +25,19 @@ def synthetic_wav(duration_s: float = 1.0) -> bytes:
 
 
 class FakeRegistry:
-    models = {key: type("Entry", (), {"name": key})() for key in ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom")}
+    KEYS = ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom", "vgg16_transfer")
+    models = {key: type("Entry", (), {"name": key, "version": "v2-fold1", "threshold": 0.0 if key.startswith("svm") else 0.5})() for key in KEYS}
+    manifest = {"benchmark_version": "v2", "split_manifest_sha": "sha", "label_convention": {"0": "normal", "1": "abnormal"},
+                "models": {key: {"display_name": key, "framework": "scikit-learn" if index < 3 else "tensorflow-keras",
+                                 "input": "22 features" if index < 3 else "gray log-Mel image",
+                                 "score_type": "decision_score" if index < 2 else "probability",
+                                 "threshold": 0.0 if index < 2 else 0.5, "app_fold": 1} for index, key in enumerate(KEYS)}}
     load_errors = {}
     all_loaded = True
 
     def predict_all(self, audio):
         assert hasattr(audio, "signal")  # audio was decoded just once by the API service
-        keys = ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom")
+        keys = self.KEYS
         results = [
             {
                 "model_name": key,
@@ -77,11 +83,11 @@ def test_analyze_happy_path_returns_separate_results() -> None:
     assert response.status_code == 200
     data = response.json()
     assert data["mlflow_run_id"] == "analysis-run"
-    assert len(data["results"]) == 4
-    assert [result["model_key"] for result in data["results"]] == ["svm_linear", "svm_rbf", "decision_tree", "cnn_custom"]
+    assert len(data["results"]) == 5
+    assert [result["model_key"] for result in data["results"]] == ["svm_linear", "svm_rbf", "decision_tree", "cnn_custom", "vgg16_transfer"]
     assert data["sample_rate_after_resampling"] == 2000
     assert data["waveform_png_base64"]
-    assert [(group["name"], len(group["models"])) for group in data["model_groups"]] == [("SVM (2 kernels)", 2), ("Decision Tree", 1), ("CNN", 1)]
+    assert [(group["name"], len(group["models"])) for group in data["model_groups"]] == [("SVM (2 kernels)", 2), ("Decision Tree", 1), ("CNN", 1), ("Transfer Learning (VGG16)", 1)]
     assert data["results"][0]["score"] == -0.5
     assert data["results"][0]["threshold"] == 0.0
     assert len(data["waveform_points"]) > 1
@@ -92,13 +98,12 @@ def test_models_endpoint_returns_model_metadata() -> None:
         response = client.get("/models")
     assert response.status_code == 200
     payload = response.json()
-    assert len(payload["models"]) == 4
+    assert len(payload["models"]) == 5
     linear = next(model for model in payload["models"] if model["key"] == "svm_linear")
     tree = next(model for model in payload["models"] if model["key"] == "decision_tree")
-    cnn = next(model for model in payload["models"] if model["key"] == "cnn_custom")
-    assert len(linear["input_features"]) == 22
+    assert linear["score_type"] == "decision_score" and linear["threshold"] == 0.0
     assert tree["score_type"] == "probability"
-    assert cnn["input_shape"] == [224, 224, 3]
+    assert payload["benchmark_version"] == "v2"
 
 
 def test_analysis_decodes_recording_once(monkeypatch) -> None:
@@ -187,7 +192,7 @@ def test_analysis_returns_predictions_when_mlflow_logging_fails(monkeypatch) -> 
         response = client.post("/analyze_pcg", files={"file": ("sample.wav", synthetic_wav(), "audio/wav")})
     assert response.status_code == 200
     data = response.json()
-    assert len(data["results"]) == 4
+    assert len(data["results"]) == 5
     assert data["mlflow_run_id"] is None
     assert "MLflow logging failed" in data["warning"]
 

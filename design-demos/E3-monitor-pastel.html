@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction E3 · Pastel Monitor</title>
+<!-- Starting point 2 pushed further: a bedside monitor. Near-black canvas with a faint millimetre grid, the waveform as
+     a cyan trace with a sweeping playhead, and each model as a numbered "channel" with a large readout (like a vital
+     sign) and its own colour-neutral scale. Alarm-style chrome is used only for the disclaimer, never for predictions.
+     Deliberately one dark theme (a monitor is dark); a light print style is separate. Form from content: heart sounds
+     are watched on monitors. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--panel:#ffffff;--panel2:#f5f9ff;--ink:#14213d;--ink2:#4a5672;--line:#dfe6f0;--grid:rgba(37,99,235,.07);--teal:#1d4ed8;--cyan:#1e40af;--on-teal:#fff;--nor:#166534;--nor-bg:#dcfce7;--abn:#b91c1c;--abn-bg:#fee2e2;--amber:#b45309;--side-n:#d9f7e3;--side-a:#ffe1e1;--mark:#14213d;--b0:#3b6fe0;--b1:#7fcf9a;--b2:#9aa6bd;--tr:#c9d3e3;--te:#3b6fe0;--heat:59,111,224;--topbg:#eaf1ff;--topink:#14213d;--discbg:#fff7e0;--discline:#f3d27a;--scope:#fbfdff;--ax:#8a97b0;--zero:#e3e9f3;--track:#f1f5fb;--glow:rgba(59,111,224,.25);--dropline:#86c99c;--chip:#e6f6ec;color-scheme:light}
+[data-pal=red]{--teal:#c2364a;--cyan:#9f1d35;--grid:rgba(194,54,74,.06);--b0:#d0566a;--te:#d0566a;--heat:208,86,106;--topbg:#fdecef;--glow:rgba(194,54,74,.2);--side-a:#ffe4d6;--abn:#9a3412;--abn-bg:#ffedd5}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'Inter Tight',system-ui,sans-serif}
+.mono,.n,.sb-num b,.rl-row b{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.top{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--line);background:var(--topbg);color:var(--topink)}
+.top h1{margin:0;font-size:1rem;font-weight:600;letter-spacing:.04em}.top h1 b{color:inherit}
+.st{display:flex;gap:14px;font:500 .8rem 'JetBrains Mono',monospace;opacity:.9}.st span:before{content:'●';color:#22a559;margin-right:5px}
+.top nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}.top nav button{color:inherit!important;font:600 .82rem 'JetBrains Mono',monospace;letter-spacing:.06em;background:none;border:1px solid var(--line);color:var(--ink2);padding:6px 12px;cursor:pointer;text-transform:uppercase}.top nav button.on{border-color:var(--teal);background:#fff;color:var(--teal)!important}
+.disc{display:flex;gap:10px;align-items:center;background:var(--discbg);border-bottom:1px solid var(--discline);color:var(--amber);padding:8px 20px;font-weight:600;font-size:.92rem}.disc i{font-style:normal;border:1.5px solid var(--amber);padding:0 6px;font:700 .72rem 'JetBrains Mono',monospace}
+.wrap{padding:16px 20px 40px;display:grid;gap:14px;max-width:1400px;margin:auto}.wrap>*{min-width:0}
+.pnl{background:var(--panel);border:1px solid var(--line);padding:14px 16px}
+.h{font:700 .76rem 'JetBrains Mono',monospace;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin:0 0 10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.up{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.drop{flex:1;min-width:230px;border:1.5px dashed var(--dropline);padding:10px 14px}.drop strong{display:block}.drop span{display:block;color:var(--ink2);font-size:.9rem}
+.btn{font:600 .85rem 'JetBrains Mono',monospace;padding:9px 14px;border:1px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer}.btn.p{background:var(--teal);color:var(--on-teal)}
+.fl{margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;color:var(--ink2);font-size:.88rem}.fl b{color:var(--ink)}a{color:var(--cyan)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--ink2);font:500 .76rem 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}td.n,th.r{text-align:right}.ts{overflow-x:auto}
+td.n{font-size:1.02rem;color:var(--cyan)}
+.badge{display:inline-flex;align-items:center;gap:6px;font:700 .82rem 'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;white-space:nowrap}.badge svg{width:15px;height:15px}.badge.nor{color:var(--nor);background:var(--nor-bg)}.badge.abn{color:var(--abn);background:var(--abn-bg)}
+.scope{background-color:var(--scope);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--line)}
+svg.wave,svg.chart{width:100%;height:auto;display:block}svg text{fill:var(--ink2);font:12px 'JetBrains Mono',monospace}
+.ax{stroke:var(--ax)}.zero{stroke:var(--zero)}.sig{fill:none;stroke:var(--cyan);stroke-width:1.3;filter:drop-shadow(0 0 2px var(--glow))}.ph{stroke:var(--abn);stroke-width:2}.grid{stroke:var(--line)}
+.specbox{position:relative;height:140px;margin:6px 1.778% 10px 4.889%;background:linear-gradient(180deg,#24124a,#3a2d85 30%,#22608c 55%,#1d8a6c 78%,#bdd946)}.specbox .phd{position:absolute;top:-6px;bottom:-6px;width:2px;background:#fff}.specbox em{position:absolute;right:6px;bottom:6px;font:12px 'JetBrains Mono',monospace;color:#fff;background:rgba(0,0,0,.6);padding:1px 6px;font-style:normal}
+.ctl{display:flex;gap:14px;align-items:center}.big{font:700 1.6rem 'JetBrains Mono',monospace;color:var(--cyan)}
+/* channels */
+.chs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.svm{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--teal)}.svm>.gh{background:var(--chip)!important;color:var(--nor)!important;grid-column:1/-1;font:700 .76rem 'JetBrains Mono',monospace;letter-spacing:.14em;color:var(--on-teal);background:var(--teal);padding:4px 12px}
+.svm .ch{border:0}.svm .ch+.ch{border-left:1px solid var(--line)}
+.ch{background:var(--panel);border:1px solid var(--line);padding:14px;display:grid;gap:12px;align-content:start;min-width:0}
+.ch .id{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.ch .id h3{margin:0;font-size:1rem}.ch .id .no{font:700 .76rem 'JetBrains Mono',monospace;color:var(--teal);letter-spacing:.12em}
+.read{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}.read .v{font:700 2.6rem/1 'JetBrains Mono',monospace;color:var(--cyan);letter-spacing:-.02em}.read .u{font:500 .78rem 'JetBrains Mono',monospace;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em}
+.read .thr{text-align:right;font:500 .9rem 'JetBrains Mono',monospace;color:var(--ink2)}.read .thr b{display:block;color:var(--ink);font-size:1.3rem}
+.sb-head{display:none}
+.sb-track{position:relative;height:14px;margin:4px 0 4px;background:var(--track)}.sb-norm,.sb-abn{position:absolute;top:0;bottom:0}.sb-norm{left:0;background:var(--side-n)}.sb-abn{right:0;background:var(--side-a)}
+.sb-thr{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--amber);transform:translateX(-1px)}.sb-mark{position:absolute;top:-3px;bottom:-3px;width:4px;background:var(--mark);box-shadow:0 0 8px var(--cyan);transform:translateX(-2px)}
+.sb-ticks{position:relative;height:16px;font:11px 'JetBrains Mono',monospace;color:var(--ink2)}.sb-ticks span{position:absolute;transform:translateX(-50%)}
+.sb-sides{display:flex;justify-content:space-between;font:500 .76rem 'JetBrains Mono',monospace;color:var(--ink2)}
+.rl{border-top:1px solid var(--line);padding-top:10px}.rl-title{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}.rl-title span{display:block;text-transform:none;letter-spacing:0;font-weight:400}
+.rl-row{display:grid;grid-template-columns:7.8em 1fr 7.2em;gap:8px;align-items:center;font-size:.86rem;color:var(--ink2)}.rl-row b{color:var(--ink);font-weight:500;text-align:right}
+.rl-bar{position:relative;height:4px;background:var(--line)}.rl-sd{position:absolute;top:-2px;bottom:-2px;background:var(--teal);opacity:.35}.rl-pt{position:absolute;top:-4px;width:2px;height:12px;background:var(--teal)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font:500 .82rem 'JetBrains Mono',monospace;color:var(--ink2)}
+.dist{font:500 .74rem 'JetBrains Mono',monospace;border:1px solid var(--line);padding:1px 6px;color:var(--ink2);cursor:help}
+.lk{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.84rem}
+details{font-size:.82rem;color:var(--ink2)}summary{cursor:pointer;color:var(--ink)}
+.b0{fill:var(--b0);background:var(--b0)}.b1{fill:var(--b1);background:var(--b1)}.b2{fill:var(--b2);background:var(--b2)}.tr{fill:var(--tr);background:var(--tr)}.te{fill:var(--te);background:var(--te)}.err{stroke:var(--ink);stroke-width:1.4}.val{fill:var(--ink)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.84rem;color:var(--ink2);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;margin-right:5px}
+.two{display:grid;grid-template-columns:3fr 2fr;gap:14px}.two>*{min-width:0}
+.heat td{font-family:'JetBrains Mono',monospace;text-align:right;background:rgba(var(--heat),calc(var(--v)*.5 + .03))}
+.cm table{max-width:380px}.cm-sel{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;font-size:.9rem}.cm select{background:var(--panel2);color:var(--ink);border:1px solid var(--line)}.ph-cell{text-align:center;color:var(--ink2);font-family:'JetBrains Mono',monospace}.note{font-size:.84rem;color:var(--ink2)}
+.vit{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.vit .ch .v{font:700 2rem 'JetBrains Mono',monospace;color:var(--cyan)}.vit .ch .u{font:.78rem 'JetBrains Mono',monospace;color:var(--ink2)}
+@media (max-width:1100px){.chs{grid-template-columns:repeat(2,minmax(0,1fr))}.svm{grid-column:1/-1}.two{grid-template-columns:1fr}.vit{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.chs,.svm,.vit{grid-template-columns:1fr}.svm .ch+.ch{border-left:0;border-top:1px solid var(--line)}.wrap{padding:12px}.read .v{font-size:2.1rem}}
+</style></head><body>
+<div class="top"><h1><b>♥</b> HEART SOUND MODEL LAB</h1><div class="pal" style="display:flex;gap:6px"><button class="btn" onclick="document.documentElement.dataset.pal='blue'">Blue + green</button><button class="btn" onclick="document.documentElement.dataset.pal='red'">Red + green</button></div><div class="st"><span>API</span><span>MODELS 5/5</span><span>MLFLOW</span></div>
+<nav aria-label="Main sections"><button class="on" data-tab="an">Analyze</button><button data-tab="bm">Benchmark</button><button>History</button><button>Models</button></nav></div>
+<div class="disc" role="note"><i>EDU</i>Educational project only. This is not a medical device and must not be used for diagnosis or medical decisions.</div>
+<div class="wrap" data-view="an" id="an"></div><div class="wrap" data-view="bm" id="bm" hidden></div>
+<script src="data.js"></script><script src="charts.js"></script>
+<script>
+const D=DEMO,C=CH,f=D.file;
+const ch=(m,i)=>`<article class="ch"><div class="id"><span class="no">CH ${i+1}</span>${C.badge(false)}</div><h3 style="margin:0">${m.name.replace('SVM · ','SVM ')}</h3>
+ <div class="read"><div><div class="u">${m.type==='decision'?'Decision score (positive = abnormal)':'Probability of abnormal'}</div><div class="v">${m.score.toFixed(4)}</div></div><div class="thr">threshold<b>${m.thr.toFixed(m.type==='decision'?0:2)}</b></div></div>
+ ${C.scoreBar(m)}<div class="row"><span>${m.ms.toFixed(1)} ms</span>${C.distTag(m)}<span>3-fold CV · fold ${m.fold} model</span></div>
+ ${C.reliability(m)}<div class="lk">${C.links()}</div><details><summary>Model details</summary><span class="mono">v2-fold${m.fold}</span> · ${m.type==='decision'?'decision_score &gt; 0':'P(abnormal) ≥ threshold'}</details></article>`;
+document.getElementById('an').innerHTML=`
+<section class="pnl"><p class="h">Input</p><div class="up"><div class="drop"><strong>Drop your WAV recording here</strong><span>or browse your device · up to 20 MB</span></div><button class="btn">Browse</button><button class="btn">Normal sample</button><button class="btn">Abnormal sample</button><button class="btn p">Analyze</button></div>
+<div class="fl"><b class="mono">${f.name}</b><span class="mono">${f.dur} s · ${f.src}→${f.rs} Hz · ${f.total} ms</span><a href="#">analysis in MLflow ↗</a><a href="#">JSON</a><a href="#">CSV</a><a href="#">Print</a></div></section>
+<section class="pnl"><p class="h"><span>Results summary</span><span>independent channels · no combined result</span></p><div class="ts"><table><thead><tr><th>Ch</th><th>Model</th><th>Prediction</th><th>Score type</th><th class="r">Score</th><th class="r">Threshold</th><th class="r">Time</th></tr></thead>
+<tbody>${D.models.map((m,i)=>`<tr><td class="mono">${i+1}</td><td>${m.name}</td><td>${C.badge(false)}</td><td>${m.type==='decision'?'Decision score':'P(abnormal)'}</td><td class="n">${m.score.toFixed(4)}</td><td class="n">${m.thr.toFixed(m.type==='decision'?0:2)}</td><td class="n">${m.ms.toFixed(1)} ms</td></tr>`).join('')}</tbody></table></div></section>
+<section class="pnl"><p class="h"><span>PCG trace · ${f.rs} Hz</span><span class="ctl"><button class="btn p" data-play>Play</button><span class="big" data-time>0.0 s / ${f.dur} s</span></span></p>
+<div class="scope">${C.waveform(900,180)}<p class="h" style="margin:4px 0 0 4.9%">Mel spectrogram (CNN and VGG16 input)</p><div class="specbox"><span class="phd" data-ph></span><em>API PNG (placeholder)</em></div></div></section>
+<div class="chs"><div class="svm"><div class="gh">SVM (2 KERNELS)</div>${ch(D.models[0],0)}${ch(D.models[1],1)}</div>${D.models.slice(2).map((m,i)=>ch(m,i+2)).join('')}</div>`;
+document.getElementById('bm').innerHTML=`
+<section class="pnl"><p class="h"><span>Benchmark · patient-grouped 3-fold CV</span><span>mean ± std over 3 test folds · reported per model</span></p>
+<div class="vit">${D.models.map((m,i)=>`<div class="ch"><span class="no" style="font:700 .76rem JetBrains Mono,monospace;color:var(--teal)">CH ${i+1} · ${m.short}</span><div><div class="u">balanced accuracy</div><div class="v">${(m.m.bal[0]*100).toFixed(1)}<small style="font-size:1rem">%</small></div><div class="u">± ${(m.m.bal[1]*100).toFixed(1)} · recall ${(m.m.recall[0]*100).toFixed(1)} · F1 ${(m.m.f1[0]*100).toFixed(1)}</div></div><div class="lk"><a href="#">3-fold ↗</a><a href="#">train/test ↗</a></div></div>`).join('')}</div></section>
+<section class="pnl"><p class="h">Test recall · balanced accuracy · F1</p>${C.grouped()}</section>
+<div class="two"><section class="pnl"><p class="h">Train vs test</p>${C.trainTest(620,220)}</section><section class="pnl"><p class="h">Recall · model × fold</p><div class="ts">${C.heatmap()}</div></section></div>
+<section class="pnl"><p class="h">Confusion matrix</p>${C.confusion()}</section>`;
+C.tabs();C.playhead();
+</script></body></html>

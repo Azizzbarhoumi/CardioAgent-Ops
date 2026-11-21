@@ -1,0 +1,7 @@
+{
+  "description": "Local demo samples for the 'Try a sample' buttons. Labels from PhysioNet's official REFERENCE.csv (-1 = normal, 1 = abnormal).",
+  "samples": [
+    {"id": "normal", "label": "normal", "file": "physionet_a0238_normal.wav", "source": "PhysioNet/CinC Challenge 2016, training-a/a0238", "reference_label": -1},
+    {"id": "abnormal", "label": "abnormal", "file": "physionet_a0296_abnormal.wav", "source": "PhysioNet/CinC Challenge 2016, training-a/a0296", "reference_label": 1}
+  ]
+}

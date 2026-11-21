@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction D · Multitrack</title>
+<!-- Starting point 1 pushed further: an audio workstation. A transport bar (play, timecode, file) sits on top like a DAW.
+     The recording lives in two time-aligned "source lanes" (waveform, Mel spectrogram) with one shared playhead.
+     Each model is a horizontal track with a channel strip on the left (name, badge, mute-style chips for its links) and
+     a "score lane" on the right where the marker and threshold sit on the model's own axis. Tracks never sum: there is
+     no master bus. Form from content: the input is literally an audio track. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef3f2;--deck:#fff;--lane:#f6f9f8;--ink:#0f1f1c;--ink2:#46595a;--line:#cfdcd9;--teal:#00796b;--teal2:#4db6ac;--on-teal:#fff;--nor:#0a6b3c;--nor-bg:#d9f0e2;--abn:#a8321c;--abn-bg:#fbe2da;--side-n:#d6ece6;--side-a:#f6ddd5;--mark:#0f1f1c;--warn:#5c4300;--warn-bg:#ffefc2;--b0:#00796b;--b1:#4db6ac;--b2:#7b8f8c;--tr:#b8c6c3;--te:#00796b;--heat:0,121,107}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1514;--deck:#141f1d;--lane:#101a18;--ink:#e3efec;--ink2:#9fb4b0;--line:#263633;--teal:#3fd0bd;--teal2:#1f8f81;--on-teal:#04201c;--nor:#7fdca8;--nor-bg:#133626;--abn:#ffa08c;--abn-bg:#3e1d16;--side-n:#173a31;--side-a:#43231b;--mark:#fff;--warn:#f3d98b;--warn-bg:#382e0e;--b0:#3fd0bd;--b1:#1f8f81;--b2:#7d918d;--tr:#3d4f4b;--te:#3fd0bd;--heat:63,208,189}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'Inter Tight',system-ui,sans-serif}
+.mono,.n,.sb-num b,.rl-row b{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+/* transport */
+.transport{position:sticky;top:0;z-index:5;background:var(--ink);color:#e8f2f0;display:flex;align-items:center;gap:16px;padding:10px 20px;flex-wrap:wrap}
+@media (prefers-color-scheme:dark){.transport{background:#050a09;border-bottom:1px solid var(--line)}}
+.transport h1{font-size:1rem;margin:0;font-weight:700;letter-spacing:.02em}.transport h1 span{color:#7fe3d5;font-weight:500}
+.play{width:40px;height:40px;border-radius:50%;border:0;background:#3fd0bd;color:#04201c;font-size:1rem;cursor:pointer;flex:none}
+.tc{font:700 1.35rem 'JetBrains Mono',monospace;color:#7fe3d5;letter-spacing:.04em}.tc small{color:#9fb4b0;font-size:.8rem;font-weight:400}
+.transport nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}.transport nav button{font:inherit;background:none;border:1px solid transparent;color:#b9cbc7;padding:5px 12px;border-radius:4px;cursor:pointer}.transport nav button.on{border-color:#3fd0bd;color:#fff}
+.disc{background:var(--warn-bg);color:var(--warn);font-weight:600;padding:8px 20px;font-size:.92rem;border-bottom:1px solid var(--line)}
+.wrap{max-width:1320px;margin:auto;padding:18px 20px 40px;display:grid;gap:16px}.wrap>*{min-width:0}
+.deck{background:var(--deck);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.lbl{font:600 .78rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
+/* upload */
+.up{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.drop{flex:1;min-width:230px;border:1.5px dashed var(--teal2);border-radius:6px;padding:10px 14px;background:var(--lane)}.drop strong{display:block}.drop span{display:block;color:var(--ink2);font-size:.9rem}
+.btn{font:inherit;font-weight:600;border-radius:6px;padding:9px 14px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer}.btn.p{background:var(--teal);color:var(--on-teal)}
+.fl{margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;color:var(--ink2);font-size:.9rem}.fl b{color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--ink2);font-weight:500;font-size:.86rem}td.n,th.r{text-align:right}.ts{overflow-x:auto}
+.badge{display:inline-flex;align-items:center;gap:6px;font-weight:700;border-radius:4px;padding:2px 9px;font-size:.88rem;white-space:nowrap}.badge svg{width:15px;height:15px}.badge.nor{color:var(--nor);background:var(--nor-bg)}.badge.abn{color:var(--abn);background:var(--abn-bg)}
+/* source lanes: shared time grid; inner plot area = 44..884 of 900 → 4.889% .. 1.778% */
+.lanes{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--deck)}
+.lanes .head{padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--lane);font-size:.88rem}.lanes .head b{display:block;font-size:.95rem}.lanes .head span{color:var(--ink2)}
+.lanes .body{border-bottom:1px solid var(--line);min-width:0;position:relative}
+.specbox{position:relative;height:150px;margin:8px 1.778% 8px 4.889%;background:linear-gradient(180deg,#24124a,#3a2d85 30%,#22608c 55%,#1d8a6c 78%,#bdd946);border-radius:2px}
+.specbox .phd{position:absolute;top:-8px;bottom:-8px;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.4)}.specbox em{position:absolute;right:6px;bottom:6px;font:12px 'JetBrains Mono',monospace;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;font-style:normal}
+svg.wave,svg.chart{width:100%;height:auto;display:block}svg text{fill:var(--ink2);font:12px 'JetBrains Mono',monospace}
+.ax{stroke:var(--ink2)}.zero{stroke:var(--line)}.sig{fill:none;stroke:var(--teal);stroke-width:1.1}.ph{stroke:var(--abn);stroke-width:2}.grid{stroke:var(--line)}
+/* model tracks */
+.tracks{display:grid;gap:8px}
+.grp{border:1.5px solid var(--teal);border-radius:8px;overflow:hidden}.grp>.gh{background:var(--teal);color:var(--on-teal);font:700 .8rem 'JetBrains Mono',monospace;letter-spacing:.1em;padding:5px 12px;text-transform:uppercase}
+.grp .track{border:0;border-radius:0}.grp .track+.track{border-top:1px solid var(--line)}
+.track{display:grid;grid-template-columns:230px minmax(0,1.5fr) minmax(0,1fr);background:var(--deck);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.strip{padding:12px;background:var(--lane);border-right:1px solid var(--line);display:grid;gap:8px;align-content:start}
+.strip h3{margin:0;font-size:1rem}.strip .meta{font-size:.84rem;color:var(--ink2)}
+.chips{display:flex;flex-wrap:wrap;gap:4px}.chips a{font:500 .74rem 'JetBrains Mono',monospace;border:1px solid var(--line);border-radius:3px;padding:1px 6px;color:var(--teal);text-decoration:none}
+.lane{padding:12px 16px;min-width:0}
+.rel{padding:12px 16px;border-left:1px dashed var(--line);min-width:0}
+.sb-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.86rem;color:var(--ink2)}.sb-num b{color:var(--ink);font-size:1.05rem}
+.sb-track{position:relative;height:22px;margin:8px 0 4px;background:var(--lane)}.sb-norm,.sb-abn{position:absolute;top:0;bottom:0}.sb-norm{left:0;background:var(--side-n)}.sb-abn{right:0;background:var(--side-a)}
+.sb-thr{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--ink);transform:translateX(-1px)}.sb-thr:after{content:'thr';position:absolute;top:-14px;left:3px;font:10px 'JetBrains Mono',monospace;color:var(--ink2)}
+.sb-mark{position:absolute;top:2px;bottom:2px;width:6px;background:var(--teal);border:1.5px solid var(--deck);transform:translateX(-3px);border-radius:1px}
+.sb-ticks{position:relative;height:16px;font:11px 'JetBrains Mono',monospace;color:var(--ink2)}.sb-ticks span{position:absolute;transform:translateX(-50%)}
+.sb-sides{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink2)}
+.rl-title{font-size:.82rem;font-weight:600;margin-bottom:4px}.rl-title span{font-weight:400;color:var(--ink2)}
+.rl-row{display:grid;grid-template-columns:7.6em 1fr 7.2em;gap:8px;align-items:center;font-size:.84rem;color:var(--ink2)}.rl-row b{color:var(--ink);font-weight:500;text-align:right}
+.rl-bar{position:relative;height:6px;background:var(--line);border-radius:3px}.rl-sd{position:absolute;top:0;bottom:0;background:var(--teal2);opacity:.6}.rl-pt{position:absolute;top:-3px;width:3px;height:12px;background:var(--teal);transform:translateX(-1px)}
+.dist{font:500 .74rem 'JetBrains Mono',monospace;border:1px solid var(--line);border-radius:3px;padding:1px 6px;color:var(--ink2);cursor:help;justify-self:start}
+details{font-size:.82rem;color:var(--ink2)}summary{cursor:pointer;color:var(--ink)}a{color:var(--teal)}
+/* benchmark */
+.b0{fill:var(--b0);background:var(--b0)}.b1{fill:var(--b1);background:var(--b1)}.b2{fill:var(--b2);background:var(--b2)}.tr{fill:var(--tr);background:var(--tr)}.te{fill:var(--te);background:var(--te)}.err{stroke:var(--ink);stroke-width:1.4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.84rem;color:var(--ink2);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;margin-right:5px}
+.two{display:grid;grid-template-columns:3fr 2fr;gap:16px}.two>*{min-width:0}
+.heat td{font-family:'JetBrains Mono',monospace;text-align:right;background:rgba(var(--heat),calc(var(--v)*.55 + .04))}
+.cm table{max-width:380px}.cm-sel{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;font-size:.9rem}.ph-cell{text-align:center;color:var(--ink2)}.note{font-size:.84rem;color:var(--ink2)}
+.btrack{display:grid;grid-template-columns:150px 1fr;align-items:center;border-top:1px solid var(--line);padding:8px 0;gap:12px}.btrack:first-child{border:0}.btrack .bars{display:grid;gap:3px}
+.hb{display:grid;grid-template-columns:7em 1fr 7em;gap:8px;align-items:center;font-size:.82rem;color:var(--ink2)}.hb .t{position:relative;height:10px;background:var(--lane)}.hb .t i{position:absolute;top:0;bottom:0;left:0}.hb .t s{position:absolute;top:-3px;bottom:-3px;border-left:1px solid var(--ink);border-right:1px solid var(--ink)}.hb b{font:500 .82rem 'JetBrains Mono',monospace;color:var(--ink);text-align:right}
+@media (max-width:1050px){.track{grid-template-columns:200px minmax(0,1fr)}.rel{grid-column:1/-1;border-left:0;border-top:1px dashed var(--line)}.two{grid-template-columns:1fr}}
+@media (max-width:640px){.track{grid-template-columns:1fr}.strip{border-right:0;border-bottom:1px solid var(--line)}.lanes{grid-template-columns:1fr}.lanes .head{border-right:0}.transport{padding:8px 12px}.wrap{padding:12px}.tc{font-size:1.1rem}.btrack{grid-template-columns:1fr}}
+</style></head><body>
+<div class="transport"><button class="play" data-play aria-label="Play">▶</button><div class="tc" data-time>0.0 s / 7.42 s</div>
+<h1>Heart Sound Model Lab <span>· 5 independent tracks</span></h1>
+<nav aria-label="Main sections"><button class="on" data-tab="an">Analyze</button><button data-tab="bm">Benchmark</button><button>History</button><button>Models</button></nav></div>
+<div class="disc" role="note">Educational project only. This is not a medical device and must not be used for diagnosis or medical decisions.</div>
+<div class="wrap" data-view="an" id="an"></div><div class="wrap" data-view="bm" id="bm" hidden></div>
+<script src="data.js"></script><script src="charts.js"></script>
+<script>
+const D=DEMO,C=CH,f=D.file;
+const track=m=>`<article class="track"><div class="strip"><h3>${m.name.replace('SVM · ','')}</h3>${C.badge(false)}
+ <div class="meta"><span class="mono">${m.ms.toFixed(1)} ms</span> · 3-fold CV · fold ${m.fold} model</div>${C.distTag(m)}
+ <div class="chips"><a href="#">3-fold ↗</a><a href="#">train/test ↗</a><a href="#">analysis ↗</a></div>
+ <details><summary>Model details</summary><span class="mono">v2-fold${m.fold}</span> · ${m.type==='decision'?'decision_score &gt; 0':'P(abnormal) ≥ threshold'}</details></div>
+ <div class="lane">${C.scoreBar(m)}</div><div class="rel">${C.reliability(m)}</div></article>`;
+document.getElementById('an').innerHTML=`
+<section class="deck"><p class="lbl">Input</p><div class="up"><div class="drop"><strong>Drop your WAV recording here</strong><span>or browse your device · up to 20 MB</span></div><button class="btn">Browse</button><button class="btn">Normal sample</button><button class="btn">Abnormal sample</button><button class="btn p">Analyze →</button></div>
+<div class="fl"><b class="mono">${f.name}</b><span class="mono">${f.dur} s · ${f.src}→${f.rs} Hz · ${f.total} ms</span><a href="#">analysis in MLflow ↗</a><a href="#">JSON</a><a href="#">CSV</a><a href="#">Print</a></div></section>
+<section class="deck"><p class="lbl">Results summary · each model independent · no combined result</p><div class="ts"><table><thead><tr><th>Model</th><th>Prediction</th><th>Score type</th><th class="r">Score</th><th class="r">Threshold</th><th class="r">Time</th></tr></thead>
+<tbody>${D.models.map(m=>`<tr><td>${m.name}</td><td>${C.badge(false)}</td><td>${m.type==='decision'?'Decision score':'P(abnormal)'}</td><td class="n">${m.score.toFixed(4)}</td><td class="n">${m.thr.toFixed(m.type==='decision'?0:2)}</td><td class="n">${m.ms.toFixed(1)} ms</td></tr>`).join('')}</tbody></table></div></section>
+<section><p class="lbl">Source lanes · shared playhead</p><div class="lanes">
+ <div class="head"><b>Waveform</b><span>${f.rs} Hz · amplitude</span></div><div class="body">${C.waveform(900,170)}</div>
+ <div class="head"><b>Mel spectrogram</b><span>CNN and VGG16 input</span></div><div class="body"><div class="specbox"><span class="phd" data-ph></span><em>API PNG (placeholder)</em></div></div></div></section>
+<section><p class="lbl">Model tracks · each reads the recording on its own</p><div class="tracks">
+ <div class="grp"><div class="gh">SVM (2 kernels) · linear | RBF</div>${track(D.models[0])}${track(D.models[1])}</div>${D.models.slice(2).map(track).join('')}</div></section>`;
+const hb=(m,k,l)=>`<div class="hb"><span>${l}</span><span class="t"><i class="b${['recall','bal','f1'].indexOf(k)}" style="width:${m.m[k][0]*100}%"></i><s style="left:${(m.m[k][0]-m.m[k][1])*100}%;width:${m.m[k][1]*200}%"></s></span><b>${(m.m[k][0]*100).toFixed(1)} ± ${(m.m[k][1]*100).toFixed(1)}</b></div>`;
+document.getElementById('bm').innerHTML=`
+<section class="deck"><p class="lbl">Benchmark · patient-grouped 3-fold CV · mean ± std over test folds · one track per model</p>
+${D.models.map(m=>`<div class="btrack"><div><b>${m.short}</b><div class="chips"><a href="#">3-fold ↗</a><a href="#">train/test ↗</a></div></div><div class="bars">${hb(m,'recall','Test recall')}${hb(m,'bal','Balanced acc.')}${hb(m,'f1','F1')}</div></div>`).join('')}
+<div class="legend"><span>bar = mean, bracket = ± std over 3 test folds, axis 0 to 100%</span></div></section>
+<section class="deck"><p class="lbl">Same metrics, grouped</p>${C.grouped()}</section>
+<div class="two"><section class="deck"><p class="lbl">Train vs test (overfitting)</p>${C.trainTest(620,220)}</section><section class="deck"><p class="lbl">Recall · model × fold</p><div class="ts">${C.heatmap()}</div></section></div>
+<section class="deck"><p class="lbl">Confusion matrix</p>${C.confusion()}</section>`;
+C.tabs();C.playhead();
+document.querySelector('[data-play]').addEventListener('click',e=>{e.currentTarget.textContent=e.currentTarget.textContent==='Pause'?'❚❚':'▶';});
+</script></body></html>

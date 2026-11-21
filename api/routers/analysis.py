@@ -9,7 +9,6 @@ from fastapi import APIRouter, File, HTTPException, Query, Request, UploadFile
 
 from api.schemas.analysis import AnalysisResponse, HealthResponse, HistoryResponse
 from api.services.analysis import analyze_recording
-from audio_engine.features.audio_features import TABULAR_FEATURE_ORDER, CNN_FEATURE_SETTINGS, CNN_IMAGE_SIZE
 
 
 router = APIRouter()
@@ -17,36 +16,36 @@ router = APIRouter()
 
 @router.get("/models")
 def models_info(request: Request) -> dict:
-    """Describe loaded models using the local provenance manifest."""
+    """Describe the loaded models from the v2 manifest (score type, threshold, provenance)."""
     registry = request.app.state.registry
-    try:
-        manifest_path = getattr(registry, "manifest_path", None)
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path else {}
-    except (OSError, ValueError):
-        manifest = {}
-    metadata = {
-        "svm_linear": {"type": "Support Vector Machine", "kernel": "linear", "input_features": list(TABULAR_FEATURE_ORDER), "score_type": "decision_score", "threshold": 0.0},
-        "svm_rbf": {"type": "Support Vector Machine", "kernel": "RBF", "input_features": list(TABULAR_FEATURE_ORDER), "score_type": "decision_score", "threshold": 0.0},
-        "decision_tree": {"type": "Decision Tree", "input_features": list(TABULAR_FEATURE_ORDER), "score_type": "probability", "threshold": 0.5},
-        "cnn_custom": {"type": "Convolutional Neural Network", "input_shape": [*CNN_IMAGE_SIZE, 3], "mel_settings": CNN_FEATURE_SETTINGS, "score_type": "probability", "threshold": float(os.getenv("CNN_DECISION_THRESHOLD", "0.5"))},
-    }
+    manifest = getattr(registry, "manifest", {}) or {}
     result = []
-    for key, details in metadata.items():
+    for key, info in manifest.get("models", {}).items():
         entry = registry.models.get(key)
-        info = manifest.get("models", {}).get(key, {})
-        metrics = next((info[key] for key in ("reported_metrics", "reproduced_mean_metrics", "reproduced_metrics", "selected_fold_metrics") if info.get(key)), {})
         result.append({
-            "key": key,
-            "name": entry.name if entry else key,
-            "loaded": entry is not None,
-            "version": getattr(entry, "version", None) if entry else None,
-            "model_run_id": getattr(entry, "run_id", None) if entry else None,
-            "label_convention": {"0": "normal", "1": "abnormal"},
-            "source": info.get("source", "Local model export"),
-            "metrics": metrics,
-            **details,
+            "key": key, "name": info.get("display_name", key), "loaded": entry is not None,
+            "version": entry.version if entry else None, "model_run_id": info.get("training_run_id"),
+            "benchmark_parent_run_id": info.get("benchmark_parent_run_id"),
+            "label_convention": manifest.get("label_convention"), "framework": info.get("framework"),
+            "input": info.get("input"), "feature_version": info.get("feature_version"),
+            "score_type": info.get("score_type"), "threshold": entry.threshold if entry else info.get("threshold"),
+            "label_rule": info.get("label_rule"), "kernel": info.get("kernel"), "app_fold": info.get("app_fold"),
+            "metrics": info.get("cv_summary", {}),
         })
-    return {"models": result, "warning": "CNN uses the current runtime threshold of 0.5; no separate validation-selected threshold is recorded."}
+    return {"models": result, "benchmark_version": manifest.get("benchmark_version"),
+            "split_manifest_sha": manifest.get("split_manifest_sha")}
+
+
+@router.get("/benchmark")
+def benchmark(request: Request) -> dict:
+    """Per model: fold metrics (train/validation/test), mean, std and MLflow links."""
+    try:
+        data = request.app.state.benchmark.fetch()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"MLflow benchmark unavailable: {exc}") from exc
+    order = ("svm_linear", "svm_rbf", "decision_tree", "cnn_custom", "vgg16_transfer")
+    models = [data[k] for k in order if k in data] + [v for k, v in data.items() if k not in order]
+    return {"experiment": "audio_benchmark", "evaluation": "patient_grouped_3_fold_cv", "models": models}
 
 
 @router.post("/analyze_pcg", response_model=AnalysisResponse)
@@ -65,6 +64,7 @@ async def analyze_pcg(request: Request, file: UploadFile = File(...)) -> Analysi
             logger=request.app.state.inference_logger,
             minimum_seconds=request.app.state.settings.min_audio_seconds,
             maximum_seconds=request.app.state.settings.max_audio_seconds,
+            benchmark=getattr(request.app.state, "benchmark", None),
         )
     except ValueError as exc:
         status_code = 422 if "too short" in str(exc).lower() or "too long" in str(exc).lower() else 400

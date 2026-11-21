@@ -1,0 +1,47 @@
+{
+  "svm_linear": {
+    "parent_run_id": "3c51c79a88934ff7bf9fd425e6b4c4c7",
+    "child_run_ids": {
+      "1": "c2595d9636da429a9600c8208a7c9308",
+      "2": "0ff3b23221314c5e91d7f417afbc25f1",
+      "3": "6800b8f541794a81ace770ecb7113fef"
+    },
+    "experiment_id": "1"
+  },
+  "svm_rbf": {
+    "parent_run_id": "bae5ca2b96da41d297fe8bd7ceb62d37",
+    "child_run_ids": {
+      "1": "712e1c4f36554c71a3f35df679d7b64d",
+      "2": "734cb91cdc8243d682ce60bed16bbe90",
+      "3": "f44f88d0ba6d4ed99b1b826810a89a30"
+    },
+    "experiment_id": "1"
+  },
+  "decision_tree": {
+    "parent_run_id": "e4ad046b15324a8d904b94265eecfcd3",
+    "child_run_ids": {
+      "1": "8b83956b8ae74a4d995032a63ef744b2",
+      "2": "70d96aa9dfc84b078087649727302635",
+      "3": "91d0a71cb6ef4dc08449c0f01aba1d60"
+    },
+    "experiment_id": "1"
+  },
+  "cnn_custom": {
+    "parent_run_id": "e44448c8950945098b67ecd90e9eb2b1",
+    "child_run_ids": {
+      "1": "de10b3badac44c498f008b468832a6ef",
+      "2": "82e864e87ac84189a4c7df91de40860d",
+      "3": "3171f8595a034ec581fa8f28b202d3e5"
+    },
+    "experiment_id": "1"
+  },
+  "vgg16_transfer": {
+    "parent_run_id": "7bf7363e23db4bdb9518da02ee349c1c",
+    "child_run_ids": {
+      "1": "12fabff388fa47ebab9357bc7dfb41e0",
+      "2": "8e54d9a85ceb4b4095f4671ca7b5aa41",
+      "3": "2774fc7707aa4032b06f53806e8e9eb7"
+    },
+    "experiment_id": "1"
+  }
+}

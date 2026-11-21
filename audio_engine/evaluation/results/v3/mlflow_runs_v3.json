@@ -1,0 +1,50 @@
+{
+  "tracking_uri": "sqlite:///C:/Users/azizb/Downloads/CardioAgent-Ops/mlflow.db",
+  "runs": {
+    "svm_linear": {
+      "parent_run_id": "3a5980b4861e4da18d487d3672f87e09",
+      "child_run_ids": {
+        "1": "cdd1e621b6334a3b8290cb2f49cd4da1",
+        "2": "af976b577a79420c8373cfd4b29eed34",
+        "3": "7bffed80b9e047bbb9aab4998600aebe"
+      },
+      "experiment_id": "1"
+    },
+    "svm_rbf": {
+      "parent_run_id": "d269f8bd42fb4effab26c4da9cfa98bf",
+      "child_run_ids": {
+        "1": "f810f1120fbb450a88877a3ffa74c530",
+        "2": "9445b99c5a064f2d93a8a31317a9328c",
+        "3": "cd13c57b74b647c180a22144e4031ce2"
+      },
+      "experiment_id": "1"
+    },
+    "decision_tree": {
+      "parent_run_id": "a79b035d1aab4d568180c1c0e590615a",
+      "child_run_ids": {
+        "1": "83ec9db301294f95aa17181fe04c1356",
+        "2": "203c0458317446efba3f8d259830631c",
+        "3": "fdd75ed203f1495e902b72257c336dc2"
+      },
+      "experiment_id": "1"
+    },
+    "cnn_custom": {
+      "parent_run_id": "f8f4ca7b28ee44aea6be4eac3170ae8f",
+      "child_run_ids": {
+        "1": "05d6698114cd4fb180467edce14ae099",
+        "2": "2a5888ffae244289b2aeabd44971baf4",
+        "3": "4215cbf2051a4fc9acc42c4f85a5ba23"
+      },
+      "experiment_id": "1"
+    },
+    "vgg16_transfer": {
+      "parent_run_id": "7b4408d861224dc3a71b9a8214ff391c",
+      "child_run_ids": {
+        "1": "eecb9965de2b48e8b90fbaeaea6590be",
+        "2": "c475ca41a8c8493babdb6a6ea147d70e",
+        "3": "ab00c0f0a2434a858a5dcbaf76bb27f7"
+      },
+      "experiment_id": "1"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+﻿
+ RUN  v5.1.0 C:/Users/azizb/Downloads/CardioAgent-Ops/frontend
+
+ ✓ src/lib/display.test.ts > distance-to-threshold rule (boundaries) > SVM uses the absolute margin, inclusive at the cut-off 6ms
+ ✓ src/lib/display.test.ts > distance-to-threshold rule (boundaries) > probabilities use |score - threshold|, inclusive at the cut-off 1ms
+ ✓ src/lib/display.test.ts > distance-to-threshold rule (boundaries) > returns the cut-off from the single config constant 0ms
+ ✓ src/lib/display.test.ts > score axis > SVM axis is centred on 0 and linear from -3 to +3 2ms
+ ✓ src/lib/display.test.ts > score axis > probability axis goes from 0 to 1 1ms
+ ✓ src/lib/display.test.ts > readable model label comes from the app fold, raw version kept elsewhere 1ms
+ ✓ src/lib/playable.test.ts > 2 kHz WAV is repeated x4 to 8 kHz for playback, same duration and values 4ms
+ ✓ src/lib/playable.test.ts > already playable rates are left alone 0ms
+ ✓ src/components/ModelCard.test.tsx > model result components > svm_linear displays its prediction and score contract 50ms
+ ✓ src/components/ModelCard.test.tsx > model result components > svm_rbf displays its prediction and score contract 13ms
+ ✓ src/components/ModelCard.test.tsx > model result components > decision_tree displays its prediction and score contract 7ms
+ ✓ src/components/ModelCard.test.tsx > model result components > cnn_custom displays its prediction and score contract 9ms
+ ✓ src/components/ModelCard.test.tsx > model result components > renders the two SVM kernel results in one group 34ms
+ ✓ src/components/BenchmarkV2.test.tsx > v2 model cards > svm_rbf shows label, score type, threshold and the MLflow buttons 141ms
+ ✓ src/components/BenchmarkV2.test.tsx > v2 model cards > decision_tree shows label, score type, threshold and the MLflow buttons 21ms
+ ✓ src/components/BenchmarkV2.test.tsx > v2 model cards > cnn_custom shows label, score type, threshold and the MLflow buttons 17ms
+ ✓ src/components/BenchmarkV2.test.tsx > v2 model cards > vgg16_transfer shows label, score type, threshold and the MLflow buttons 22ms
+ ✓ src/components/BenchmarkV2.test.tsx > v2 model cards > says why the 3-fold link is missing when MLflow is unavailable 8ms
+ ✓ src/components/BenchmarkV2.test.tsx > Benchmark tab > renders the models x mean±std table, one train-vs-test chart per model and the links 31ms
+ ✓ src/components/BenchmarkV2.test.tsx > Benchmark tab > never shows an aggregated verdict 23ms
+ ✓ src/LegacyApp.test.tsx > Heart Sound Model Lab > uploads a WAV and displays separate model groups and its MLflow link 445ms
+ ✓ src/LegacyApp.test.tsx > Heart Sound Model Lab > shows a loading state while the analysis request is pending 99ms
+ ✓ src/LegacyApp.test.tsx > Heart Sound Model Lab > shows the API error message when analysis fails 84ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > renders the summary table before the channel grid 527ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > grid has 5 cards and the SVM group holds 2 225ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > each card shows label, score with type, threshold, reliability and the 3 MLflow links 314ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > score marker position matches the score on the model axis 159ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > summary table values equal the card values 125ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > never renders a combined verdict 128ms
+ ✓ src/monitor/monitor.test.tsx > Analyze results (monitor UI) > distance tag shows its rule and is not a confidence 138ms
+ ✓ src/monitor/monitor.test.tsx > i18n > French dictionary has every key, with no empty value and standard terms 7ms
+ ✓ src/monitor/monitor.test.tsx > i18n > switching to French changes the visible strings and keeps the MLflow links 260ms
+ ✓ src/monitor/monitor.test.tsx > i18n > translate fills variables 1ms
+ ✓ src/monitor/monitor.test.tsx > exports contain exactly the values shown > CSV rows match the cards 188ms
+ ✓ src/monitor/monitor.test.tsx > exports contain exactly the values shown > JSON is the API response without the large images 2ms
+ ✓ src/monitor/monitor.test.tsx > the disclaimer stays visible on every tab 80ms
+
+ Test Files  6 passed (6)
+      Tests  36 passed (36)
+   Start at  16:01:30
+   Duration  5.06s (environment 54%, tests 18%, setup 14%, import 7%, transform 7%)
+

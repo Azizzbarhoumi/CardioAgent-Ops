@@ -9,7 +9,9 @@ from pathlib import Path
 
 
 PHYSIONET_SUBSETS = ("training-a", "training-b", "training-c", "training-d", "training-e", "training-f")
-PHYSIONET_LABELS = {"1": "normal", "-1": "abnormal"}
+# PhysioNet/CinC 2016 REFERENCE.csv convention: -1 = normal, 1 = abnormal
+# (matches RECORDS-normal / RECORDS-abnormal). Fixed 2026-11-21; was inverted.
+PHYSIONET_LABELS = {"-1": "normal", "1": "abnormal"}
 PASCAL_LABELS = {"normal": "normal", "murmur": "abnormal", "extra": "abnormal"}
 MANIFEST_FIELDS = ("recording_id", "source", "subset", "source_label", "label", "relative_path")
 

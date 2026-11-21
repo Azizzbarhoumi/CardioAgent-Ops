@@ -44,3 +44,25 @@ mlartifacts/
 .idea/
 .DS_Store
 /mlflow.db
+
+# Benchmark v2: keep the exported app models (audio_engine/artifacts/models/*_v2.*),
+# not the per-fold training outputs, caches, backups or logs.
+/audio_engine/artifacts/models/v2/
+/backups/
+/logs/
+!tests/fixtures/golden_v2/wavs/*.wav
+
+# Local demo samples for /samples (not redistributed; see samples/README.md)
+samples/*.wav
+# Design drafts and backups from the frontend redesign
+backups/
+
+# Large/generated artifacts kept out of git (2026-11-21)
+Data/processed/features/
+audio_engine/artifacts/models/v3/
+audio_engine/artifacts/models/*_v2.keras
+audio_engine/artifacts/models/*_v2.joblib
+design-demos/shots/
+frontend/test-results/
+frontend/e2e/screenshots/
+frontend/tsconfig.tsbuildinfo
