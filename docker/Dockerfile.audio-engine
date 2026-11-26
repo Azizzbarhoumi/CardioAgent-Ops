@@ -1,0 +1,16 @@
+# ──────────────────────────────────────────────
+# Dockerfile.audio-engine  (Service 3)
+# ──────────────────────────────────────────────
+FROM python:3.10-slim AS base
+
+WORKDIR /app
+
+COPY audio_engine/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY audio_engine/ ./audio_engine/
+
+EXPOSE 8003
+
+CMD ["uvicorn", "audio_engine.server:app", "--host", "0.0.0.0", "--port", "8003"]
+

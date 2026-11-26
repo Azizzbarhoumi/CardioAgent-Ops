@@ -1,0 +1,17 @@
+# ──────────────────────────────────────────────
+# Dockerfile.llm-server  (Service 1)
+# LLM Fine-Tuné — Ollama + QLoRA / GGUF model
+# ──────────────────────────────────────────────
+FROM ollama/ollama:latest
+
+# Copy the Modelfile that registers the fine-tuned GGUF adapter
+COPY docker/ollama/Modelfile /root/Modelfile
+
+# Copy the startup script that pulls the base model and creates the custom model
+COPY docker/ollama/entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
+
+EXPOSE 11434
+
+ENTRYPOINT ["/root/entrypoint.sh"]
+

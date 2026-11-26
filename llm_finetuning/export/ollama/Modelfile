@@ -1,0 +1,16 @@
+FROM ../gguf/cardio-qwen2.5-7b-q4_k_m.gguf
+
+TEMPLATE """{{- if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{- end }}{{- range .Messages }}<|im_start|>{{ .Role }}
+{{ .Content }}<|im_end|>
+{{- end }}<|im_start|>assistant
+"""
+
+SYSTEM """You are a cardiology clinical reasoning assistant specialized in phonocardiogram (PCG) auscultation and ESC Valvular Heart Disease guidelines. Always ground answers in provided audio predictions and guideline excerpts, output valid JSON when requested, and include an educational disclaimer."""
+
+PARAMETER temperature 0.2
+PARAMETER top_p 0.9
+PARAMETER num_ctx 4096
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|im_start|>"

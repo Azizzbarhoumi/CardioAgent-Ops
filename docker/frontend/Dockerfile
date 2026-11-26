@@ -2,7 +2,7 @@ FROM python:3.12-slim AS builder
 
 WORKDIR /build
 COPY docker/frontend/requirements.txt ./requirements.txt
-RUN python -m pip install --no-cache-dir --prefix=/install -r requirements.txt
+RUN python -m pip install --no-cache-dir --timeout 120 --retries 10 --prefix=/install -r requirements.txt
 
 FROM python:3.12-slim AS runtime
 

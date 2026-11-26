@@ -1,0 +1,16 @@
+# ──────────────────────────────────────────────
+# Dockerfile.agent-orchestrator  (Service 4)
+# ──────────────────────────────────────────────
+FROM python:3.10-slim AS base
+
+WORKDIR /app
+
+COPY agents/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY agents/ ./agents/
+
+EXPOSE 8004
+
+CMD ["uvicorn", "agents.server:app", "--host", "0.0.0.0", "--port", "8004"]
+

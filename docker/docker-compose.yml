@@ -1,0 +1,148 @@
+# CardioAgent-Ops: Docker Compose configuration (located in docker/ per PROJECT_STRUCTURE.md)
+# Run from repo root:
+#   docker compose -f docker/docker-compose.yml up --build
+# Include Milestones 3-5 (vector-db, llm-server, agent-orchestrator):
+#   docker compose -f docker/docker-compose.yml --profile agents up --build
+name: cardioagent-ops
+
+services:
+  mlflow:
+    build:
+      context: ..
+      dockerfile: docker/mlflow-server/Dockerfile
+    ports:
+      - "${MLFLOW_PORT:-5000}:5000"
+    volumes:
+      # Persistent MLflow backend store (SQLite) + artifact store; survives restarts and `down` (never use `down -v`).
+      - mlflow_data:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=5)"]
+      interval: 20s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - mlflow-server
+
+  audio-engine:
+    build:
+      context: ..
+      dockerfile: docker/audio-engine/Dockerfile
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow-server:5000
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+      MLFLOW_SUPPRESS_PRINTING_URL_TO_STDOUT: "true"
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173}
+      MODEL_DIR: /app/audio_engine/artifacts/models
+      MODEL_MANIFEST_PATH: /app/audio_engine/artifacts/models/model_manifest.json
+      API_MAX_UPLOAD_BYTES: ${API_MAX_UPLOAD_BYTES:-20971520}
+      MIN_AUDIO_SECONDS: ${MIN_AUDIO_SECONDS:-0.25}
+      MAX_AUDIO_SECONDS: ${MAX_AUDIO_SECONDS:-120}
+      TF_CPP_MIN_LOG_LEVEL: "2"
+      SAMPLES_DIR: /app/samples
+    volumes:
+      - ../audio_engine/artifacts/models:/app/audio_engine/artifacts/models:ro
+      - ../samples:/app/samples:ro
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, json; r=json.load(urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)); assert r['models_loaded'], r"]
+      interval: 30s
+      timeout: 10s
+      start_period: 180s
+      retries: 3
+    restart: unless-stopped
+
+  react-frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/react-frontend/Dockerfile
+      additional_contexts:
+        dockerconf: ./react-frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+        VITE_MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+    environment:
+      API_URL: ${VITE_API_URL:-http://localhost:8000}
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+    ports:
+      - "${APP_PORT:-3000}:80"
+    depends_on:
+      audio-engine:
+        condition: service_healthy
+    restart: unless-stopped
+
+  streamlit:
+    profiles:
+      - legacy
+    build:
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://audio-engine:8000
+      MLFLOW_PUBLIC_URL: ${MLFLOW_PUBLIC_URL:-http://localhost:5000}
+    depends_on:
+      audio-engine:
+        condition: service_healthy
+    restart: unless-stopped
+
+  vector-db:
+    profiles:
+      - agents
+    build:
+      context: ..
+      dockerfile: docker/vector-db/Dockerfile
+    ports:
+      - "${VECTOR_DB_PORT:-8002}:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    restart: unless-stopped
+
+  llm-server:
+    profiles:
+      - agents
+    build:
+      context: ..
+      dockerfile: docker/llm-server/Dockerfile
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ../llm_finetuning/export:/models/export:ro
+    restart: unless-stopped
+
+  agent-orchestrator:
+    profiles:
+      - agents
+    build:
+      context: ..
+      dockerfile: docker/agent-orchestrator/Dockerfile
+    ports:
+      - "${ORCHESTRATOR_PORT:-8001}:8001"
+    environment:
+      AUDIO_ENGINE_URL: http://audio-engine:8000
+      OLLAMA_BASE_URL: http://llm-server:11434
+      VECTOR_DB_HOST: vector-db
+      VECTOR_DB_PORT: "8000"
+      MLFLOW_TRACKING_URI: http://mlflow-server:5000
+      MOCK_AUDIO: ${MOCK_AUDIO:-false}
+    depends_on:
+      - vector-db
+      - llm-server
+    restart: unless-stopped
+
+volumes:
+  mlflow_data:
+    name: mlflow-data
+  chroma_data:
+    name: chroma-data
+  ollama_data:
+    name: ollama-data

@@ -1,0 +1,6 @@
+# rag_engine dependencies
+qdrant-client>=1.7
+sentence-transformers>=2.2
+langchain>=0.1
+langchain-community>=0.0.10
+

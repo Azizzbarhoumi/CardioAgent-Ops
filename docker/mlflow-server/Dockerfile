@@ -1,3 +1,6 @@
+# ──────────────────────────────────────────────
+# Service 6: mlflow-server (MLflow Tracking)
+# ──────────────────────────────────────────────
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
